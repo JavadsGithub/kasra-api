@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+sqlalchemy
+passlib
+bcrypt
+PyJWT
+python-jose
+pymysql
+python-multipart
+pydantic
+pandas
+numpy
+joblib
