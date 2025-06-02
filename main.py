@@ -2,7 +2,7 @@ from fastapi import FastAPI
 import routers
 from model import database, model
 import ssl
-from routers import authentication
+from routers import authentication, broker, explorer, mentor, supervisor, user
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -17,6 +17,11 @@ app.add_middleware(
 ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
 ssl_context.load_cert_chain("./cert.pem", keyfile="./key.pem")
 
-# test
+
 model.Base.metadata.create_all(database.engine)
 app.include_router(authentication.router)
+app.include_router(broker.router)
+app.include_router(user.router)
+app.include_router(explorer.router)
+app.include_router(mentor.router)
+app.include_router(supervisor.router)

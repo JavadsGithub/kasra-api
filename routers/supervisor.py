@@ -6,8 +6,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy import update, desc
 from datetime import time
 
-from repository.user import *
+from repository import user
 from util import util
 
 
-router = APIRouter(tags=["user"], prefix="/users")
+router = APIRouter(tags=["supervisor"], prefix="/supervisor")
