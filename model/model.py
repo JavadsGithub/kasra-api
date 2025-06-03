@@ -66,6 +66,8 @@ class Proposal(Base):
     RFP_id = Column(Integer, ForeignKey("RFP.id"))
     user_id = Column(Integer, ForeignKey("user.id"))
     file_id = Column(Integer, ForeignKey("file.id"))
+    state = Column(Integer)  # ENUM
+    comment = Column(String(999))
 
     rfp = relationship("RFP", back_populates="proposals")
     user = relationship("User")

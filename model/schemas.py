@@ -88,6 +88,8 @@ class ProposalRequest(BaseModel):
     info: str
     RFP_id: int
     user_id: int
+    state: int  # ENUM
+    comment: str
     file_id: Optional[int] = None
 
 
@@ -96,10 +98,18 @@ class ProposalResponse(BaseModel):
     info: str
     RFP_id: int
     user_id: int
+    comment: str
+    state: int
+    comment: str
     file_id: Optional[int] = None
 
     class Config:
         orm_mode = True
+
+
+class ProposalUpdate(BaseModel):
+    state: int  # ENUM
+    comment: str
 
 
 # Commission schemas
