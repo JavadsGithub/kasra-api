@@ -115,6 +115,8 @@ class Report(Base):
     id = Column(Integer, primary_key=True)
     info = Column(String(999))
     project_id = Column(Integer, ForeignKey("project.id"))
+    comment = Column(String(999))
+    state = Column(Integer)  # ENUM
 
     project = relationship("Project")
     report_files = relationship("ReportFile", back_populates="report")

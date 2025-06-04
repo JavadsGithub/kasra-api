@@ -166,15 +166,24 @@ class ProjectResponse(BaseModel):
 class ReportRequest(BaseModel):
     info: str
     project_id: int
+    comment: str
+    state: int
 
 
 class ReportResponse(BaseModel):
     id: int
     info: str
     project_id: int
+    comment: str
+    state: int
 
     class Config:
         orm_mode = True
+
+
+class ReportUpdate(BaseModel):
+    state: int
+    comment: str
 
 
 # ReportFile schemas
