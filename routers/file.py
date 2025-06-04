@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, responses, File, UploadFi
 from model.schemas import *
 from sqlalchemy.orm import Session
 import os
-from repository.supervisor import *
+from repository.file import *
 from util.util import *
 
 # ALLOWED_EXTENSIONS = load_allowed_extensions("allowed_extensions.yaml")
@@ -31,12 +31,7 @@ async def upload_file(
         content = await file.read()
         f.write(content)
 
-    db_file = File(info=file_hash, access_id=access_id)
-    db.add(db_file)
-    db.commit()
-    db.refresh(db_file)
-
-    return {"file_id": db_file.id, "file_hash": file_hash}
+    return create_file(file_hash=file_hash, access_id=access_id)
 
 
 @router.get("/download/{file_id}")
