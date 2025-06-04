@@ -1,4 +1,6 @@
 from datetime import datetime, timedelta, timezone
+import hashlib
+import random
 from typing import Annotated
 from model import database, schemas
 from fastapi import Depends, HTTPException, status
@@ -6,6 +8,7 @@ from fastapi.security import OAuth2PasswordBearer
 import jwt
 from jwt.exceptions import InvalidTokenError
 from passlib.context import CryptContext
+import yaml
 
 """""" """""" """""" """""" """""" """""" """""" """""" """""" """""" """
     
@@ -25,6 +28,19 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
+# file
+def load_allowed_extensions(yaml_file):
+    with open(yaml_file, "r") as file:
+        return yaml.safe_load(file)["allowed_extensions"]
+
+
+def compute_file_hash(user_id: str, key: str, file_name: str) -> str:
+    random_int = random.randint(1, 10000)
+    hash_input = f"{user_id}{key}{random_int}{file_name}".encode("utf-8")
+    return hashlib.sha256(hash_input).hexdigest()
+
+
+# auth
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
     to_encode = data.copy()
     if expires_delta:
