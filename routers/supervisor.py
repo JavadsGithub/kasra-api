@@ -18,11 +18,11 @@ async def read_proposals(skip: int = 0, limit: int = 10, db: Session = Depends(g
     return proposals
 
 
-@router.get("/proposals/", response_model=List[Proposal])
+@router.get("/proposals-like/", response_model=List[Proposal])
 async def read_proposals(
     skip: int = 0, limit: int = 10, info: str = None, db: Session = Depends(get_db)
 ):
-    proposals = get_proposals(db, skip=skip, limit=limit, info=info)
+    proposals = get_proposals_like(db, skip=skip, limit=limit, info=info)
     return proposals
 
 

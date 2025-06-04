@@ -9,7 +9,7 @@ def get_proposals(db: Session, skip: int = 0, limit: int = 10):
     return db.query(Proposal).offset(skip).limit(limit).all()
 
 
-def get_proposals(db: Session, skip: int = 0, limit: int = 10, info: str = None):
+def get_proposals_like(db: Session, skip: int = 0, limit: int = 10, info: str = None):
     query = db.query(Proposal)
 
     if info:
