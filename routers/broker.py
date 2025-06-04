@@ -29,3 +29,10 @@ async def read_proposals(
 @router.get("/proposals/{proposal_id}", response_model=Proposal)
 async def read_proposal(proposal_id: int, db: Session = Depends(get_db)):
     return get_proposal_by_id(db=db, proposal_id=proposal_id)
+
+
+@router.post("/commissions/", response_model=Commission)
+async def add_commission(
+    commission_request: CommissionRequest, db: Session = Depends(get_db)
+):
+    return create_commission(db=db, commission=commission_request)
