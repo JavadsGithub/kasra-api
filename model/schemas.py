@@ -48,7 +48,7 @@ class UserUpdateRequest(BaseModel):
     active: bool
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class UserInfoResponse(BaseModel):
@@ -65,7 +65,7 @@ class UserInfoResponse(BaseModel):
     user_type: UserTypeInfo
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 # RFP schemas
@@ -80,7 +80,7 @@ class RFPResponse(BaseModel):
     file_id: Optional[int] = None
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 # Proposal schemas
@@ -104,7 +104,7 @@ class ProposalResponse(BaseModel):
     file_id: Optional[int] = None
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class ProposalUpdate(BaseModel):
@@ -134,7 +134,7 @@ class CommissionResponse(BaseModel):
     file_id: Optional[int] = None
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 # Project schemas
@@ -159,7 +159,7 @@ class ProjectResponse(BaseModel):
     user_user_id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 # Report schemas
@@ -178,7 +178,7 @@ class ReportResponse(BaseModel):
     state: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class ReportUpdate(BaseModel):
@@ -200,4 +200,4 @@ class ReportFileResponse(BaseModel):
     file_id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True

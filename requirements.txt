@@ -11,3 +11,4 @@ pydantic
 pandas
 numpy
 joblib
+pyyaml

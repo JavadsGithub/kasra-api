@@ -12,13 +12,13 @@ from util.util import *
 router = APIRouter(tags=["supervisor"], prefix="/supervisor")
 
 
-@router.get("/proposals/", response_model=List[Proposal])
+@router.get("/proposals/", response_model=List[ProposalResponse])
 async def read_proposals(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     proposals = get_proposals(db, skip=skip, limit=limit)
     return proposals
 
 
-@router.get("/proposals-like/", response_model=List[Proposal])
+@router.get("/proposals-like/", response_model=List[ProposalResponse])
 async def read_proposals(
     skip: int = 0, limit: int = 10, info: str = None, db: Session = Depends(get_db)
 ):
@@ -26,7 +26,7 @@ async def read_proposals(
     return proposals
 
 
-@router.get("/proposals/{proposal_id}", response_model=Proposal)
+@router.get("/proposals/{proposal_id}", response_model=ProposalResponse)
 async def read_proposal(proposal_id: int, db: Session = Depends(get_db)):
     return get_proposal_by_id(db=db, proposal_id=proposal_id)
 
@@ -40,13 +40,13 @@ async def edit_proposal(
     )
 
 
-@router.get("/reports/", response_model=List[Report])
+@router.get("/reports/", response_model=List[ReportResponse])
 async def read_reports(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     reports = get_reports(db, skip=skip, limit=limit)
     return reports
 
 
-@router.get("/reports/{report_id}", response_model=dict)
+@router.get("/reports/{report_id}", response_model=ReportResponse)
 async def read_report(report_id: int, db: Session = Depends(get_db)):
     return get_report_with_files(db=db, report_id=report_id)
 
@@ -58,7 +58,7 @@ async def edit_report(
     return update_report(db=db, report_id=report_id, report_update=report_update)
 
 
-@router.get("/projects/", response_model=List[Project])
+@router.get("/projects/", response_model=List[ProjectResponse])
 async def read_projects(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     projects = get_projects(db, skip=skip, limit=limit)
     return projects
