@@ -5,7 +5,7 @@ from model.schemas import *
 from fastapi import HTTPException
 
 
-def create_file(
+def file_create_file(
     db: Session,
     file_hash: str,
     access_id: int,

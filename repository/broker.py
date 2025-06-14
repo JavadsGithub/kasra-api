@@ -5,11 +5,13 @@ from model.schemas import *
 from fastapi import HTTPException
 
 
-def get_proposals(db: Session, skip: int = 0, limit: int = 10):
+def broker_get_proposals(db: Session, skip: int = 0, limit: int = 10):
     return db.query(Proposal).offset(skip).limit(limit).all()
 
 
-def get_proposals_like(db: Session, skip: int = 0, limit: int = 10, info: str = None):
+def broker_get_proposals_like(
+    db: Session, skip: int = 0, limit: int = 10, info: str = None
+):
     query = db.query(Proposal)
 
     if info:
@@ -17,14 +19,15 @@ def get_proposals_like(db: Session, skip: int = 0, limit: int = 10, info: str = 
     return query.offset(skip).limit(limit).all()
 
 
-def get_proposal_by_id(db: Session, proposal_id: int):
+def broker_get_proposal_by_id(db: Session, proposal_id: int):
     proposal = db.query(Proposal).filter(Proposal.id == proposal_id).first()
     if not proposal:
         raise HTTPException(status_code=404, detail="Proposal not found")
     return proposal
 
 
-def create_commission(db: Session, commission: CommissionRequest):
+# ..................
+def broker_create_commission(db: Session, commission: CommissionRequest):
     db_commission = Commission(
         title=commission.title,
         comment=commission.comment,

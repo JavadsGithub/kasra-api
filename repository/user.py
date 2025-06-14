@@ -5,7 +5,7 @@ from model.schemas import *
 from fastapi import HTTPException
 
 
-def create_proposal(db: Session, proposal: ProposalRequest):
+def user_create_proposal(db: Session, proposal: ProposalRequest):
     db_proposal = Proposal(
         info=proposal.info,
         RFP_id=proposal.RFP_id,
@@ -20,14 +20,14 @@ def create_proposal(db: Session, proposal: ProposalRequest):
     return db_proposal
 
 
-def get_proposal_by_id(db: Session, proposal_id: int):
+def user_get_proposal_by_id(db: Session, proposal_id: int):
     proposal = db.query(Proposal).filter(Proposal.id == proposal_id).first()
     if not proposal:
         raise HTTPException(status_code=404, detail="Proposal not found")
     return proposal
 
 
-def get_projects(
+def user_get_projects(
     db: Session,
     user_id: int,
     skip: int = 0,
@@ -43,11 +43,11 @@ def get_projects(
     )
 
 
-def get_reports_by_project(db: Session, project_id: int):
+def user_get_reports_by_project(db: Session, project_id: int):
     return db.query(Report).filter(Report.project_id == project_id).all()
 
 
-def create_report(db: Session, report: ReportRequest):
+def user_create_report(db: Session, report: ReportRequest):
     db_report = Report(
         info=report.info,
         project_id=report.project_id,
@@ -60,7 +60,7 @@ def create_report(db: Session, report: ReportRequest):
     return db_report
 
 
-def get_report_by_id(db: Session, report_id: int):
+def user_get_report_by_id(db: Session, report_id: int):
     report = db.query(Report).filter(Report.id == report_id).first()
     if report is None:
         raise HTTPException(status_code=404, detail="Report not found")
