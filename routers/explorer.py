@@ -16,7 +16,7 @@ router = APIRouter(tags=["explorer"], prefix="/explorer")
 
 @router.get("/rfps/", response_model=List[RFPResponse])
 async def read_rfps(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    rfps = get_rfps(db, skip=skip, limit=limit)
+    rfps = explorer_get_rfps(db, skip=skip, limit=limit)
     if not rfps:
         raise HTTPException(status_code=404, detail="No RFPs found")
     return rfps
@@ -26,7 +26,7 @@ async def read_rfps(skip: int = 0, limit: int = 10, db: Session = Depends(get_db
 async def search_rfps_endpoint(
     query: str, skip: int = 0, limit: int = 10, db: Session = Depends(get_db)
 ):
-    rfps = search_rfps(db, query=query, skip=skip, limit=limit)
+    rfps = explorer_search_rfps(db, query=query, skip=skip, limit=limit)
     if not rfps:
         raise HTTPException(status_code=404, detail="No RFPs found matching the query")
     return rfps
@@ -34,9 +34,9 @@ async def search_rfps_endpoint(
 
 @router.post("/rfps/", response_model=RFPResponse)
 async def add_rfp(rfp: RFPRequest, db: Session = Depends(get_db)):
-    return create_rfp(db=db, rfp=rfp)
+    return explorer_create_rfp(db=db, rfp=rfp)
 
 
 @router.put("/rfps/{rfp_id}", response_model=RFPResponse)
 async def edit_rfp(rfp_id: int, rfp_update: RFPRequest, db: Session = Depends(get_db)):
-    return update_rfp(db=db, rfp_id=rfp_id, rfp_update=rfp_update)
+    return explorer_update_rfp(db=db, rfp_id=rfp_id, rfp_update=rfp_update)

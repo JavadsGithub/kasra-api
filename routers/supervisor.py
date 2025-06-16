@@ -14,7 +14,7 @@ router = APIRouter(tags=["supervisor"], prefix="/supervisor")
 
 @router.get("/proposals/", response_model=List[ProposalResponse])
 async def read_proposals(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    proposals = get_proposals(db, skip=skip, limit=limit)
+    proposals = suoervisor_get_proposals(db, skip=skip, limit=limit)
     return proposals
 
 
@@ -22,43 +22,45 @@ async def read_proposals(skip: int = 0, limit: int = 10, db: Session = Depends(g
 async def read_proposals(
     skip: int = 0, limit: int = 10, info: str = None, db: Session = Depends(get_db)
 ):
-    proposals = get_proposals_like(db, skip=skip, limit=limit, info=info)
+    proposals = suoervisor_get_proposals_like(db, skip=skip, limit=limit, info=info)
     return proposals
 
 
 @router.get("/proposals/{proposal_id}", response_model=ProposalResponse)
 async def read_proposal(proposal_id: int, db: Session = Depends(get_db)):
-    return get_proposal_by_id(db=db, proposal_id=proposal_id)
+    return suoervisor_get_proposal_by_id(db=db, proposal_id=proposal_id)
 
 
 @router.put("/proposals/{proposal_id}", response_model=ProposalResponse)
 async def edit_proposal(
     proposal_id: int, proposal_update: ProposalUpdate, db: Session = Depends(get_db)
 ):
-    return update_proposal(
+    return suoervisor_update_proposal(
         db=db, proposal_id=proposal_id, proposal_update=proposal_update
     )
 
 
 @router.get("/reports/", response_model=List[ReportResponse])
 async def read_reports(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    reports = get_reports(db, skip=skip, limit=limit)
+    reports = suoervisor_get_reports(db, skip=skip, limit=limit)
     return reports
 
 
 @router.get("/reports/{report_id}", response_model=ReportResponse)
 async def read_report(report_id: int, db: Session = Depends(get_db)):
-    return get_report_with_files(db=db, report_id=report_id)
+    return suoervisor_get_report_with_files(db=db, report_id=report_id)
 
 
 @router.put("/reports/{report_id}", response_model=ReportResponse)
 async def edit_report(
     report_id: int, report_update: ReportUpdate, db: Session = Depends(get_db)
 ):
-    return update_report(db=db, report_id=report_id, report_update=report_update)
+    return suoervisor_update_report(
+        db=db, report_id=report_id, report_update=report_update
+    )
 
 
 @router.get("/projects/", response_model=List[ProjectResponse])
 async def read_projects(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    projects = get_projects(db, skip=skip, limit=limit)
+    projects = suoervisor_get_projects(db, skip=skip, limit=limit)
     return projects

@@ -31,7 +31,7 @@ async def upload_file(
         content = await file.read()
         f.write(content)
 
-    return create_file(file_hash=file_hash, access_id=access_id)
+    return file_create_file(file_hash=file_hash, access_id=access_id)
 
 
 @router.get("/download/{file_id}")

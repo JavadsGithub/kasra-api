@@ -14,7 +14,7 @@ router = APIRouter(tags=["broker"], prefix="/broker")
 
 @router.get("/proposals/", response_model=List[ProposalResponse])
 async def read_proposals(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    proposals = get_proposals(db, skip=skip, limit=limit)
+    proposals = broker_get_proposals(db, skip=skip, limit=limit)
     return proposals
 
 
@@ -22,17 +22,17 @@ async def read_proposals(skip: int = 0, limit: int = 10, db: Session = Depends(g
 async def read_proposals(
     skip: int = 0, limit: int = 10, info: str = None, db: Session = Depends(get_db)
 ):
-    proposals = get_proposals_like(db, skip=skip, limit=limit, info=info)
+    proposals = broker_get_proposals_like(db, skip=skip, limit=limit, info=info)
     return proposals
 
 
 @router.get("/proposals/{proposal_id}", response_model=ProposalResponse)
 async def read_proposal(proposal_id: int, db: Session = Depends(get_db)):
-    return get_proposal_by_id(db=db, proposal_id=proposal_id)
+    return broker_get_proposal_by_id(db=db, proposal_id=proposal_id)
 
 
 @router.post("/commissions/", response_model=CommissionResponse)
 async def add_commission(
     commission_request: CommissionRequest, db: Session = Depends(get_db)
 ):
-    return create_commission(db=db, commission=commission_request)
+    return broker_create_commission(db=db, commission=commission_request)

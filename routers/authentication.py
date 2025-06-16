@@ -32,10 +32,10 @@ def login(
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="invalid username"
         )
-    access_token = util.create_access_token(data={"sub": user.user_name})
+    access_token = util.create_access_token(data={"sub": user.username})
     return schemas.Token(
         access_token=access_token,
         token_type="bearer",
-        user_name=str(user.user_name),
-        name=str(user.name),
+        user_name=str(user.username),
+        name=str(f"{user.lname} {user.lname}"),
     )
