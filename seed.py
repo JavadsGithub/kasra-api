@@ -1,9 +1,11 @@
 from util.util import *
 from sqlalchemy.orm import Session
-from model.model import User
+from model.model import User, UserRole
 from time import datetime
 
 db: Session = get_db()
+
+new_user_roule = UserRole(title="ادمین اصلی-تست")
 
 new_user = User(
     user_type_id=1,
@@ -17,3 +19,5 @@ new_user = User(
     phone="09181020300",
     active=True,
 )
+db.add(new_user_roule)
+db.add(new_user)
