@@ -135,7 +135,180 @@ new_proposal = [
 ]
 db.add_all(new_proposal)
 
+new_projects = [
+    Project(
+        title="project 1",
+        proposal_id=1,
+        user_supervisor_id=4,
+        user_discoverer_id=2,
+        user_master_id=1,
+        user_broker_id=1,
+        user_user_id=3,
+    ),
+    Project(
+        title="project 2",
+        proposal_id=1,
+        user_supervisor_id=4,
+        user_discoverer_id=2,
+        user_master_id=1,
+        user_broker_id=1,
+        user_user_id=3,
+    ),
+    Project(
+        title="project 3",
+        proposal_id=1,
+        user_supervisor_id=4,
+        user_discoverer_id=2,
+        user_master_id=1,
+        user_broker_id=1,
+        user_user_id=3,
+    ),
+    Project(
+        title="project 4",
+        proposal_id=1,
+        user_supervisor_id=4,
+        user_discoverer_id=2,
+        user_master_id=1,
+        user_broker_id=1,
+        user_user_id=3,
+    ),
+    Project(
+        title="project 5",
+        proposal_id=1,
+        user_supervisor_id=4,
+        user_discoverer_id=2,
+        user_master_id=1,
+        user_broker_id=1,
+        user_user_id=3,
+    ),
+    Project(
+        title="project 6",
+        proposal_id=1,
+        user_supervisor_id=4,
+        user_discoverer_id=2,
+        user_master_id=1,
+        user_broker_id=1,
+        user_user_id=3,
+    ),
+    Project(
+        title="project 7",
+        proposal_id=1,
+        user_supervisor_id=4,
+        user_discoverer_id=2,
+        user_master_id=1,
+        user_broker_id=1,
+        user_user_id=3,
+    ),
+    Project(
+        title="project 8",
+        proposal_id=1,
+        user_supervisor_id=4,
+        user_discoverer_id=2,
+        user_master_id=1,
+        user_broker_id=1,
+        user_user_id=3,
+    ),
+    Project(
+        title="project 9",
+        proposal_id=1,
+        user_supervisor_id=4,
+        user_discoverer_id=2,
+        user_master_id=1,
+        user_broker_id=1,
+        user_user_id=3,
+    ),
+    Project(
+        title="project 10",
+        proposal_id=1,
+        user_supervisor_id=4,
+        user_discoverer_id=2,
+        user_master_id=1,
+        user_broker_id=1,
+        user_user_id=3,
+    ),
+    Project(
+        title="project 11",
+        proposal_id=1,
+        user_supervisor_id=4,
+        user_discoverer_id=2,
+        user_master_id=1,
+        user_broker_id=1,
+        user_user_id=3,
+    ),
+    Project(
+        title="project 12",
+        proposal_id=1,
+        user_supervisor_id=4,
+        user_discoverer_id=2,
+        user_master_id=1,
+        user_broker_id=1,
+        user_user_id=3,
+    ),
+    Project(
+        title="project 13",
+        proposal_id=1,
+        user_supervisor_id=4,
+        user_discoverer_id=2,
+        user_master_id=1,
+        user_broker_id=1,
+        user_user_id=3,
+    ),
+    Project(
+        title="project 14",
+        proposal_id=1,
+        user_supervisor_id=4,
+        user_discoverer_id=2,
+        user_master_id=1,
+        user_broker_id=1,
+        user_user_id=3,
+    ),
+    Project(
+        title="project 15",
+        proposal_id=1,
+        user_supervisor_id=4,
+        user_discoverer_id=2,
+        user_master_id=1,
+        user_broker_id=1,
+        user_user_id=3,
+    ),
+]
+db.add_all(new_projects)
 
-db.add_all(new_user_roules)
-db.add_all(new_users)
+new_reports = [
+    Report(
+        info="report 1",
+        project_id=1,
+        comment="none",
+        state=1,
+    ),
+    Report(
+        info="report 2",
+        project_id=1,
+        comment="none",
+        state=2,
+    ),
+    Report(
+        info="report 2",
+        project_id=1,
+        comment="none",
+        state=3,
+    ),
+]
+db.add_all(new_reports)
+
+new_report_files = [
+    ReportFile(
+        info="file 1",
+        report_id=1,
+        file_id=1,
+    ),
+    ReportFile(
+        info="file 2",
+        report_id=1,
+        file_id=1,
+    ),
+]
+db.add_all(new_report_files)
+
+
 db.commit()
