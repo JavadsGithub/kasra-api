@@ -36,6 +36,7 @@ class RFP(Base):
     id = Column(Integer, primary_key=True)
     info = Column(String(999))
     file_id = Column(Integer, ForeignKey("file.id"))
+    field_id = Column(Integer, ForeignKey("field.id"))
 
     file = relationship("File")
     field = relationship("RFPField", back_populates="rfps")
@@ -54,8 +55,7 @@ class File(Base):
     __tablename__ = "file"
     id = Column(Integer, primary_key=True)
     info = Column(String(999))
-    access_id = Column(Integer)
-
+    # access_id = Column(Integer)
     access = relationship("UserRole")
 
 

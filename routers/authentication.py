@@ -3,9 +3,8 @@ from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import Depends, status
 from sqlalchemy.orm import Session
 from model import model, schemas
-from util import util
+from util.util import *
 from sqlalchemy.orm import Session
-
 
 router = APIRouter(tags=["authenticaton"])
 
@@ -18,24 +17,64 @@ router = APIRouter(tags=["authenticaton"])
  """ """""" """""" """""" """""" """""" """""" """""" """""" """""" """"""
 
 
-@router.post("/login", response_model=schemas.Token)
-def login(
-    request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(util.get_db)
+@router.post("/token", response_model=schemas.Token)
+async def login(
+    request: OAuth2PasswordRequestForm = Depends(),
+    db: Session = Depends(get_db),
 ):
-    user = db.query(model.User).filter(model.User.user_name == request.username).first()
+    user = db.query(model.User).filter(model.User.username == request.username).first()
     if not user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="invalid username"
         )
 
-    if not util.verify_hash(user.password, request.password):
+    if not verify_hash(user.password, request.password):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="invalid username"
         )
-    access_token = util.create_access_token(data={"sub": user.username})
-    return schemas.Token(
-        access_token=access_token,
-        token_type="bearer",
-        user_name=str(user.username),
-        name=str(f"{user.lname} {user.lname}"),
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": user.username}, expires_delta=access_token_expires
     )
+    refresh_token = create_refresh_token(data={"sub": user.username})
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "refresh_token": refresh_token,
+    }
+
+
+@router.post("/refresh-token", response_model=schemas.Token)
+async def refresh_token(refresh_token: str):
+    payload = verify_token(refresh_token)
+    if payload is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid refresh token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    access_token = create_access_token(data={"sub": payload["sub"]})
+    new_refresh_token = create_refresh_token(data={"sub": payload["sub"]})
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "refresh_token": new_refresh_token,
+    }
+
+
+@router.get("/users/me", response_model=model.User)
+async def read_users_me(
+    token: str = Depends(oauth2_scheme),
+    db: Session = Depends(get_db),
+):
+    payload = verify_token(token)
+    if payload is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid access token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    user = db.get(payload["sub"])
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user
