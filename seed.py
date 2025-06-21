@@ -1,7 +1,7 @@
 from util.util import *
 from sqlalchemy.orm import Session
 from model.model import *
-from time import datetime
+import datetime
 from util import util
 
 db: Session = get_db()
