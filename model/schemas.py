@@ -14,10 +14,10 @@ class TokenData(BaseModel):
     username: str | None = None
 
 
-# Define UserTypeInfo as needed
-class UserTypeInfo(BaseModel):
-    id: int
-    info: str
+# # Define UserTypeInfo as needed
+# class UserTypeInfo(BaseModel):
+#     id: int
+#     info: str
 
 
 # User schemas

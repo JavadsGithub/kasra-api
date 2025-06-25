@@ -5,6 +5,8 @@ import ssl
 from routers import authentication, broker, explorer, mentor, supervisor, user
 from fastapi.middleware.cors import CORSMiddleware
 
+# from seed import seeding
+
 app = FastAPI()
 
 app.add_middleware(
@@ -25,3 +27,4 @@ app.include_router(user.router)
 app.include_router(explorer.router)
 app.include_router(mentor.router)
 app.include_router(supervisor.router)
+# seeding()

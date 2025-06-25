@@ -62,7 +62,7 @@ async def refresh_token(refresh_token: str):
     }
 
 
-@router.get("/users/me", response_model=model.User)
+@router.get("/users/me", response_model=schemas.UserInfoResponse)
 async def read_users_me(
     token: str = Depends(oauth2_scheme),
     db: Session = Depends(get_db),

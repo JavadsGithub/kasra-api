@@ -9,8 +9,6 @@ class UserRole(Base):
     id = Column(Integer, primary_key=True)
     title = Column(String(999))
 
-    users = relationship("User", back_populates="role")
-
 
 class User(Base):
     __tablename__ = "user"
@@ -20,27 +18,20 @@ class User(Base):
     lname = Column(String(999))
     father_name = Column(String(999))
     birth = Column(Date)
-    resume_file_id = Column(Integer)
+    resume_file_id = Column(Integer, ForeignKey("file.id"))
     address = Column(String(999))
     username = Column(String(999))
     password = Column(String(999))
     phone = Column(String(999))
     active = Column(Boolean)
 
-    resume_file = relationship("File")
-    role = relationship("UserRole", back_populates="users")
-
 
 class RFP(Base):
-    __tablename__ = "RFP"
+    __tablename__ = "RFP_main"
     id = Column(Integer, primary_key=True)
     info = Column(String(999))
     file_id = Column(Integer, ForeignKey("file.id"))
-    field_id = Column(Integer, ForeignKey("field.id"))
-
-    file = relationship("File")
-    field = relationship("RFPField", back_populates="rfps")
-    proposals = relationship("Proposal", back_populates="rfp")
+    RFP_field_id = Column(Integer, ForeignKey("RFP_field.id"))
 
 
 class RFPField(Base):
@@ -48,15 +39,13 @@ class RFPField(Base):
     id = Column(Integer, primary_key=True)
     title = Column(String(999))
 
-    rfps = relationship("RFP", back_populates="field")
-
 
 class File(Base):
     __tablename__ = "file"
     id = Column(Integer, primary_key=True)
     info = Column(String(999))
-    # access_id = Column(Integer)
-    access = relationship("UserRole")
+    access_id = Column(Integer, ForeignKey("user_role.id"))
+    # access = relationship("UserRole")
 
 
 class Proposal(Base):
@@ -69,9 +58,9 @@ class Proposal(Base):
     state = Column(Integer)  # ENUM
     comment = Column(String(999))
 
-    rfp = relationship("RFP", back_populates="proposals")
-    user = relationship("User")
-    file = relationship("File")
+    # rfp = relationship("RFP", back_populates="proposals")
+    # user = relationship("User")
+    # file = relationship("File")
 
 
 class Commission(Base):
@@ -85,10 +74,9 @@ class Commission(Base):
     user_discoverer_id = Column(Integer, ForeignKey("user.id"))
     file_id = Column(Integer, ForeignKey("file.id"))
 
-    proposal = relationship("Proposal")
-    supervisor = relationship("User", foreign_keys=[user_supervisor_id])
-    discoverer = relationship("User", foreign_keys=[user_discoverer_id])
-    file = relationship("File")
+    # proposal = relationship("Proposal")
+    # supervisor = relationship("User", foreign_keys=[user_supervisor_id])
+    # discoverer = relationship("User", foreign_keys=[user_discoverer_id])
 
 
 class Project(Base):
@@ -102,12 +90,12 @@ class Project(Base):
     user_broker_id = Column(Integer, ForeignKey("user.id"))
     user_user_id = Column(Integer, ForeignKey("user.id"))
 
-    proposal = relationship("Proposal")
-    supervisor = relationship("User", foreign_keys=[user_supervisor_id])
-    discoverer = relationship("User", foreign_keys=[user_discoverer_id])
-    master = relationship("User", foreign_keys=[user_master_id])
-    broker = relationship("User", foreign_keys=[user_broker_id])
-    user = relationship("User", foreign_keys=[user_user_id])
+    # proposal = relationship("Proposal")
+    # supervisor = relationship("User", foreign_keys=[user_supervisor_id])
+    # discoverer = relationship("User", foreign_keys=[user_discoverer_id])
+    # master = relationship("User", foreign_keys=[user_master_id])
+    # broker = relationship("User", foreign_keys=[user_broker_id])
+    # user = relationship("User", foreign_keys=[user_user_id])
 
 
 class Report(Base):
@@ -118,8 +106,8 @@ class Report(Base):
     comment = Column(String(999))
     state = Column(Integer)  # ENUM
 
-    project = relationship("Project")
-    report_files = relationship("ReportFile", back_populates="report")
+    # project = relationship("Project")
+    # report_files = relationship("ReportFile", back_populates="report")
 
 
 class ReportFile(Base):
@@ -129,5 +117,4 @@ class ReportFile(Base):
     report_id = Column(Integer, ForeignKey("report.id"))
     file_id = Column(Integer, ForeignKey("file.id"))
 
-    report = relationship("Report", back_populates="report_files")
-    file = relationship("File")
+    # report = relationship("Report", back_populates="report_files")

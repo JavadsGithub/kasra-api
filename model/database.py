@@ -16,7 +16,8 @@ import time
 # SQLALCHEMY_DATABASE_URL = f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DATABASE}"
 
 
-SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:@172.18.0.2:3306/kasra"
+# SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:@db:3307/kasra"
+SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:aA1!@127.0.0.1:3306/kasra"
 
 time.sleep(15)
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
