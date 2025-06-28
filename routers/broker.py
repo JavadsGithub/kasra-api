@@ -5,7 +5,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy.orm import Session
 from datetime import time
 
-from repository.broker import *
+from repository.proposal import *
+from repository.commision import *
 from util.util import *
 
 

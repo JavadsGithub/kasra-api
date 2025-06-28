@@ -5,7 +5,9 @@ from sqlalchemy.orm import Session
 from sqlalchemy.orm import Session
 from sqlalchemy import update, desc
 from datetime import time
-from repository.supervisor import *
+from repository.proposal import *
+from repository.projects import *
+from repository.reports import *
 from util.util import *
 
 

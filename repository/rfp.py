@@ -1,6 +1,5 @@
-from sqlalchemy.sql import exists
 from sqlalchemy.orm import Session
-from model import model, schemas
+from model import schemas
 from model.schemas import *
 from fastapi import HTTPException
 
