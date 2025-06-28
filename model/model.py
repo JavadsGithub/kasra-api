@@ -52,7 +52,7 @@ class Proposal(Base):
     __tablename__ = "proposal"
     id = Column(Integer, primary_key=True)
     info = Column(String(999))
-    RFP_id = Column(Integer, ForeignKey("RFP.id"))
+    RFP_id = Column(Integer, ForeignKey("RFP_main.id"))
     user_id = Column(Integer, ForeignKey("user.id"))
     file_id = Column(Integer, ForeignKey("file.id"))
     state = Column(Integer)  # ENUM

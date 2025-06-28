@@ -61,7 +61,7 @@ class UserInfoResponse(BaseModel):
     address: Optional[str] = None
     phone: Optional[str] = None
     active: bool
-    user_type: UserTypeInfo
+    user_type_id: int
 
     class Config:
         from_attributes = True
