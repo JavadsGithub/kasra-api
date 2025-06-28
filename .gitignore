@@ -1,5 +1,5 @@
 venv/
 .vscode
 __pycache__/
-cert.pem
-key.pem
+# cert.pem
+# key.pem
