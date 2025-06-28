@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.orm import Session
 from datetime import time
 import datetime
+from logic.user import reports_exist
 from repository.user import *
 from util.util import *
 from util import util
@@ -13,8 +14,7 @@ router = APIRouter(tags=["user"], prefix="/users")
 
 
 @router.get("/seed/")
-async def add_proposal(db: Session = Depends(get_db)
-):
+async def add_proposal(db: Session = Depends(get_db)):
     db = database.SessionLocal()
 
     new_user_roules = [
@@ -103,7 +103,7 @@ async def add_proposal(db: Session = Depends(get_db)
     db.add_all(new_users)
     db.commit()
 
-    return {"response":"ok"}
+    return {"response": "ok"}
 
 
 @router.post("/proposals/", response_model=ProposalResponse)
@@ -119,8 +119,14 @@ async def read_proposal(proposal_id: int, db: Session = Depends(get_db)):
 
 
 @router.get("/projects/", response_model=List[ProjectResponse])
-async def read_projects(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    user_id = 0
+async def read_projects(
+    current_user: Annotated[UserInfoResponse, Depends(get_current_user)],
+    skip: int = 0,
+    limit: int = 10,
+    db: Session = Depends(get_db),
+):
+
+    user_id = current_user.id
     projects = user_get_projects(db, skip=skip, limit=limit, user_id=user_id)
     return projects
 
@@ -128,8 +134,7 @@ async def read_projects(skip: int = 0, limit: int = 10, db: Session = Depends(ge
 @router.get("/reports-by-project/{project_id}", response_model=List[ReportResponse])
 async def read_reports(project_id: int, db: Session = Depends(get_db)):
     reports = user_get_reports_by_project(db, project_id)
-    if not reports:
-        raise HTTPException(status_code=404, detail="Reports not found")
+    reports_exist(reports)
     return reports
 
 
