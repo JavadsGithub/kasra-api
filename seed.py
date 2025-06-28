@@ -4,15 +4,11 @@ from model.model import *
 import datetime
 from util import util
 
-dasfsdfasdfffffffffffffffffffffffffffffffffffffffffffffffffffasffff
-
 
 def seeding():
     db = database.SessionLocal()
 
-    new_file = File(info="file.pdf", access_id=1)
-    db.add(new_file)
-    db.commit()
+    
 
     new_user_roules = [
         UserRole(title="کارگزار"),
@@ -23,25 +19,28 @@ def seeding():
     ]
     db.add_all(new_user_roules)
     db.commit()
-
+    new_file = File(info="file.pdf", access_id=1)
+    db.add(new_file)
+    db.commit()
+    
     rolese = db.query(UserRole).all()
 
     new_users = [
         User(
-            user_type_id=rolese[1].id,
+            user_type_id=rolese[0].id,
             fname="جواد",
             lname="جوادی",
             father_name="محمدجواد",
             resume_file_id=1,
             birth=datetime.datetime.now(),
             address="همدان-جوادیه",
-            username="admin1",
+            username="admin",
             password=util.hash("admin"),
             phone="09181020300",
             active=True,
         ),
         User(
-            user_type_id=rolese[2].id,
+            user_type_id=rolese[1].id,
             fname="علی",
             lname="اکبری",
             father_name="حسن",
@@ -54,7 +53,7 @@ def seeding():
             active=True,
         ),
         User(
-            user_type_id=rolese[3].id,
+            user_type_id=rolese[2].id,
             fname="سارا",
             lname="موسوی",
             father_name="محمد",
@@ -67,7 +66,7 @@ def seeding():
             active=True,
         ),
         User(
-            user_type_id=rolese[4].id,
+            user_type_id=rolese[3].id,
             fname="زهرا",
             lname="حسینی",
             father_name="علی",
@@ -80,7 +79,7 @@ def seeding():
             active=True,
         ),
         User(
-            user_type_id=rolese[5].id,
+            user_type_id=rolese[4].id,
             fname="رضا",
             lname="نیکو",
             father_name="سید",
