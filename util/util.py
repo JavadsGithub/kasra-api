@@ -4,13 +4,16 @@ import random
 
 from fastapi import Depends, HTTPException, status
 from typing import Annotated
-
+from sqlalchemy.orm import Session
+from jwt.exceptions import InvalidTokenError
 from model import database
 from fastapi.security import OAuth2PasswordBearer
 import jwt
 from typing import Optional
 from passlib.context import CryptContext
 import yaml
+
+from model.model import User
 
 """""" """""" """""" """""" """""" """""" """""" """""" """""" """""" """
     
@@ -98,7 +101,9 @@ def verify_token(token: str):
         return None
 
 
-async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
+async def get_current_user(
+    token: Annotated[str, Depends(oauth2_scheme)], db: Session = Depends(get_db)
+):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -111,6 +116,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
         username: str = payload.get("sub")
         if username is None:
             raise credentials_exception
-        # token_data = TokenData(username=username)
-    except jwt.InvalidTokenError:
+        user = db.query(User).filter(User.username == username).first()
+        return user
+    except InvalidTokenError:
         raise credentials_exception

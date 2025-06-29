@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from model import model, schemas
 from util.util import *
 from sqlalchemy.orm import Session
+from typing import Annotated
 
 router = APIRouter(tags=["authenticaton"])
 
@@ -37,6 +38,7 @@ async def login(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
     refresh_token = create_refresh_token(data={"sub": user.username})
+
     return {
         "access_token": access_token,
         "token_type": "bearer",
@@ -64,17 +66,11 @@ async def refresh_token(refresh_token: str):
 
 @router.get("/users/me", response_model=schemas.UserInfoResponse)
 async def read_users_me(
-    token: str = Depends(oauth2_scheme),
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
     db: Session = Depends(get_db),
 ):
-    payload = verify_token(token)
-    if payload is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid access token",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    user = db.get(payload["sub"])
+    
+    user = db.query(model.User).filter(model.User.id == current_user.id).first()
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return user
