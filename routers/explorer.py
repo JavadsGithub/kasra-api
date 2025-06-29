@@ -1,6 +1,6 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status, Response
-from logic.explorer import rfps_exist
+from service.explorer import rfps_exist
 from model import model
 from model.schemas import *
 from sqlalchemy.orm import Session

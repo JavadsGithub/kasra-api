@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, responses, File, UploadFile
-from logic.file import *
+from service.file import *
 from model.schemas import *
 from sqlalchemy.orm import Session
 import os
