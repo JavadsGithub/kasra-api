@@ -15,3 +15,7 @@ def file_create_file(
     db.commit()
     db.refresh(db_file)
     return db_file
+
+
+def get_all_files(db: Session):
+    return db.query(File).all()

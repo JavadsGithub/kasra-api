@@ -15,19 +15,21 @@ router = APIRouter(tags=["file"], prefix="/file")
 
 @router.post("/upload/")
 async def upload_file(
-    user_id: int,
-    access_id: int,
-    key: str,
-    file: UploadFile = File(...),
+    current_user: Annotated[UserInfoResponse, Depends(get_current_user)],
+    file: UploadFile,
     db: Session = Depends(get_db),
 ):
+    user_id = current_user.id
+    access_id = current_user.user_type_id
     file_extension = os.path.splitext(file.filename)[1][1:]
     file_extension_allowed(file_extension)
 
-    file_hash = compute_file_hash(user_id, key, file.filename)
+    file_hash = compute_file_hash(user_id, file.filename)
     file_hash = write_file_hash(file_hash=file_hash, file=file)
     return file_create_file(
+        db=db,
         file_hash=file_hash,
+        access_id=access_id,
         # access_id=access_id
     )
 
@@ -40,3 +42,8 @@ async def download_file(file_id: int, db: Session = Depends(get_db)):
     file_path = f"uploads/{db_file.info}"
     file_path_exists(file_path)
     return responses.FileResponse(file_path)
+
+
+@router.get("/files")
+async def get_file_ids(db: Session = Depends(get_db)):
+    return get_all_files(db)

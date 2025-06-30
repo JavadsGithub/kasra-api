@@ -15,11 +15,38 @@ from util.util import *
 router = APIRouter(tags=["explorer"], prefix="/explorer")
 
 
+@router.get("/seed/")
+async def add_proposal(db: Session = Depends(get_db)):
+    new_RFP_fields = [
+        model.RFPField(title="صنعت خودرو"),
+        model.RFPField(title="کامپیوتر و it"),
+        model.RFPField(title="کشاورزی"),
+        model.RFPField(title="صنایع شیمی"),
+        model.RFPField(title="صنایع هوافضا"),
+        model.RFPField(title="امنیت سایبری"),
+        model.RFPField(title="هوش مصنوعی"),
+        model.RFPField(title="صنایع دفاعی"),
+        model.RFPField(title="علوم انسانی"),
+    ]
+    db.add_all(new_RFP_fields)
+    db.commit()
+    return {"response": "ok"}
+
+
 @router.get("/rfps/", response_model=List[RFPResponse])
 async def read_rfps(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     rfps = explorer_get_rfps(db, skip=skip, limit=limit)
     rfps_exist(rfps)
     return rfps
+
+
+@router.get("/rfp-fields/", response_model=List[RFPFieldResponse])
+async def read_rfp_fields(
+    skip: int = 0, limit: int = 10, db: Session = Depends(get_db)
+):
+    rfp_fields = explorer_get_rfp_fields(db, skip=skip, limit=limit)
+    rfps_exist(rfp_fields)
+    return rfp_fields
 
 
 @router.get("/rfps/search/", response_model=List[RFPResponse])

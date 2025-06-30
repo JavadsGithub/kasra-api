@@ -67,15 +67,25 @@ class UserInfoResponse(BaseModel):
         from_attributes = True
 
 
+# RFPField
+
+
+class RFPFieldResponse(BaseModel):
+    id: int
+    title: str
+
+
 # RFP schemas
 class RFPRequest(BaseModel):
     info: str
+    RFP_field_id: int
     file_id: Optional[int] = None
 
 
 class RFPResponse(BaseModel):
     id: int
     info: str
+    RFP_field_id: int
     file_id: Optional[int] = None
 
     class Config:

@@ -30,7 +30,7 @@ SECRET_KEY = "09d15e094aaa6ca2556c518166b7a9563b93f7099f6f0f4caa6cf45b88e8d3e7"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 REFRESH_TOKEN_EXPIRE_DAYS = 7
-
+FILE_HASH_KEY = "09d15e094aaa6ca2556c518166b7a9563b93f7099f6f0f4caa6cf45b88e8d3e7"
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
@@ -40,7 +40,8 @@ def load_allowed_extensions(yaml_file):
         return yaml.safe_load(file)["allowed_extensions"]
 
 
-def compute_file_hash(user_id: str, key: str, file_name: str) -> str:
+def compute_file_hash(user_id: str, file_name: str) -> str:
+    key = FILE_HASH_KEY
     random_int = random.randint(1, 10000)
     hash_input = f"{user_id}{key}{random_int}{file_name}".encode("utf-8")
     return hashlib.sha256(hash_input).hexdigest()
