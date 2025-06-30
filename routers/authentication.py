@@ -7,7 +7,7 @@ from util.util import *
 from sqlalchemy.orm import Session
 from typing import Annotated
 
-router = APIRouter(tags=["authenticaton"])
+router = APIRouter(tags=["authentication"])
 
 
 """""" """""" """""" """""" """""" """""" """""" """""" """""" """""" """
@@ -69,7 +69,7 @@ async def read_users_me(
     current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
     db: Session = Depends(get_db),
 ):
-    
+
     user = db.query(model.User).filter(model.User.id == current_user.id).first()
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
