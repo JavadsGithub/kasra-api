@@ -2,7 +2,16 @@ from fastapi import FastAPI
 import routers
 from model import database, model
 import ssl
-from routers import authentication, broker, explorer, mentor, supervisor, user, file
+from routers import (
+    authentication,
+    broker,
+    explorer,
+    mentor,
+    supervisor,
+    user,
+    file,
+    seed,
+)
 from fastapi.middleware.cors import CORSMiddleware
 
 # from seed import seeding
@@ -22,10 +31,12 @@ ssl_context.load_cert_chain("./cert.pem", keyfile="./key.pem")
 
 model.Base.metadata.create_all(database.engine)
 app.include_router(authentication.router)
+app.include_router(seed.router)
 app.include_router(broker.router)
 app.include_router(user.router)
 app.include_router(explorer.router)
 app.include_router(mentor.router)
 app.include_router(file.router)
 app.include_router(supervisor.router)
+app.include_router(seed.router)
 # seeding()
