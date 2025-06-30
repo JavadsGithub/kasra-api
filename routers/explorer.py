@@ -15,22 +15,22 @@ from util.util import *
 router = APIRouter(tags=["explorer"], prefix="/explorer")
 
 
-@router.get("/seed/")
-async def add_proposal(db: Session = Depends(get_db)):
-    new_RFP_fields = [
-        model.RFPField(title="صنعت خودرو"),
-        model.RFPField(title="کامپیوتر و it"),
-        model.RFPField(title="کشاورزی"),
-        model.RFPField(title="صنایع شیمی"),
-        model.RFPField(title="صنایع هوافضا"),
-        model.RFPField(title="امنیت سایبری"),
-        model.RFPField(title="هوش مصنوعی"),
-        model.RFPField(title="صنایع دفاعی"),
-        model.RFPField(title="علوم انسانی"),
-    ]
-    db.add_all(new_RFP_fields)
-    db.commit()
-    return {"response": "ok"}
+# @router.get("/seed/")
+# async def add_proposal(db: Session = Depends(get_db)):
+#     new_RFP_fields = [
+#         model.RFPField(title="صنعت خودرو"),
+#         model.RFPField(title="کامپیوتر و it"),
+#         model.RFPField(title="کشاورزی"),
+#         model.RFPField(title="صنایع شیمی"),
+#         model.RFPField(title="صنایع هوافضا"),
+#         model.RFPField(title="امنیت سایبری"),
+#         model.RFPField(title="هوش مصنوعی"),
+#         model.RFPField(title="صنایع دفاعی"),
+#         model.RFPField(title="علوم انسانی"),
+#     ]
+#     db.add_all(new_RFP_fields)
+#     db.commit()
+#     return {"response": "ok"}
 
 
 @router.get("/rfps/", response_model=List[RFPResponse])
