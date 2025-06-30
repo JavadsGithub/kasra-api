@@ -43,6 +43,7 @@ async def login(
         "access_token": access_token,
         "token_type": "bearer",
         "refresh_token": refresh_token,
+        "role_id": user.user_type_id,
     }
 
 
