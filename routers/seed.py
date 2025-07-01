@@ -1,6 +1,6 @@
 from typing import List, Annotated
 from fastapi import APIRouter, Depends, HTTPException, status, Response
-
+from sqlalchemy import text
 from sqlalchemy.orm import Session
 from sqlalchemy.orm import Session
 
@@ -9,13 +9,21 @@ from service.user import reports_exist
 from repository.user import *
 from util.util import *
 from util import util
+from model import database, model
 
 router = APIRouter(tags=["seed"], prefix="/seed")
 
 
 @router.get("/seed/")
 async def add_proposal(db: Session = Depends(get_db)):
-    db = database.SessionLocal()
+
+    db.execute(text("SET FOREIGN_KEY_CHECKS = 0;"))
+    result = db.execute(text("SHOW TABLES;"))
+    tables = [row[0] for row in result.fetchall()]
+    for table in tables:
+        db.execute(text(f"DROP TABLE IF EXISTS {table};"))
+
+    model.Base.metadata.create_all(database.engine)
 
     new_user_roules = [
         UserRole(title="کارگزار"),
@@ -27,11 +35,11 @@ async def add_proposal(db: Session = Depends(get_db)):
     db.add_all(new_user_roules)
     db.commit()
 
-    file_id = db.query(File).first().id
     rolese = db.query(UserRole).all()
     new_file = File(info="file.pdf", access_id=rolese[0].id)
     db.add(new_file)
     db.commit()
+    file_id = db.query(File).first().id
 
     new_users = [
         User(
