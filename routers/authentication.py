@@ -48,7 +48,10 @@ async def login(
 
 
 @router.post("/refresh-token", response_model=schemas.Token)
-async def refresh_token(refresh_token: str):
+async def refresh_token(
+    refresh_token: str,
+    db: Session = Depends(get_db),
+):
     payload = verify_token(refresh_token)
     if payload is None:
         raise HTTPException(
@@ -58,10 +61,16 @@ async def refresh_token(refresh_token: str):
         )
     access_token = create_access_token(data={"sub": payload["sub"]})
     new_refresh_token = create_refresh_token(data={"sub": payload["sub"]})
+    username: str = payload.get("sub")
+    if username is None:
+        raise credentials_exception
+    user = db.query(User).filter(User.username == username).first()
+
     return {
         "access_token": access_token,
         "token_type": "bearer",
         "refresh_token": new_refresh_token,
+        "role_id": user.user_type_id,
     }
 
 
