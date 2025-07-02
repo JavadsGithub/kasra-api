@@ -41,6 +41,11 @@ async def add_commission(
     return broker_create_commission(db=db, commission=commission_request)
 
 
+@router.get("/commissions/", response_model=CommissionResponse)
+async def add_commission(proposal_id: int, db: Session = Depends(get_db)):
+    return broker_get_commission(db=db, proposal_id=proposal_id)
+
+
 @router.get("/users-master/", response_model=List[UserInfoResponse])
 async def read_users_master(db: Session = Depends(get_db)):
     users = broker_get_users_master(db)
