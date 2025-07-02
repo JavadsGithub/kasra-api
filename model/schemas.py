@@ -141,7 +141,7 @@ class CommissionResponse(BaseModel):
     proposal_id: int
     user_supervisor_id: int
     user_discoverer_id: int
-    file_id: Optional[int] = None
+    # file_id: Optional[int] = None
 
     class Config:
         from_attributes = True
