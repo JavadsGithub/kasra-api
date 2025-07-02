@@ -130,7 +130,9 @@ class CommissionRequest(BaseModel):
     proposal_id: int
     user_supervisor_id: int
     user_discoverer_id: int
-    file_id: Optional[int] = None
+    user_master_id: int
+
+    # file_id: Optional[int] = None
 
 
 class CommissionResponse(BaseModel):
@@ -141,6 +143,7 @@ class CommissionResponse(BaseModel):
     proposal_id: int
     user_supervisor_id: int
     user_discoverer_id: int
+    user_master_id: int
     # file_id: Optional[int] = None
 
     class Config:

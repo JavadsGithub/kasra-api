@@ -65,3 +65,15 @@ def user_get_report_by_id(db: Session, report_id: int):
     if report is None:
         raise HTTPException(status_code=404, detail="Report not found")
     return report
+
+
+def broker_get_users_master(db: Session):
+    return db.query(User).filter(User.user_type_id == 4)
+
+
+def broker_get_users_discoverer(db: Session):
+    return db.query(User).filter(User.user_type_id == 1)
+
+
+def broker_get_users_supervisor(db: Session):
+    return db.query(User).filter(User.user_type_id == 3)

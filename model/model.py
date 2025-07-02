@@ -72,6 +72,7 @@ class Commission(Base):
     proposal_id = Column(Integer, ForeignKey("proposal.id"))
     user_supervisor_id = Column(Integer, ForeignKey("user.id"))
     user_discoverer_id = Column(Integer, ForeignKey("user.id"))
+    user_master_id = Column(Integer, ForeignKey("user.id"))
 
     # file_id = Column(Integer, ForeignKey("file.id"))
     # proposal = relationship("Proposal")

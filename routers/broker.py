@@ -7,19 +7,21 @@ from datetime import time
 
 from repository.proposal import *
 from repository.commision import *
+from repository.user import *
 from util.util import *
 
 
 router = APIRouter(tags=["broker"], prefix="/broker")
 
 
+# @router.get("/proposals/", response_model=List[ProposalResponse])
+# async def read_proposals(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
+#     proposals = broker_get_proposals(db, skip=skip, limit=limit)
+#     return proposals
+
+
+# Proposal-like:
 @router.get("/proposals/", response_model=List[ProposalResponse])
-async def read_proposals(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    proposals = broker_get_proposals(db, skip=skip, limit=limit)
-    return proposals
-
-
-@router.get("/proposals-like/", response_model=List[ProposalResponse])
 async def read_proposals(
     skip: int = 0, limit: int = 10, info: str = None, db: Session = Depends(get_db)
 ):
@@ -37,3 +39,21 @@ async def add_commission(
     commission_request: CommissionRequest, db: Session = Depends(get_db)
 ):
     return broker_create_commission(db=db, commission=commission_request)
+
+
+@router.get("/users-master/", response_model=List[UserInfoResponse])
+async def read_users_master(db: Session = Depends(get_db)):
+    users = broker_get_users_master(db)
+    return users
+
+
+@router.get("/users-discoverer/", response_model=List[UserInfoResponse])
+async def read_users_discoverer(db: Session = Depends(get_db)):
+    users = broker_get_users_discoverer(db)
+    return users
+
+
+@router.get("/users-supervisor/", response_model=List[UserInfoResponse])
+async def read_users_supervisor(db: Session = Depends(get_db)):
+    users = broker_get_users_supervisor(db)
+    return users
