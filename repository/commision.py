@@ -13,7 +13,7 @@ def broker_create_commission(db: Session, commission: CommissionRequest):
         proposal_id=commission.proposal_id,
         user_supervisor_id=commission.user_supervisor_id,
         user_discoverer_id=commission.user_discoverer_id,
-        file_id=commission.file_id,
+        user_master_id=commission.user_master_id,
     )
     db.add(db_commission)
     db.commit()
