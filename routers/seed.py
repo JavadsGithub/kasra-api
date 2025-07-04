@@ -26,11 +26,11 @@ async def add_proposal(db: Session = Depends(get_db)):
     model.Base.metadata.create_all(database.engine)
 
     new_user_roules = [
-        UserRole(title="کارگزار"),
-        UserRole(title="کاشف"),
-        UserRole(title="کاربر"),
-        UserRole(title="ناظر"),
-        UserRole(title="استاد راهنما"),
+        UserRole(title="کارگزار"),  # 1
+        UserRole(title="کاشف"),  # 2
+        UserRole(title="کاربر"),  # 3
+        UserRole(title="ناظر"),  # 4
+        UserRole(title="استاد راهنما"),  # 5
     ]
     db.add_all(new_user_roules)
     db.commit()

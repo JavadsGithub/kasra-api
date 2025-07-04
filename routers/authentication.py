@@ -74,7 +74,7 @@ async def refresh_token(
     }
 
 
-@router.get("/users/me", response_model=schemas.UserInfoResponse)
+@router.get("/users/me", response_model=schemas.UserMeInfoResponse)
 async def read_users_me(
     current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
     db: Session = Depends(get_db),
@@ -83,4 +83,22 @@ async def read_users_me(
     user = db.query(model.User).filter(model.User.id == current_user.id).first()
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
-    return user
+    return schemas.UserMeInfoResponse(
+        id=user.id,
+        username=user.username,
+        fname=user.fname,
+        lname=user.lname,
+        father_name=user.father_name,
+        birth=user.birth,
+        resume_file_id=user.resume_file_id,
+        address=user.address,
+        phone=user.phone,
+        active=user.active,
+        user_type_id=user.user_type_id,
+        STATE={
+            1: "تایید",
+            2: "رد",
+            3: "در انتظار",
+            4: "اصلاح",
+        },
+    )

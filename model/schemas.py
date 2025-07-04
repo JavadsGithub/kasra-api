@@ -51,6 +51,24 @@ class UserUpdateRequest(BaseModel):
         from_attributes = True
 
 
+class UserMeInfoResponse(BaseModel):
+    id: int
+    username: str
+    fname: str
+    lname: str
+    father_name: str
+    birth: date
+    resume_file_id: Optional[int] = None
+    address: Optional[str] = None
+    phone: Optional[str] = None
+    active: bool
+    user_type_id: int
+    STATE: dict
+
+    class Config:
+        from_attributes = True
+
+
 class UserInfoResponse(BaseModel):
     id: int
     username: str
