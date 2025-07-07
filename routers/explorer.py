@@ -51,7 +51,7 @@ async def read_rfp_fields(
 
 @router.get("/rfps/", response_model=List[RFPResponse])
 async def search_rfps_endpoint(
-    query: str, skip: int = 0, limit: int = 10, db: Session = Depends(get_db)
+    query: str = None, skip: int = 0, limit: int = 10, db: Session = Depends(get_db)
 ):
     rfps = explorer_search_rfps(db, query=query, skip=skip, limit=limit)
     rfps_exist(rfps)
