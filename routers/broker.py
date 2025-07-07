@@ -7,6 +7,7 @@ from datetime import time
 
 from repository.proposal import *
 from repository.commision import *
+from repository.projects import *
 from repository.user import *
 from util.util import *
 
@@ -34,10 +35,27 @@ async def read_proposal(proposal_id: int, db: Session = Depends(get_db)):
     return broker_get_proposal_by_id(db=db, proposal_id=proposal_id)
 
 
-@router.post("/commissions/", response_model=CommissionResponse)
+@router.post("/commissions/", response_model=ProposalResponse)
 async def add_commission(
-    commission_request: CommissionRequest, db: Session = Depends(get_db)
+    current_user: Annotated[UserInfoResponse, Depends(get_current_user)],
+    commission_request: CommissionRequest,
+    db: Session = Depends(get_db),
 ):
+    proposal = broker_get_proposal_by_id(
+        db=db, proposal_id=commission_request.proposal_id
+    )
+    new_project = Project(
+        title=proposal.info,
+        proposal_id=commission_request.proposal_id,
+        user_supervisor_id=commission_request.user_supervisor_id,
+        user_discoverer_id=commission_request.user_discoverer_id,
+        user_master_id=commission_request.user_master_id,
+        user_broker_id=current_user.id,
+        user_user_id=proposal.id,
+    )
+
+    broker_create_project(db=db, new_project=new_project)
+    broker_update_proposal(db=db, proposal_id=commission_request.proposal_id)
     return broker_create_commission(db=db, commission=commission_request)
 
 

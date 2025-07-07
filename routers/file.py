@@ -25,10 +25,11 @@ async def upload_file(
     file_extension_allowed(file_extension)
 
     file_hash = compute_file_hash(user_id, file.filename)
-    file_hash = write_file_hash(file_hash=file_hash, file=file)
+    file_name = file_hash + "." + file_extension
+    file_ = write_file_hash(file_name=file_name, file=file)
     return file_create_file(
         db=db,
-        file_hash=file_hash,
+        file_hash=file_name,
         access_id=access_id,
         # access_id=access_id
     )
@@ -38,8 +39,8 @@ async def upload_file(
 async def download_file(file_id: int, db: Session = Depends(get_db)):
     db_file = db.query(File).filter(File.id == file_id).first()
     db_file_exist(db_file)
-
-    file_path = f"uploads/{db_file.info}"
+    print("/////////////////////////////////////////")
+    file_path = f"./uploads/{db_file.info}"
     file_path_exists(file_path)
     return responses.FileResponse(file_path)
 

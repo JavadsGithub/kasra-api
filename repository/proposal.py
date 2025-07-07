@@ -5,7 +5,9 @@ from fastapi import HTTPException
 
 
 def broker_get_proposals(db: Session, skip: int = 0, limit: int = 10):
-    return db.query(Proposal).offset(skip).limit(limit).all()
+    return (
+        db.query(Proposal).filter(Proposal.state == 2).offset(skip).limit(limit).all()
+    )
 
 
 def broker_get_proposals_like(

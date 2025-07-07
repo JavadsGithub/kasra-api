@@ -1,6 +1,7 @@
 from fastapi import HTTPException, File, UploadFile
 
 import os
+import aiofiles
 from repository.file import *
 from util.util import *
 
@@ -13,12 +14,13 @@ def file_extension_allowed(file_extension):
         raise HTTPException(status_code=400, detail="Not Allowed!")
 
 
-async def write_file_hash(file_hash: str, file: UploadFile):
+async def write_file_hash(file_name: str, file: UploadFile):
 
-    with open(f"uploads/{file_hash}", "wb") as f:
+    os.makedirs("uploads", exist_ok=True)
+    async with aiofiles.open(f"uploads/{file_name}", "wb") as f:
         content = await file.read()
-        f.write(content)
-    return file_hash
+        await f.write(content)
+    return file_name
 
 
 def db_file_exist(db_file: File):

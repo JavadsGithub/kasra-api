@@ -95,7 +95,14 @@ async def read_users_me(
         phone=user.phone,
         active=user.active,
         user_type_id=user.user_type_id,
-        STATE={
+        STATE_COMMISION={
+            1: " تایید نهایی",
+            2: " تایید ناظر",
+            3: "رد",
+            4: "در انتظار",
+            5: "اصلاح",
+        },
+        STATE_PROPOSAL={
             1: "تایید",
             2: "رد",
             3: "در انتظار",

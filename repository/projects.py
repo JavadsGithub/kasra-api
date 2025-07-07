@@ -15,3 +15,16 @@ def mentor_get_projects(db: Session, user_id: int, skip: int = 0, limit: int = 1
         .limit(limit)
         .all()
     )
+
+
+def broker_create_project(db: Session, new_project: Project):
+    db.add(new_project)
+    db.commit()
+    db.refresh(new_project)
+    return new_project
+
+
+def broker_delete_proposal(db: Session, proposal_id: int):
+    deleting_proposal = db.query(Proposal).filter(Proposal.id == proposal_id).first()
+    db.delete(deleting_proposal)
+    db.commit()
