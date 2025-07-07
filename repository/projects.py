@@ -22,10 +22,3 @@ def broker_create_project(db: Session, new_project: Project):
     db.commit()
     db.refresh(new_project)
     return new_project
-
-
-def broker_update_proposal(db: Session, proposal_id: int):
-    updating_proposal = db.query(Proposal).filter(Proposal.id == proposal_id).first()
-    updating_proposal.state == 1
-    db.commit()
-    db.refresh(updating_proposal)

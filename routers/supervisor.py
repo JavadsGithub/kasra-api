@@ -14,13 +14,13 @@ from util.util import *
 router = APIRouter(tags=["supervisor"], prefix="/supervisor")
 
 
+# @router.get("/proposals/", response_model=List[ProposalResponse])
+# async def read_proposals(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
+#     proposals = suoervisor_get_proposals(db, skip=skip, limit=limit)
+#     return proposals
+
+
 @router.get("/proposals/", response_model=List[ProposalResponse])
-async def read_proposals(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    proposals = suoervisor_get_proposals(db, skip=skip, limit=limit)
-    return proposals
-
-
-@router.get("/proposals-like/", response_model=List[ProposalResponse])
 async def read_proposals(
     skip: int = 0, limit: int = 10, info: str = None, db: Session = Depends(get_db)
 ):
