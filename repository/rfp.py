@@ -47,3 +47,7 @@ def explorer_update_rfp(db: Session, rfp_id: int, rfp_update: RFPRequest):
     db.commit()
     db.refresh(rfp)
     return rfp
+
+
+def broker_get_rfp_by_id(db: Session, rfp_id: int):
+    return db.query(RFP).filter(RFP.id == rfp_id).first()

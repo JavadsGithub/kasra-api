@@ -9,6 +9,7 @@ from repository.proposal import *
 from repository.commision import *
 from repository.projects import *
 from repository.user import *
+from repository.rfp import *
 from util.util import *
 
 
@@ -22,17 +23,34 @@ router = APIRouter(tags=["broker"], prefix="/broker")
 
 
 # Proposal-like:
-@router.get("/proposals/", response_model=List[ProposalResponse])
+@router.get("/proposals/")  # , response_model=List[ProposalAllResponse])
 async def read_proposals(
     skip: int = 0, limit: int = 10, info: str = None, db: Session = Depends(get_db)
 ):
     proposals = broker_get_proposals_like(db, skip=skip, limit=limit, info=info)
-    return proposals
+
+    proposals_list = []
+    for i in proposals:
+        rfp = broker_get_rfp_by_id(db=db, rfp_id=i.RFP_id)
+        proposals_list.append(
+            ProposalAllResponse(
+                info=i.info,
+                RFP_info=rfp.info,
+            )
+        )
+    return proposals_list
 
 
-@router.get("/proposals/{proposal_id}", response_model=ProposalResponse)
+@router.get("/proposals/{proposal_id}", response_model=ProposalSingleResponse)
 async def read_proposal(proposal_id: int, db: Session = Depends(get_db)):
-    return broker_get_proposal_by_id(db=db, proposal_id=proposal_id)
+    proposal = broker_get_proposal_by_id(db=db, proposal_id=proposal_id)
+    rfp = broker_get_rfp_by_id(db=db, rfp_id=proposal.RFP_id)
+    return ProposalSingleResponse(
+        info=proposal.info,
+        comment=proposal.comment,
+        file_id=proposal.file_id,
+        RFP_info=rfp.info,
+    )
 
 
 @router.post("/commissions/", response_model=ProposalResponse)

@@ -121,6 +121,14 @@ class ProposalRequest(BaseModel):
     file_id: Optional[int] = None
 
 
+class ProposalAllResponse(BaseModel):
+    info: str
+    RFP_info: str
+
+    class Config:
+        from_attributes = True
+
+
 class ProposalResponse(BaseModel):
     id: int
     info: str
@@ -128,6 +136,16 @@ class ProposalResponse(BaseModel):
     user_id: int
     comment: str
     state: int
+    comment: str
+    file_id: Optional[int] = None
+
+    class Config:
+        from_attributes = True
+
+
+class ProposalSingleResponse(BaseModel):
+    info: str
+    RFP_info: str
     comment: str
     file_id: Optional[int] = None
 

@@ -28,3 +28,13 @@ def suoervisor_update_report(db: Session, report_id: int, report_update: ReportU
     db.commit()
     db.refresh(report)
     return report
+
+
+def mentor_get_report(db: Session, project_id: int, skip: int, limit: int):
+    return (
+        db.query(Report)
+        .filter(Report.project_id == project_id)
+        .offset(skip)
+        .limit(limit)
+        .all()
+    )
