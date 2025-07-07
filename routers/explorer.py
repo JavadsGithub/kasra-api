@@ -33,11 +33,11 @@ router = APIRouter(tags=["explorer"], prefix="/explorer")
 #     return {"response": "ok"}
 
 
-@router.get("/rfps/", response_model=List[RFPResponse])
-async def read_rfps(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    rfps = explorer_get_rfps(db, skip=skip, limit=limit)
-    rfps_exist(rfps)
-    return rfps
+# @router.get("/rfps/", response_model=List[RFPResponse])
+# async def read_rfps(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
+#     rfps = explorer_get_rfps(db, skip=skip, limit=limit)
+#     rfps_exist(rfps)
+#     return rfps
 
 
 @router.get("/rfp-fields/", response_model=List[RFPFieldResponse])
@@ -49,7 +49,7 @@ async def read_rfp_fields(
     return rfp_fields
 
 
-@router.get("/rfps/search/", response_model=List[RFPResponse])
+@router.get("/rfps/", response_model=List[RFPResponse])
 async def search_rfps_endpoint(
     query: str, skip: int = 0, limit: int = 10, db: Session = Depends(get_db)
 ):
