@@ -61,3 +61,10 @@ def suoervisor_update_proposal(
     db.commit()
     db.refresh(proposal)
     return proposal
+
+
+def broker_update_proposal(db: Session, proposal_id: int):
+    updating_proposal = db.query(Proposal).filter(Proposal.id == proposal_id).first()
+    updating_proposal.state == 1
+    db.commit()
+    db.refresh(updating_proposal)

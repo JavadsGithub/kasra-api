@@ -24,7 +24,8 @@ def broker_create_project(db: Session, new_project: Project):
     return new_project
 
 
-def broker_delete_proposal(db: Session, proposal_id: int):
-    deleting_proposal = db.query(Proposal).filter(Proposal.id == proposal_id).first()
-    db.delete(deleting_proposal)
+def broker_update_proposal(db: Session, proposal_id: int):
+    updating_proposal = db.query(Proposal).filter(Proposal.id == proposal_id).first()
+    updating_proposal.state == 1
     db.commit()
+    db.refresh(updating_proposal)
