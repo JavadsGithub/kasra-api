@@ -63,7 +63,8 @@ class UserMeInfoResponse(BaseModel):
     phone: Optional[str] = None
     active: bool
     user_type_id: int
-    STATE: dict
+    STATE_COMMISION: dict
+    STATE_PROPOSAL: dict
 
     class Config:
         from_attributes = True
