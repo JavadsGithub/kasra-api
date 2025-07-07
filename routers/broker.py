@@ -34,6 +34,7 @@ async def read_proposals(
         rfp = broker_get_rfp_by_id(db=db, rfp_id=i.RFP_id)
         proposals_list.append(
             ProposalAllResponse(
+                id=i.id,
                 info=i.info,
                 RFP_info=rfp.info,
             )

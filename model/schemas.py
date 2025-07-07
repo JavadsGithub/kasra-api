@@ -123,6 +123,7 @@ class ProposalRequest(BaseModel):
 
 
 class ProposalAllResponse(BaseModel):
+    id: int
     info: str
     RFP_info: str
 
