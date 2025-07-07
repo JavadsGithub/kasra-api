@@ -15,6 +15,10 @@ def explorer_search_rfps(db: Session, query: str, skip: int = 0, limit: int = 10
     )
 
 
+def explorer_rfp_single(db: Session, rfp_id: int):
+    return db.query(RFP).filter(RFP.id == rfp_id).first()
+
+
 def explorer_get_rfps(db: Session, skip: int = 0, limit: int = 10):
     return db.query(RFP).offset(skip).limit(limit).all()
 

@@ -58,6 +58,13 @@ async def search_rfps_endpoint(
     return rfps
 
 
+@router.get("/rfps/{rfp_id}", response_model=RFPResponse)
+async def search_rfps(rfp_id: int, db: Session = Depends(get_db)):
+    rfp = explorer_rfp_single(db, rfp_id=rfp_id)
+    rfps_exist(rfp)
+    return rfp
+
+
 @router.post("/rfps/", response_model=RFPResponse)
 async def add_rfp(rfp: RFPRequest, db: Session = Depends(get_db)):
     return explorer_create_rfp(db=db, rfp=rfp)
