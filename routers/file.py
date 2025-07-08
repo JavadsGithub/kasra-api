@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 import os
 from repository.file import *
 from util.util import *
+from pathlib import Path
 
 # ALLOWED_EXTENSIONS = load_allowed_extensions("allowed_extensions.yaml")
 
@@ -26,7 +27,7 @@ async def upload_file(
 
     file_hash = compute_file_hash(user_id, file.filename)
     file_name = file_hash + "." + file_extension
-    file_ = write_file_hash(file_name=file_name, file=file)
+    file_ = await write_file_hash(file_name=file_name, file=file)
     return file_create_file(
         db=db,
         file_hash=file_name,
@@ -39,10 +40,16 @@ async def upload_file(
 async def download_file(file_id: int, db: Session = Depends(get_db)):
     db_file = db.query(File).filter(File.id == file_id).first()
     db_file_exist(db_file)
-    print("/////////////////////////////////////////")
-    file_path = f"./uploads/{db_file.info}"
-    file_path_exists(file_path)
-    return responses.FileResponse(file_path)
+    upload_dir = os.path.abspath("uploads")
+    safe_file_name = Path(db_file.info).name
+    file_path = os.path.join(upload_dir, safe_file_name)
+
+    if not os.path.exists(file_path):
+        return {"error": "File does not exist"}
+
+    return responses.FileResponse(
+        path=file_path, filename=safe_file_name, media_type="application/octet-stream"
+    )
 
 
 @router.get("/files")

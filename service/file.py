@@ -14,13 +14,30 @@ def file_extension_allowed(file_extension):
         raise HTTPException(status_code=400, detail="Not Allowed!")
 
 
+# async def write_file_hash(file_name: str, file: UploadFile):
+
+#     os.makedirs("upload", exist_ok=True)
+#     contents = await file.read()
+#     with open(file_name, "wb") as f:
+#         f.write(contents)
+#     return file_name
+#     async with aiofiles.open(f"upload/{file_name}", "wb") as f:
+#         content = await file.read()
+#         await f.write(content)
+#     return file_name
+
+import os
+from fastapi import UploadFile
+
+
 async def write_file_hash(file_name: str, file: UploadFile):
 
     os.makedirs("uploads", exist_ok=True)
-    async with aiofiles.open(f"uploads/{file_name}", "wb") as f:
-        content = await file.read()
-        await f.write(content)
-    return file_name
+    file_path = os.path.join("uploads", file_name)
+    with open(file_path, "wb") as f:
+        while chunk := await file.read(1024 * 1024):
+            f.write(chunk)
+    return file_path
 
 
 def db_file_exist(db_file: File):

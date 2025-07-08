@@ -22,8 +22,8 @@ async def get_project(
     limit: int = 10,
     db: Session = Depends(get_db),
 ):
-    if not current_user.user_type_id == 5:
-        raise HTTPException(status_code=401, detail="Not Allowed")
+    # if not current_user.user_type_id == 5:
+    #     raise HTTPException(status_code=401, detail="Not Allowed")
 
     user_id = current_user.id
     projects = mentor_get_projects(db, user_id=user_id, skip=skip, limit=limit)

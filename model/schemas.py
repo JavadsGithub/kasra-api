@@ -87,6 +87,15 @@ class UserInfoResponse(BaseModel):
         from_attributes = True
 
 
+class UserInfoLimitedResponse(BaseModel):
+    id: int
+    fname: str
+    lname: str
+
+    class Config:
+        from_attributes = True
+
+
 # RFPField
 
 
@@ -105,7 +114,7 @@ class RFPRequest(BaseModel):
 class RFPResponse(BaseModel):
     id: int
     info: str
-    RFP_field_id: int
+    RFP_field: RFPFieldResponse
     file_id: Optional[int] = None
 
     class Config:
@@ -125,7 +134,7 @@ class ProposalRequest(BaseModel):
 class ProposalAllResponse(BaseModel):
     id: int
     info: str
-    RFP_info: str
+    rfp: RFPResponse
 
     class Config:
         from_attributes = True
@@ -134,8 +143,8 @@ class ProposalAllResponse(BaseModel):
 class ProposalResponse(BaseModel):
     id: int
     info: str
-    RFP_id: int
-    user_id: int
+    rfp: RFPResponse
+    user: UserInfoLimitedResponse
     comment: str
     state: int
     comment: str
@@ -147,7 +156,7 @@ class ProposalResponse(BaseModel):
 
 class ProposalSingleResponse(BaseModel):
     info: str
-    RFP_info: str
+    rfp: RFPResponse
     comment: str
     file_id: Optional[int] = None
 
@@ -164,7 +173,7 @@ class ProposalUpdate(BaseModel):
 class CommissionRequest(BaseModel):
     title: str
     comment: str
-    state: int  # asking M.E for the best solution of handeling the enum
+    state: int
     proposal_id: int
     user_supervisor_id: int
     user_discoverer_id: int
@@ -177,11 +186,11 @@ class CommissionResponse(BaseModel):
     id: int
     title: str
     comment: str
-    state: int  # also enum, also ask M.E
-    proposal_id: int
-    user_supervisor_id: int
-    user_discoverer_id: int
-    user_master_id: int
+    state: int
+    proposal: ProposalSingleResponse
+    user_supervisor_id: ProposalSingleResponse
+    user_discoverer_id: ProposalSingleResponse
+    user_master_id: ProposalSingleResponse
     # file_id: Optional[int] = None
 
     class Config:
@@ -202,12 +211,11 @@ class ProjectRequest(BaseModel):
 class ProjectResponse(BaseModel):
     id: int
     title: str
-    proposal_id: int
-    user_supervisor_id: int
-    user_discoverer_id: int
-    user_master_id: int
-    user_broker_id: int
-    user_user_id: int
+    proposal: ProposalSingleResponse
+    supervisor: UserInfoLimitedResponse
+    discoverer: UserInfoLimitedResponse
+    master: UserInfoLimitedResponse
+    broker: UserInfoLimitedResponse
 
     class Config:
         from_attributes = True
@@ -216,7 +224,7 @@ class ProjectResponse(BaseModel):
 # Report schemas
 class ReportRequest(BaseModel):
     info: str
-    project_id: int
+    project: ProjectResponse
     comment: str
     state: int
 
@@ -247,7 +255,7 @@ class ReportFileRequest(BaseModel):
 class ReportFileResponse(BaseModel):
     id: int
     info: str
-    report_id: int
+    ReportResponse: ReportResponse
     file_id: int
 
     class Config:
