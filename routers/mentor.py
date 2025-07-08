@@ -39,4 +39,4 @@ async def get_reports(
     db: Session = Depends(get_db),
 ):
 
-    mentor_get_report(db, project_id=project_id, skip=skip, limit=limit)
+    return mentor_get_report(db, project_id=project_id, skip=skip, limit=limit)

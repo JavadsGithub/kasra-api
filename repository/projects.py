@@ -3,8 +3,13 @@ from model.model import *
 from model.schemas import *
 
 
-def suoervisor_get_projects(db: Session, skip: int = 0, limit: int = 10):
-    return db.query(Project).offset(skip).limit(limit).all()
+def supervisor_get_projects(
+    db: Session, skip: int = 0, limit: int = 10, info: str = None
+):
+    query = db.query(Project)
+    if info:
+        query = query.filter(Project.title.ilike(f"%{info}%"))
+    return query.offset(skip).limit(limit).all()
 
 
 def mentor_get_projects(db: Session, user_id: int, skip: int = 0, limit: int = 10):

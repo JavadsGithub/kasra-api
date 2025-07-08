@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from datetime import time
 
 from repository.proposal import *
-from repository.commision import *
+from repository.commission import *
 from repository.projects import *
 from repository.user import *
 from repository.rfp import *
@@ -55,7 +55,7 @@ async def read_proposal(proposal_id: int, db: Session = Depends(get_db)):
     return proposal
 
 
-@router.post("/commissions/", response_model=ProposalResponse)
+@router.post("/commissions/")  # , response_model=ProposalResponse)
 async def add_commission(
     current_user: Annotated[UserInfoResponse, Depends(get_current_user)],
     commission_request: CommissionRequest,
@@ -64,6 +64,7 @@ async def add_commission(
     proposal = broker_get_proposal_by_id(
         db=db, proposal_id=commission_request.proposal_id
     )
+
     new_project = Project(
         title=proposal.info,
         proposal_id=commission_request.proposal_id,
@@ -79,14 +80,19 @@ async def add_commission(
     return broker_create_commission(db=db, commission=commission_request)
 
 
-@router.get("/commissions/", response_model=CommissionResponse)
+@router.get("/commissions/{proposal_id}", response_model=CommissionResponse)
 async def add_commission(proposal_id: int, db: Session = Depends(get_db)):
-    return broker_get_commission(db=db, proposal_id=proposal_id)
+    commissions = broker_get_commission(db=db, proposal_id=proposal_id)
+
+    if not commissions:
+        raise HTTPException(status_code=404, detail="Report not found")
+    return commissions
 
 
 @router.get("/users-master/", response_model=List[UserInfoResponse])
 async def read_users_master(db: Session = Depends(get_db)):
     users = broker_get_users_master(db)
+
     return users
 
 

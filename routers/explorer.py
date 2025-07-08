@@ -51,14 +51,14 @@ async def read_rfp_fields(
 
 @router.get("/rfps/", response_model=List[RFPResponse])
 async def search_rfps_endpoint(
-    query: str = None, skip: int = 0, limit: int = 10, db: Session = Depends(get_db)
+    info: str = None, skip: int = 0, limit: int = 10, db: Session = Depends(get_db)
 ):
-    rfps = explorer_search_rfps(db, query=query, skip=skip, limit=limit)
+    rfps = explorer_search_rfps(db, info=info, skip=skip, limit=limit)
     rfps_exist(rfps)
     return rfps
 
 
-@router.get("/rfps/{rfp_id}", response_model=RFPResponse)
+@router.get("/single-rfp/{rfp_id}", response_model=RFPResponse)
 async def search_rfps(rfp_id: int, db: Session = Depends(get_db)):
     rfp = explorer_rfp_single(db, rfp_id=rfp_id)
     rfps_exist(rfp)

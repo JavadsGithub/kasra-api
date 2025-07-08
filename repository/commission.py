@@ -25,4 +25,5 @@ def broker_get_commission(db: Session, proposal_id: int):
     commission = (
         db.query(Commission).filter(Commission.proposal_id == proposal_id).first()
     )
+
     return commission

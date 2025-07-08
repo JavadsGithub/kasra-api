@@ -5,14 +5,11 @@ from model.schemas import *
 from fastapi import HTTPException
 
 
-def explorer_search_rfps(db: Session, query: str, skip: int = 0, limit: int = 10):
-    return (
-        db.query(RFP)
-        .filter(RFP.info.ilike(f"%{query}%"))
-        .offset(skip)
-        .limit(limit)
-        .all()
-    )
+def explorer_search_rfps(db: Session, skip: int = 0, limit: int = 10, info: str = None):
+    query = db.query(RFP)
+    if info:
+        query = query.filter(RFP.info.ilike(f"%{info}%"))
+    return query.offset(skip).limit(limit).all()
 
 
 def explorer_rfp_single(db: Session, rfp_id: int):

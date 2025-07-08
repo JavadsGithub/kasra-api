@@ -44,25 +44,27 @@ async def edit_proposal(
 
 @router.get("/reports/", response_model=List[ReportResponse])
 async def read_reports(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    reports = suoervisor_get_reports(db, skip=skip, limit=limit)
+    reports = supervisor_get_reports(db, skip=skip, limit=limit)
     return reports
 
 
-@router.get("/reports/{report_id}", response_model=ReportResponse)
+@router.get("/report-files/{report_id}", response_model=List[ReportFileResponse])
 async def read_report(report_id: int, db: Session = Depends(get_db)):
-    return suoervisor_get_report_with_files(db=db, report_id=report_id)
+    return supervisor_get_report_with_files(db=db, report_id=report_id)
 
 
 @router.put("/reports/{report_id}", response_model=ReportResponse)
 async def edit_report(
     report_id: int, report_update: ReportUpdate, db: Session = Depends(get_db)
 ):
-    return suoervisor_update_report(
+    return supervisor_update_report(
         db=db, report_id=report_id, report_update=report_update
     )
 
 
 @router.get("/projects/", response_model=List[ProjectResponse])
-async def read_projects(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    projects = suoervisor_get_projects(db, skip=skip, limit=limit)
+async def read_projects(
+    skip: int = 0, limit: int = 10, info: str = None, db: Session = Depends(get_db)
+):
+    projects = supervisor_get_projects(db, skip=skip, limit=limit, info=info)
     return projects

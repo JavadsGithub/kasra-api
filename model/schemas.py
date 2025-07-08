@@ -63,7 +63,7 @@ class UserMeInfoResponse(BaseModel):
     phone: Optional[str] = None
     active: bool
     user_type_id: int
-    STATE_COMMISION: dict
+    STATE_COMMISSION: dict
     STATE_PROPOSAL: dict
 
     class Config:
@@ -188,9 +188,9 @@ class CommissionResponse(BaseModel):
     comment: str
     state: int
     proposal: ProposalSingleResponse
-    user_supervisor_id: ProposalSingleResponse
-    user_discoverer_id: ProposalSingleResponse
-    user_master_id: ProposalSingleResponse
+    supervisor: UserInfoLimitedResponse
+    discoverer: UserInfoLimitedResponse
+    master: UserInfoLimitedResponse
     # file_id: Optional[int] = None
 
     class Config:
@@ -224,7 +224,7 @@ class ProjectResponse(BaseModel):
 # Report schemas
 class ReportRequest(BaseModel):
     info: str
-    project: ProjectResponse
+    project_id: int
     comment: str
     state: int
 
@@ -232,7 +232,7 @@ class ReportRequest(BaseModel):
 class ReportResponse(BaseModel):
     id: int
     info: str
-    project_id: int
+    project: ProjectResponse
     comment: str
     state: int
 
@@ -255,7 +255,7 @@ class ReportFileRequest(BaseModel):
 class ReportFileResponse(BaseModel):
     id: int
     info: str
-    ReportResponse: ReportResponse
+    report: ReportResponse
     file_id: int
 
     class Config:
