@@ -95,7 +95,7 @@ async def read_users_me(
         phone=user.phone,
         active=user.active,
         user_type_id=user.user_type_id,
-        STATE_COMMISION={
+        STATE_COMMISSION={
             1: " تایید نهایی",
             2: " تایید ناظر",
             3: "رد",
