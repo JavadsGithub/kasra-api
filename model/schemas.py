@@ -232,6 +232,8 @@ class ReportRequest(BaseModel):
     info: str
     project_id: int
     comment: str
+    file_id: int
+
     # state: int
 
 
@@ -241,6 +243,7 @@ class ReportResponse(BaseModel):
     project: ProjectResponse
     comment: str
     state: int
+    file_id: int
 
     class Config:
         from_attributes = True
@@ -251,18 +254,18 @@ class ReportUpdate(BaseModel):
     comment: str
 
 
-# ReportFile schemas
-class ReportFileRequest(BaseModel):
-    info: str
-    report_id: int
-    file_id: int
+# # ReportFile schemas
+# class ReportFileRequest(BaseModel):
+#     info: str
+#     report_id: int
+#     file_id: int
 
 
-class ReportFileResponse(BaseModel):
-    id: int
-    info: str
-    report: ReportResponse
-    file_id: int
+# class ReportFileResponse(BaseModel):
+#     id: int
+#     info: str
+#     report: ReportResponse
+#     file_id: int
 
-    class Config:
-        from_attributes = True
+#     class Config:
+#         from_attributes = True

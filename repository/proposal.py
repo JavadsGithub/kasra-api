@@ -40,6 +40,26 @@ def suoervisor_get_proposals_like(
     return query.offset(skip).limit(limit).all()
 
 
+def user_get_proposals_like(
+    db: Session, skip: int = 0, limit: int = 10, info: str = None
+):
+    query = db.query(Proposal)
+
+    if info:
+        query = query.filter(Proposal.info.ilike(f"%{info}%"))
+    return query.offset(skip).limit(limit).all()
+
+
+def user_get_proposals_like(
+    db: Session, skip: int = 0, limit: int = 10, info: str = None
+):
+    query = db.query(Proposal)
+
+    if info:
+        query = query.filter(Proposal.info.ilike(f"%{info}%"))
+    return query.offset(skip).limit(limit).all()
+
+
 def suoervisor_get_proposal_by_id(db: Session, proposal_id: int):
     proposal = db.query(Proposal).filter(Proposal.id == proposal_id).first()
     if not proposal:

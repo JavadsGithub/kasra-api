@@ -109,16 +109,17 @@ class Report(Base):
     project_id = Column(Integer, ForeignKey("project.id"))
     comment = Column(String(999))
     state = Column(Integer)  # ENUM
+    file_id = Column(Integer, ForeignKey("file.id"))
 
     project = relationship("Project", foreign_keys=[project_id])
     # report_files = relationship("ReportFile", back_populates="report")
 
 
-class ReportFile(Base):
-    __tablename__ = "report_file"
-    id = Column(Integer, primary_key=True)
-    info = Column(String(999))
-    report_id = Column(Integer, ForeignKey("report.id"))
-    file_id = Column(Integer, ForeignKey("file.id"))
+# class ReportFile(Base):
+#     __tablename__ = "report_file"
+#     id = Column(Integer, primary_key=True)
+#     info = Column(String(999))
+#     report_id = Column(Integer, ForeignKey("report.id"))
+#     file_id = Column(Integer, ForeignKey("file.id"))
 
-    report = relationship("Report", foreign_keys=[report_id])
+#     report = relationship("Report", foreign_keys=[report_id])

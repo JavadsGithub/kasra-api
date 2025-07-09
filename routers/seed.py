@@ -327,37 +327,40 @@ async def add_proposal(db: Session = Depends(get_db)):
             project_id=project_id,
             comment="none",
             state=project_id,
+            file_id=file_id,
         ),
         Report(
             info="report 2",
             project_id=project_id,
             comment="none",
             state=2,
+            file_id=file_id,
         ),
         Report(
             info="report 2",
             project_id=project_id,
             comment="none",
             state=3,
+            file_id=file_id,
         ),
     ]
     db.add_all(new_reports)
     db.commit()
 
-    report_id = db.query(Report).first().id
-    new_report_files = [
-        ReportFile(
-            info="file 1",
-            report_id=report_id,
-            file_id=file_id,
-        ),
-        ReportFile(
-            info="file 2",
-            report_id=report_id,
-            file_id=file_id,
-        ),
-    ]
-    db.add_all(new_report_files)
-    db.commit()
+    # report_id = db.query(Report).first().id
+    # new_report_files = [
+    #     ReportFile(
+    #         info="file 1",
+    #         report_id=report_id,
+    #         file_id=file_id,
+    #     ),
+    #     ReportFile(
+    #         info="file 2",
+    #         report_id=report_id,
+    #         file_id=file_id,
+    #     ),
+    # ]
+    # db.add_all(new_report_files)
+    # db.commit()
 
     return {"response": "ok"}

@@ -43,8 +43,8 @@ def user_get_projects(
     )
 
 
-def user_get_reports_by_project(db: Session, project_id: int):
-    return db.query(Report).filter(Report.project_id == project_id).all()
+def user_get_project(db: Session, project_id: int):
+    return db.query(Project).filter(Project.id == project_id).first()
 
 
 def user_create_report(db: Session, report: ReportRequest):
@@ -52,6 +52,7 @@ def user_create_report(db: Session, report: ReportRequest):
         info=report.info,
         project_id=report.project_id,
         comment=report.comment,
+        file_id=report.file_id,
         state=3,
     )
     db.add(db_report)

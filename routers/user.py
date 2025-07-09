@@ -5,7 +5,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy.orm import Session
 from datetime import time
 import datetime
-from repository.proposal import user_update_proposal
+from repository.proposal import user_get_proposals_like, user_update_proposal
+from repository.reports import user_get_reports_by_project
 from repository.rfp import user_search_rfps
 from service.user import reports_exist
 from repository.user import *
@@ -125,7 +126,7 @@ async def read_proposal(proposal_id: int, db: Session = Depends(get_db)):
     return user_get_proposal_by_id(db=db, proposal_id=proposal_id)
 
 
-@router.get("/projects/", response_model=List[ProjectResponse])
+@router.get("/projects/", response_model=ProjectResponse)
 async def read_projects(
     current_user: Annotated[UserInfoResponse, Depends(get_current_user)],
     skip: int = 0,
@@ -138,10 +139,16 @@ async def read_projects(
     return projects
 
 
+@router.get("/projects/{project_id}", response_model=List[ProjectResponse])
+async def read_projects_single(project_id: int, db: Session = Depends(get_db)):
+    project = user_get_project(db, project_id=project_id)
+    return project
+
+
 @router.get("/reports-by-project/{project_id}", response_model=List[ReportResponse])
-async def read_reports(project_id: int, db: Session = Depends(get_db)):
-    reports = user_get_reports_by_project(db, project_id)
-    reports_exist(reports)
+async def read_reports_by_project_id(project_id: int, db: Session = Depends(get_db)):
+    reports = user_get_reports_by_project(db=db, project_id=project_id)
+    # reports_exist(reports)
     return reports
 
 
@@ -174,3 +181,11 @@ async def edit_proposal(
     return user_update_proposal(
         db=db, proposal_id=proposal_id, proposal_update=proposal_update
     )
+
+
+@router.get("/proposals/", response_model=List[ProposalResponse])
+async def read_proposals(
+    skip: int = 0, limit: int = 10, info: str = None, db: Session = Depends(get_db)
+):
+    proposals = user_get_proposals_like(db, skip=skip, limit=limit, info=info)
+    return proposals

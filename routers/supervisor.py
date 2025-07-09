@@ -8,6 +8,7 @@ from datetime import time
 from repository.proposal import *
 from repository.projects import *
 from repository.reports import *
+from service.user import reports_exist
 from util.util import *
 
 
@@ -33,13 +34,11 @@ async def read_proposal(proposal_id: int, db: Session = Depends(get_db)):
     return suoervisor_get_proposal_by_id(db=db, proposal_id=proposal_id)
 
 
-@router.put("/proposals/{proposal_id}", response_model=ProposalResponse)
-async def edit_proposal(
-    proposal_id: int, proposal_update: ProposalUpdate, db: Session = Depends(get_db)
-):
-    return suoervisor_update_proposal(
-        db=db, proposal_id=proposal_id, proposal_update=proposal_update
-    )
+@router.get("/reports-by-project/{project_id}", response_model=List[ReportResponse])
+async def read_reports_by_project(project_id: int, db: Session = Depends(get_db)):
+    reports = supervisor_get_reports_by_project(db, project_id=project_id)
+    reports_exist(reports)
+    return reports
 
 
 @router.get("/reports/", response_model=List[ReportResponse])
@@ -48,9 +47,9 @@ async def read_reports(skip: int = 0, limit: int = 10, db: Session = Depends(get
     return reports
 
 
-@router.get("/report-files/{report_id}", response_model=List[ReportFileResponse])
-async def read_report(report_id: int, db: Session = Depends(get_db)):
-    return supervisor_get_report_with_files(db=db, report_id=report_id)
+# @router.get("/report-files/{report_id}", response_model=List[ReportFileResponse])
+# async def read_report(report_id: int, db: Session = Depends(get_db)):
+#     return supervisor_get_report_with_files(db=db, report_id=report_id)
 
 
 @router.put("/reports/{report_id}", response_model=ReportResponse)
