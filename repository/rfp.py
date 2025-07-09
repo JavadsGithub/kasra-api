@@ -12,6 +12,13 @@ def explorer_search_rfps(db: Session, skip: int = 0, limit: int = 10, info: str 
     return query.offset(skip).limit(limit).all()
 
 
+def user_search_rfps(db: Session, skip: int = 0, limit: int = 10, info: str = None):
+    query = db.query(RFP)
+    if info:
+        query = query.filter(RFP.info.ilike(f"%{info}%"))
+    return query.offset(skip).limit(limit).all()
+
+
 def explorer_rfp_single(db: Session, rfp_id: int):
     return db.query(RFP).filter(RFP.id == rfp_id).first()
 

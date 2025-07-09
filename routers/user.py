@@ -5,6 +5,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy.orm import Session
 from datetime import time
 import datetime
+from repository.proposal import user_update_proposal
+from repository.rfp import user_search_rfps
 from service.user import reports_exist
 from repository.user import *
 from util.util import *
@@ -108,9 +110,14 @@ router = APIRouter(tags=["user"], prefix="/users")
 
 @router.post("/proposals/", response_model=ProposalResponse)
 async def add_proposal(
-    proposal_request: ProposalRequest, db: Session = Depends(get_db)
+    current_user: Annotated[UserInfoResponse, Depends(get_current_user)],
+    proposal_request: ProposalRequest,
+    db: Session = Depends(get_db),
 ):
-    return user_create_proposal(db=db, proposal=proposal_request)
+
+    return user_create_proposal(
+        db=db, proposal=proposal_request, user_id=current_user.id
+    )
 
 
 @router.get("/proposals/{proposal_id}", response_model=ProposalResponse)
@@ -146,3 +153,24 @@ async def add_report(report_request: ReportRequest, db: Session = Depends(get_db
 @router.get("/reports/{report_id}", response_model=ReportResponse)
 async def read_report(report_id: int, db: Session = Depends(get_db)):
     return user_get_report_by_id(db=db, report_id=report_id)
+
+
+@router.get("/rfps/", response_model=List[RFPResponse])
+async def search_rfps_endpoint(
+    info: str = None, skip: int = 0, limit: int = 10, db: Session = Depends(get_db)
+):
+    rfps = user_search_rfps(db, info=info, skip=skip, limit=limit)
+    if not rfps:
+        raise HTTPException(status_code=404, detail="No RFPs found")
+    return rfps
+
+
+@router.put("/proposals/{proposal_id}", response_model=ProposalResponse)
+async def edit_proposal(
+    proposal_id: int,
+    proposal_update: ProposalUserUpdateRequest,
+    db: Session = Depends(get_db),
+):
+    return user_update_proposal(
+        db=db, proposal_id=proposal_id, proposal_update=proposal_update
+    )

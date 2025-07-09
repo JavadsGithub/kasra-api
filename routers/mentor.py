@@ -40,3 +40,14 @@ async def get_reports(
 ):
 
     return mentor_get_report(db, project_id=project_id, skip=skip, limit=limit)
+
+
+@router.get("/all-reports/")
+async def get_all_reports(
+    current_user: Annotated[UserInfoResponse, Depends(get_current_user)],
+    skip: int = 0,
+    limit: int = 10,
+    db: Session = Depends(get_db),
+):
+
+    return mentor_get_all_report(db, skip=skip, limit=limit)

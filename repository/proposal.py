@@ -62,6 +62,24 @@ def suoervisor_update_proposal(
     return proposal
 
 
+def user_update_proposal(
+    db: Session, proposal_id: int, proposal_update: ProposalUserUpdateRequest
+):
+
+    proposal = db.query(Proposal).filter(Proposal.id == proposal_id).first()
+    if not proposal:
+        raise HTTPException(status_code=404, detail="Proposal not found")
+    if proposal_update.info:
+        proposal.info = proposal_update.info
+    if proposal_update.RFP_id:
+        proposal.RFP_id = proposal_update.RFP_id
+    if proposal_update.file_id:
+        proposal.file_id = proposal_update.file_id
+    db.commit()
+    db.refresh(proposal)
+    return proposal
+
+
 def broker_update_proposal(db: Session, proposal_id: int):
     updating_proposal = db.query(Proposal).filter(Proposal.id == proposal_id).first()
     updating_proposal.state == 1

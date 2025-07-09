@@ -5,13 +5,13 @@ from model.schemas import *
 from fastapi import HTTPException
 
 
-def user_create_proposal(db: Session, proposal: ProposalRequest):
+def user_create_proposal(db: Session, proposal: ProposalRequest, user_id: int):
     db_proposal = Proposal(
         info=proposal.info,
         RFP_id=proposal.RFP_id,
-        user_id=proposal.user_id,
+        user_id=user_id,
         file_id=proposal.file_id,
-        state=proposal.state,
+        state=3,
         comment=proposal.comment,
     )
     db.add(db_proposal)
@@ -52,7 +52,7 @@ def user_create_report(db: Session, report: ReportRequest):
         info=report.info,
         project_id=report.project_id,
         comment=report.comment,
-        state=report.state,
+        state=3,
     )
     db.add(db_report)
     db.commit()

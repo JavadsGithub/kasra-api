@@ -38,3 +38,7 @@ def mentor_get_report(db: Session, project_id: int, skip: int, limit: int):
         .limit(limit)
         .all()
     )
+
+
+def mentor_get_all_report(db: Session, skip: int, limit: int):
+    return db.query(Report).offset(skip).limit(limit).all()

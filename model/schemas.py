@@ -125,8 +125,8 @@ class RFPResponse(BaseModel):
 class ProposalRequest(BaseModel):
     info: str
     RFP_id: int
-    user_id: int
-    state: int  # ENUM
+    # user_id: int
+    # state: int  # ENUM
     comment: str
     file_id: Optional[int] = None
 
@@ -167,6 +167,12 @@ class ProposalSingleResponse(BaseModel):
 class ProposalUpdate(BaseModel):
     state: int  # ENUM
     comment: str
+
+
+class ProposalUserUpdateRequest(BaseModel):
+    info: Optional[str]
+    RFP_id: Optional[int]
+    file_id: Optional[int]
 
 
 # Commission schemas
@@ -226,7 +232,7 @@ class ReportRequest(BaseModel):
     info: str
     project_id: int
     comment: str
-    state: int
+    # state: int
 
 
 class ReportResponse(BaseModel):
