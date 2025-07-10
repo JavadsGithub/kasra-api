@@ -126,7 +126,7 @@ async def read_proposal(proposal_id: int, db: Session = Depends(get_db)):
     return user_get_proposal_by_id(db=db, proposal_id=proposal_id)
 
 
-@router.get("/projects/", response_model=ProjectResponse)
+@router.get("/projects/", response_model=List[ProjectResponse])
 async def read_projects(
     current_user: Annotated[UserInfoResponse, Depends(get_current_user)],
     skip: int = 0,
@@ -136,6 +136,8 @@ async def read_projects(
 
     user_id = current_user.id
     projects = user_get_projects(db, skip=skip, limit=limit, user_id=user_id)
+    if not projects:
+        raise HTTPException(status_code=404, detail="No Projects found")
     return projects
 
 
