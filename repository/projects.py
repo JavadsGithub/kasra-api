@@ -12,6 +12,10 @@ def supervisor_get_projects(
     return query.offset(skip).limit(limit).all()
 
 
+def supervisor_get_single_project(db: Session, project_id: int):
+    return db.query(Project).filter(Project.id == project_id).first()
+
+
 def mentor_get_projects(db: Session, user_id: int, skip: int = 0, limit: int = 10):
     return (
         db.query(Project)
