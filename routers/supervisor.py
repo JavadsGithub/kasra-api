@@ -72,4 +72,6 @@ async def read_projects(
 @router.get("/single-project/{project_id}", response_model=ProjectResponse)
 async def read_projects(project_id: int, db: Session = Depends(get_db)):
     projects = supervisor_get_single_project(db=db, project_id=project_id)
+    if not projects:
+        raise HTTPException(status_code=404, detail="No Projects found")
     return projects
