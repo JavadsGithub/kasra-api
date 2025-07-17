@@ -328,6 +328,7 @@ async def add_proposal(db: Session = Depends(get_db)):
             comment="none",
             state=project_id,
             file_id=file_id,
+            percent=30,
         ),
         Report(
             info="report 2",
@@ -335,13 +336,15 @@ async def add_proposal(db: Session = Depends(get_db)):
             comment="none",
             state=2,
             file_id=file_id,
+            percent=30,
         ),
         Report(
-            info="report 2",
+            info="report 3",
             project_id=project_id,
             comment="none",
             state=3,
             file_id=file_id,
+            percent=30,
         ),
     ]
     db.add_all(new_reports)

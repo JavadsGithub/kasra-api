@@ -233,6 +233,7 @@ class ReportRequest(BaseModel):
     project_id: int
     comment: str
     file_id: int
+    percent: int
 
     # state: int
 
@@ -244,6 +245,7 @@ class ReportResponse(BaseModel):
     comment: str
     state: int
     file_id: int
+    percent: int
 
     class Config:
         from_attributes = True

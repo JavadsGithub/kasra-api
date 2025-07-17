@@ -37,8 +37,17 @@ async def read_proposal(proposal_id: int, db: Session = Depends(get_db)):
 @router.get("/reports-by-project/{project_id}", response_model=List[ReportResponse])
 async def read_reports_by_project(project_id: int, db: Session = Depends(get_db)):
     reports = supervisor_get_reports_by_project(db, project_id=project_id)
-    reports_exist(reports)
+    if not reports:
+        return []
     return reports
+
+
+@router.get("/single-report/{id}", response_model=ReportResponse)
+async def read_reports_by_project(id: int, db: Session = Depends(get_db)):
+    report = supervisor_get_reports_by_id(db, id=id)
+    if not report:
+        raise HTTPException(status_code=404, detail="No Reports found")
+    return report
 
 
 @router.get("/reports/", response_model=List[ReportResponse])

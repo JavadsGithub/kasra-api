@@ -12,6 +12,10 @@ def supervisor_get_reports_by_project(db: Session, project_id: int):
     return db.query(Report).filter(Report.project_id == project_id).all()
 
 
+def supervisor_get_reports_by_id(db: Session, id: int):
+    return db.query(Report).filter(Report.id == id).first()
+
+
 def user_get_reports_by_project(db: Session, project_id: int):
     return db.query(Report).filter(Report.project_id == project_id).all()
 
