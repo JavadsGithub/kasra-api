@@ -43,7 +43,7 @@ async def read_reports_by_project(project_id: int, db: Session = Depends(get_db)
 
 
 @router.get("/single-report/{id}", response_model=ReportResponse)
-async def read_reports_by_project(id: int, db: Session = Depends(get_db)):
+async def read_report(id: int, db: Session = Depends(get_db)):
     report = supervisor_get_reports_by_id(db, id=id)
     if not report:
         raise HTTPException(status_code=404, detail="No Reports found")
