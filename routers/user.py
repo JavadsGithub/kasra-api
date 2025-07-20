@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.orm import Session
 from datetime import time
 import datetime
+from model import schemas
 from repository.proposal import user_get_proposals_like, user_update_proposal
 from repository.reports import user_get_reports_by_project
 from repository.rfp import user_search_rfps
@@ -122,7 +123,11 @@ async def add_proposal(
 
 
 @router.get("/proposals/{proposal_id}", response_model=ProposalResponse)
-async def read_proposal(proposal_id: int, db: Session = Depends(get_db)):
+async def read_proposal(
+    current_user: Annotated[UserInfoResponse, Depends(get_current_user)],
+    proposal_id: int,
+    db: Session = Depends(get_db),
+):
     return user_get_proposal_by_id(db=db, proposal_id=proposal_id)
 
 
@@ -142,31 +147,51 @@ async def read_projects(
 
 
 @router.get("/projects/{project_id}", response_model=List[ProjectResponse])
-async def read_projects_single(project_id: int, db: Session = Depends(get_db)):
+async def read_projects_single(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    project_id: int,
+    db: Session = Depends(get_db),
+):
     project = user_get_project(db, project_id=project_id)
     return project
 
 
 @router.get("/reports-by-project/{project_id}", response_model=List[ReportResponse])
-async def read_reports_by_project_id(project_id: int, db: Session = Depends(get_db)):
+async def read_reports_by_project_id(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    project_id: int,
+    db: Session = Depends(get_db),
+):
     reports = user_get_reports_by_project(db=db, project_id=project_id)
     # reports_exist(reports)
     return reports
 
 
 @router.post("/reports/", response_model=ReportResponse)
-async def add_report(report_request: ReportRequest, db: Session = Depends(get_db)):
+async def add_report(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    report_request: ReportRequest,
+    db: Session = Depends(get_db),
+):
     return user_create_report(db=db, report=report_request)
 
 
 @router.get("/reports/{report_id}", response_model=ReportResponse)
-async def read_report(report_id: int, db: Session = Depends(get_db)):
+async def read_report(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    report_id: int,
+    db: Session = Depends(get_db),
+):
     return user_get_report_by_id(db=db, report_id=report_id)
 
 
 @router.get("/rfps/", response_model=List[RFPResponse])
 async def search_rfps_endpoint(
-    info: str = None, skip: int = 0, limit: int = 10, db: Session = Depends(get_db)
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    info: str = None,
+    skip: int = 0,
+    limit: int = 10,
+    db: Session = Depends(get_db),
 ):
     rfps = user_search_rfps(db, info=info, skip=skip, limit=limit)
     if not rfps:
@@ -176,6 +201,7 @@ async def search_rfps_endpoint(
 
 @router.put("/proposals/{proposal_id}", response_model=ProposalResponse)
 async def edit_proposal(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
     proposal_id: int,
     proposal_update: ProposalUserUpdateRequest,
     db: Session = Depends(get_db),
@@ -187,7 +213,11 @@ async def edit_proposal(
 
 @router.get("/proposals/", response_model=List[ProposalResponse])
 async def read_proposals(
-    skip: int = 0, limit: int = 10, info: str = None, db: Session = Depends(get_db)
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    skip: int = 0,
+    limit: int = 10,
+    info: str = None,
+    db: Session = Depends(get_db),
 ):
     proposals = user_get_proposals_like(db, skip=skip, limit=limit, info=info)
     return proposals

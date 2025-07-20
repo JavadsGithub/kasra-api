@@ -42,7 +42,10 @@ router = APIRouter(tags=["explorer"], prefix="/explorer")
 
 @router.get("/rfp-fields/", response_model=List[RFPFieldResponse])
 async def read_rfp_fields(
-    skip: int = 0, limit: int = 10, db: Session = Depends(get_db)
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    skip: int = 0,
+    limit: int = 10,
+    db: Session = Depends(get_db),
 ):
     rfp_fields = explorer_get_rfp_fields(db, skip=skip, limit=limit)
     rfps_exist(rfp_fields)
@@ -51,7 +54,11 @@ async def read_rfp_fields(
 
 @router.get("/rfps/", response_model=List[RFPResponse])
 async def search_rfps_endpoint(
-    info: str = None, skip: int = 0, limit: int = 10, db: Session = Depends(get_db)
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    info: str = None,
+    skip: int = 0,
+    limit: int = 10,
+    db: Session = Depends(get_db),
 ):
     rfps = explorer_search_rfps(db, info=info, skip=skip, limit=limit)
     rfps_exist(rfps)
@@ -59,17 +66,30 @@ async def search_rfps_endpoint(
 
 
 @router.get("/single-rfp/{rfp_id}", response_model=RFPResponse)
-async def search_rfps(rfp_id: int, db: Session = Depends(get_db)):
+async def search_rfps(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    rfp_id: int,
+    db: Session = Depends(get_db),
+):
     rfp = explorer_rfp_single(db, rfp_id=rfp_id)
     rfps_exist(rfp)
     return rfp
 
 
 @router.post("/rfps/", response_model=RFPResponse)
-async def add_rfp(rfp: RFPRequest, db: Session = Depends(get_db)):
+async def add_rfp(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    rfp: RFPRequest,
+    db: Session = Depends(get_db),
+):
     return explorer_create_rfp(db=db, rfp=rfp)
 
 
 @router.put("/rfps/{rfp_id}", response_model=RFPResponse)
-async def edit_rfp(rfp_id: int, rfp_update: RFPRequest, db: Session = Depends(get_db)):
+async def edit_rfp(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    rfp_id: int,
+    rfp_update: RFPRequest,
+    db: Session = Depends(get_db),
+):
     return explorer_update_rfp(db=db, rfp_id=rfp_id, rfp_update=rfp_update)

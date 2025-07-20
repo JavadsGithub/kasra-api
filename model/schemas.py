@@ -232,7 +232,9 @@ class ReportRequest(BaseModel):
     info: str
     project_id: int
     comment: str
-    file_id: int
+    file_pdf_id: int
+    file_docx_id: int
+    file_pptx_id: int
     percent: int
 
     # state: int
@@ -244,7 +246,9 @@ class ReportResponse(BaseModel):
     project: ProjectResponse
     comment: str
     state: int
-    file_id: int
+    file_pdf_id: int
+    file_docx_id: int
+    file_pptx_id: int
     percent: int
 
     class Config:

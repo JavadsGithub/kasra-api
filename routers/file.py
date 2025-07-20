@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, responses, File, UploadFile
+from model import schemas
 from service.file import *
 from model.schemas import *
 from sqlalchemy.orm import Session
@@ -37,7 +38,11 @@ async def upload_file(
 
 
 @router.get("/download/{file_id}")
-async def download_file(file_id: int, db: Session = Depends(get_db)):
+async def download_file(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    file_id: int,
+    db: Session = Depends(get_db),
+):
     db_file = db.query(File).filter(File.id == file_id).first()
     db_file_exist(db_file)
     upload_dir = os.path.abspath("uploads")
@@ -53,5 +58,8 @@ async def download_file(file_id: int, db: Session = Depends(get_db)):
 
 
 @router.get("/files")
-async def get_file_ids(db: Session = Depends(get_db)):
+async def get_file_ids(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    db: Session = Depends(get_db),
+):
     return get_all_files(db)

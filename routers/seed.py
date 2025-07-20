@@ -336,6 +336,9 @@ async def add_proposal(db: Session = Depends(get_db)):
             comment="none",
             state=2,
             file_id=file_id,
+            file_pdf_id=file_id,
+            file_docx_id=file_id,
+            file_pptx_id=file_id,
             percent=30,
         ),
         Report(

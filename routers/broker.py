@@ -25,7 +25,11 @@ router = APIRouter(tags=["broker"], prefix="/broker")
 # Proposal-like:
 @router.get("/proposals/", response_model=List[ProposalAllResponse])
 async def read_proposals(
-    skip: int = 0, limit: int = 10, info: str = None, db: Session = Depends(get_db)
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    skip: int = 0,
+    limit: int = 10,
+    info: str = None,
+    db: Session = Depends(get_db),
 ):
     proposals = broker_get_proposals_like(db, skip=skip, limit=limit, info=info)
 
@@ -43,7 +47,11 @@ async def read_proposals(
 
 
 @router.get("/proposals/{proposal_id}", response_model=ProposalSingleResponse)
-async def read_proposal(proposal_id: int, db: Session = Depends(get_db)):
+async def read_proposal(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    proposal_id: int,
+    db: Session = Depends(get_db),
+):
     proposal = broker_get_proposal_by_id(db=db, proposal_id=proposal_id)
     # rfp = broker_get_rfp_by_id(db=db, rfp_id=proposal.RFP_id)
     # return ProposalSingleResponse(
@@ -81,7 +89,11 @@ async def add_commission(
 
 
 @router.get("/commissions/{proposal_id}", response_model=CommissionResponse)
-async def add_commission(proposal_id: int, db: Session = Depends(get_db)):
+async def add_commission(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    proposal_id: int,
+    db: Session = Depends(get_db),
+):
     commissions = broker_get_commission(db=db, proposal_id=proposal_id)
 
     if not commissions:
@@ -90,19 +102,28 @@ async def add_commission(proposal_id: int, db: Session = Depends(get_db)):
 
 
 @router.get("/users-master/", response_model=List[UserInfoResponse])
-async def read_users_master(db: Session = Depends(get_db)):
+async def read_users_master(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    db: Session = Depends(get_db),
+):
     users = broker_get_users_master(db)
 
     return users
 
 
 @router.get("/users-discoverer/", response_model=List[UserInfoResponse])
-async def read_users_discoverer(db: Session = Depends(get_db)):
+async def read_users_discoverer(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    db: Session = Depends(get_db),
+):
     users = broker_get_users_discoverer(db)
     return users
 
 
 @router.get("/users-supervisor/", response_model=List[UserInfoResponse])
-async def read_users_supervisor(db: Session = Depends(get_db)):
+async def read_users_supervisor(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    db: Session = Depends(get_db),
+):
     users = broker_get_users_supervisor(db)
     return users

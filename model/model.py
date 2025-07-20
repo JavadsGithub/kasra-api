@@ -109,7 +109,9 @@ class Report(Base):
     project_id = Column(Integer, ForeignKey("project.id"))
     comment = Column(String(999))
     state = Column(Integer)  # ENUM
-    file_id = Column(Integer, ForeignKey("file.id"))
+    file_pdf_id = Column(Integer, ForeignKey("file.id"))
+    file_docx_id = Column(Integer, ForeignKey("file.id"))
+    file_pptx_id = Column(Integer, ForeignKey("file.id"))
     percent = Column(Integer)
 
     project = relationship("Project", foreign_keys=[project_id])
