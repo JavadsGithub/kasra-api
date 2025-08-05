@@ -135,7 +135,7 @@ class ProposalAllResponse(BaseModel):
     id: int
     info: str
     rfp: RFPResponse
-
+    state: int
     class Config:
         from_attributes = True
 

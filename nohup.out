@@ -1,0 +1,855 @@
+INFO:     Started server process [17095]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started server process [17096]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 98] error while attempting to bind on address ('0.0.0.0', 8000): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Started server process [17099]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 98] error while attempting to bind on address ('0.0.0.0', 8000): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Started server process [17135]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 98] error while attempting to bind on address ('0.0.0.0', 8000): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     5.212.68.156:36185 - "GET /docs HTTP/1.1" 200 OK
+/home/kasra/source/kasra/venv/lib/python3.12/site-packages/fastapi/openapi/utils.py:246: UserWarning: Duplicate Operation ID add_proposal_seed_seed__get for function add_proposal at /home/kasra/source/kasra/routers/seed.py
+  warnings.warn(message, stacklevel=1)
+INFO:     5.212.68.156:36185 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     5.212.68.156:36184 - "GET /docs HTTP/1.1" 200 OK
+INFO:     5.212.68.156:36184 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     176.65.148.243:44876 - "CONNECT example.com%3A443 HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     88.149.138.172:59172 - "GET / HTTP/1.0" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     209.38.20.58:52030 - "GET / HTTP/1.1" 404 Not Found
+INFO:     209.38.20.58:52036 - "GET /login HTTP/1.1" 404 Not Found
+INFO:     170.130.187.22:62122 - "GET / HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     44.220.185.159:51390 - "GET / HTTP/1.1" 404 Not Found
+INFO:     199.45.155.98:51268 - "GET / HTTP/1.1" 404 Not Found
+INFO:     199.45.155.98:50624 - "GET / HTTP/1.1" 404 Not Found
+INFO:     199.45.155.98:50636 - "PRI %2A HTTP/2.0" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     199.45.155.98:36348 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     199.45.155.98:36350 - "PRI %2A HTTP/2.0" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     199.45.155.98:36370 - "GET /login HTTP/1.1" 404 Not Found
+INFO:     2.182.1.191:56066 - "GET / HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     2.182.1.191:33538 - "GET /docs HTTP/1.1" 200 OK
+INFO:     2.182.1.191:33552 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     2.182.1.191:42368 - "GET /docs HTTP/1.1" 200 OK
+INFO:     2.182.1.191:42384 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     37.228.137.57:62298 - "GET / HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     37.228.137.57:62306 - "GET /docs HTTP/1.1" 200 OK
+INFO:     37.228.137.57:62307 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     106.75.84.210:43484 - "GET /api/v2/heartbeat HTTP/1.1" 404 Not Found
+INFO:     106.75.84.210:43834 - "GET / HTTP/1.1" 404 Not Found
+INFO:     106.75.157.207:12658 - "GET / HTTP/1.1" 404 Not Found
+INFO:     106.75.157.207:12664 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     37.228.137.57:65478 - "POST /token HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/pymysql/connections.py", line 806, in _write_bytes
+    self._sock.sendall(data)
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1963, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 943, in do_execute
+    cursor.execute(statement, parameters)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/pymysql/cursors.py", line 153, in execute
+    result = self._query(query)
+             ^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/pymysql/cursors.py", line 322, in _query
+    conn.query(q)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/pymysql/connections.py", line 562, in query
+    self._execute_command(COMMAND.COM_QUERY, sql)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/pymysql/connections.py", line 864, in _execute_command
+    self._write_bytes(packet)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/pymysql/connections.py", line 809, in _write_bytes
+    raise err.OperationalError(
+pymysql.err.OperationalError: (2006, "MySQL server has gone away (BrokenPipeError(32, 'Broken pipe'))")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/uvicorn/protocols/http/h11_impl.py", line 403, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/middleware/cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/fastapi/routing.py", line 213, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/routers/authentication.py", line 26, in login
+    user = db.query(model.User).filter(model.User.username == request.username).first()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2759, in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2857, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/orm/context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1415, in execute
+    return meth(
+           ^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 523, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1637, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1842, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1982, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2351, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1963, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 943, in do_execute
+    cursor.execute(statement, parameters)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/pymysql/cursors.py", line 153, in execute
+    result = self._query(query)
+             ^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/pymysql/cursors.py", line 322, in _query
+    conn.query(q)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/pymysql/connections.py", line 562, in query
+    self._execute_command(COMMAND.COM_QUERY, sql)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/pymysql/connections.py", line 864, in _execute_command
+    self._write_bytes(packet)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/pymysql/connections.py", line 809, in _write_bytes
+    raise err.OperationalError(
+sqlalchemy.exc.OperationalError: (pymysql.err.OperationalError) (2006, "MySQL server has gone away (BrokenPipeError(32, 'Broken pipe'))")
+[SQL: SELECT user.id AS user_id, user.user_type_id AS user_user_type_id, user.fname AS user_fname, user.lname AS user_lname, user.father_name AS user_father_name, user.birth AS user_birth, user.resume_file_id AS user_resume_file_id, user.address AS user_address, user.username AS user_username, user.password AS user_password, user.phone AS user_phone, user.active AS user_active 
+FROM user 
+WHERE user.username = %(username_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'username_1': 'admin', 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO:     37.228.137.57:65479 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     162.142.125.219:35138 - "GET / HTTP/1.1" 404 Not Found
+INFO:     162.142.125.219:49296 - "GET / HTTP/1.1" 404 Not Found
+INFO:     162.142.125.219:49348 - "PRI %2A HTTP/2.0" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     162.142.125.219:50800 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     162.142.125.219:50812 - "PRI %2A HTTP/2.0" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     162.142.125.219:54956 - "GET /robots.txt HTTP/1.1" 404 Not Found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [17095]
+INFO:     Started server process [1730]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8010 (Press CTRL+C to quit)
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [1730]
+INFO:     Started server process [2572]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     2.182.10.105:49832 - "GET /docs HTTP/1.1" 200 OK
+/home/kasra/source/kasra/venv/lib/python3.12/site-packages/fastapi/openapi/utils.py:246: UserWarning: Duplicate Operation ID add_proposal_seed_seed__get for function add_proposal at /home/kasra/source/kasra/routers/seed.py
+  warnings.warn(message, stacklevel=1)
+INFO:     2.182.10.105:49832 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     2.182.10.105:49832 - "GET /docs HTTP/1.1" 200 OK
+INFO:     2.182.10.105:49832 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     37.228.137.57:54432 - "GET /docs HTTP/1.1" 200 OK
+INFO:     37.228.137.57:54432 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     37.228.137.57:54452 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     37.228.137.57:54452 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     37.228.137.57:54453 - "GET /docs HTTP/1.1" 200 OK
+INFO:     37.228.137.57:54453 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     37.228.137.57:54454 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     37.228.137.57:54454 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     37.228.137.57:54457 - "GET /docs HTTP/1.1" 200 OK
+INFO:     37.228.137.57:54457 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     37.228.137.57:54460 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     37.228.137.57:54460 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     37.228.137.57:54475 - "GET /docs HTTP/1.1" 200 OK
+INFO:     37.228.137.57:54475 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     37.228.137.57:54476 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     37.228.137.57:54476 - "POST /token HTTP/1.1" 404 Not Found
+(trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+INFO:     37.228.137.57:54481 - "GET /seed/seed/ HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/uvicorn/protocols/http/h11_impl.py", line 403, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/fastapi/routing.py", line 213, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/routers/seed.py", line 325, in add_proposal
+    Report(
+  File "<string>", line 4, in __init__
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/orm/state.py", line 571, in _initialize_instance
+    with util.safe_reraise():
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/orm/state.py", line 569, in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/orm/decl_base.py", line 2173, in _declarative_constructor
+    raise TypeError(
+TypeError: 'file_id' is an invalid keyword argument for Report
+INFO:     2.182.10.105:59854 - "GET /seed/seed/ HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/uvicorn/protocols/http/h11_impl.py", line 403, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/fastapi/routing.py", line 213, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/routers/seed.py", line 325, in add_proposal
+    Report(
+  File "<string>", line 4, in __init__
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/orm/state.py", line 571, in _initialize_instance
+    with util.safe_reraise():
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/orm/state.py", line 569, in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/orm/decl_base.py", line 2173, in _declarative_constructor
+    raise TypeError(
+TypeError: 'file_id' is an invalid keyword argument for Report
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2572]
+INFO:     Started server process [3716]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     2.182.10.105:52700 - "GET /docs HTTP/1.1" 200 OK
+/home/kasra/source/kasra/venv/lib/python3.12/site-packages/fastapi/openapi/utils.py:246: UserWarning: Duplicate Operation ID add_proposal_seed_seed__get for function add_proposal at /home/kasra/source/kasra/routers/seed.py
+  warnings.warn(message, stacklevel=1)
+INFO:     2.182.10.105:52700 - "GET /openapi.json HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     3.131.215.38:36250 - "GET / HTTP/1.1" 404 Not Found
+INFO:     3.131.215.38:41652 - "GET / HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     37.228.137.57:57536 - "GET /docs HTTP/1.1" 200 OK
+INFO:     37.228.137.57:57536 - "GET /openapi.json HTTP/1.1" 200 OK
+(trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+INFO:     37.228.137.57:57545 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     37.228.137.57:57545 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     37.228.137.57:57551 - "GET /seed/seed/ HTTP/1.1" 200 OK
+INFO:     37.228.137.57:57559 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     37.228.137.57:57559 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     37.228.137.57:57559 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     37.228.137.57:57559 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     37.228.137.57:57600 - "POST /token HTTP/1.1" 200 OK
+INFO:     37.228.137.57:57601 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     37.228.137.57:57601 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     37.228.137.57:57806 - "POST /token HTTP/1.1" 200 OK
+INFO:     37.228.137.57:57829 - "OPTIONS /users/me HTTP/1.1" 200 OK
+INFO:     37.228.137.57:57829 - "GET /users/me HTTP/1.1" 200 OK
+INFO:     37.228.137.57:57829 - "OPTIONS /broker/proposals/?skip=0&limit=10 HTTP/1.1" 200 OK
+INFO:     37.228.137.57:57848 - "GET /broker/proposals/?skip=0&limit=10 HTTP/1.1" 200 OK
+INFO:     37.228.137.57:57973 - "OPTIONS /token HTTP/1.1" 200 OK
+INFO:     37.228.137.57:57973 - "POST /token HTTP/1.1" 200 OK
+INFO:     37.228.137.57:57973 - "OPTIONS /broker/proposals/?skip=0&limit=10 HTTP/1.1" 200 OK
+INFO:     37.228.137.57:57973 - "GET /broker/proposals/?skip=0&limit=10 HTTP/1.1" 200 OK
+INFO:     77.111.30.203:48440 - "GET / HTTP/1.0" 404 Not Found
+INFO:     37.228.137.57:57987 - "OPTIONS /broker/proposals/3 HTTP/1.1" 200 OK
+INFO:     37.228.137.57:57988 - "OPTIONS /users/proposals/3 HTTP/1.1" 200 OK
+INFO:     37.228.137.57:57987 - "GET /broker/proposals/3 HTTP/1.1" 200 OK
+INFO:     37.228.137.57:57988 - "GET /users/proposals/3 HTTP/1.1" 200 OK
+INFO:     37.228.137.57:58015 - "GET /broker/proposals/?skip=0&limit=10 HTTP/1.1" 200 OK
+INFO:     37.228.137.57:58410 - "OPTIONS /users/me HTTP/1.1" 200 OK
+INFO:     37.228.137.57:58410 - "GET /users/me HTTP/1.1" 200 OK
+INFO:     37.228.137.57:58410 - "GET /broker/proposals/?skip=0&limit=10 HTTP/1.1" 200 OK
+INFO:     37.228.137.57:58410 - "OPTIONS /broker/proposals/1 HTTP/1.1" 200 OK
+INFO:     37.228.137.57:58411 - "OPTIONS /users/proposals/1 HTTP/1.1" 200 OK
+INFO:     37.228.137.57:58411 - "GET /users/proposals/1 HTTP/1.1" 200 OK
+INFO:     37.228.137.57:58410 - "GET /broker/proposals/1 HTTP/1.1" 200 OK
+INFO:     37.228.137.57:58410 - "OPTIONS /broker/proposals/2 HTTP/1.1" 200 OK
+INFO:     37.228.137.57:58410 - "GET /broker/proposals/2 HTTP/1.1" 200 OK
+INFO:     37.228.137.57:58410 - "OPTIONS /users/proposals/2 HTTP/1.1" 200 OK
+INFO:     37.228.137.57:58410 - "GET /users/proposals/2 HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     159.89.110.150:49428 - "GET / HTTP/1.1" 404 Not Found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [3716]
+Compose now can delegate build to bake for better performances
+Just set COMPOSE_BAKE=true
+#0 building with "default" instance using docker driver
+
+#1 [api internal] load build definition from Dockerfile
+#1 transferring dockerfile: 154B 0.0s done
+#1 DONE 0.0s
+
+#2 [api internal] load metadata for docker.io/library/python:3.12
+#2 ERROR: failed to do request: Head "https://registry-1.docker.io/v2/library/python/manifests/3.12": net/http: TLS handshake timeout
+------
+ > [api internal] load metadata for docker.io/library/python:3.12:
+------
+failed to solve: python:3.12: failed to resolve source metadata for docker.io/library/python:3.12: failed to do request: Head "https://registry-1.docker.io/v2/library/python/manifests/3.12": net/http: TLS handshake timeout
+Traceback (most recent call last):
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/pymysql/connections.py", line 649, in connect
+    sock = socket.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 852, in create_connection
+    raise exceptions[0]
+  File "/usr/lib/python3.12/socket.py", line 837, in create_connection
+    sock.connect(sa)
+OSError: [Errno 101] Network is unreachable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 145, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3297, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1264, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 713, in checkout
+    rec = pool._do_get()
+          ^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    with util.safe_reraise():
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 177, in _do_get
+    return self._create_connection()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 390, in _create_connection
+    return _ConnectionRecord(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 675, in __init__
+    self.__connect()
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 901, in __connect
+    with util.safe_reraise():
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 897, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 625, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/pymysql/connections.py", line 361, in __init__
+    self.connect()
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/pymysql/connections.py", line 716, in connect
+    raise exc
+pymysql.err.OperationalError: (2003, "Can't connect to MySQL server on 'db' ([Errno 101] Network is unreachable)")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/kasra/source/kasra/venv/bin/uvicorn", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/click/core.py", line 1442, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/click/core.py", line 1363, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/click/core.py", line 1226, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/click/core.py", line 794, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/uvicorn/main.py", line 413, in main
+    run(
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/uvicorn/main.py", line 580, in run
+    server.run()
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 687, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/uvicorn/config.py", line 436, in load
+    self.loaded_app = import_from_string(self.app)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/home/kasra/source/kasra/main.py", line 32, in <module>
+    model.Base.metadata.create_all(database.engine)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/sql/schema.py", line 5924, in create_all
+    bind._run_ddl_visitor(
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3247, in _run_ddl_visitor
+    with self.begin() as conn:
+  File "/usr/lib/python3.12/contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3237, in begin
+    with self.connect() as conn:
+         ^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3273, in connect
+    return self._connection_cls(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 147, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2436, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 145, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3297, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1264, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 713, in checkout
+    rec = pool._do_get()
+          ^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    with util.safe_reraise():
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 177, in _do_get
+    return self._create_connection()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 390, in _create_connection
+    return _ConnectionRecord(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 675, in __init__
+    self.__connect()
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 901, in __connect
+    with util.safe_reraise():
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 897, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 625, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/pymysql/connections.py", line 361, in __init__
+    self.connect()
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/pymysql/connections.py", line 716, in connect
+    raise exc
+sqlalchemy.exc.OperationalError: (pymysql.err.OperationalError) (2003, "Can't connect to MySQL server on 'db' ([Errno 101] Network is unreachable)")
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO:     Started server process [45730]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     2.182.13.188:42978 - "GET /docs HTTP/1.1" 200 OK
+/home/kasra/source/kasra/venv/lib/python3.12/site-packages/fastapi/openapi/utils.py:246: UserWarning: Duplicate Operation ID add_proposal_seed_seed__get for function add_proposal at /home/kasra/source/kasra/routers/seed.py
+  warnings.warn(message, stacklevel=1)
+INFO:     2.182.13.188:42978 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     2.182.1.255:56762 - "OPTIONS /token HTTP/1.1" 200 OK
+(trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+INFO:     2.182.1.255:56762 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     2.182.1.255:56762 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     2.182.1.255:56769 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     2.182.1.255:56769 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     2.182.1.255:56775 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     2.182.1.255:56775 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     2.182.1.255:56780 - "POST /token HTTP/1.1" 200 OK
+INFO:     2.182.1.255:56780 - "OPTIONS /users/me HTTP/1.1" 200 OK
+INFO:     2.182.1.255:56780 - "GET /users/me HTTP/1.1" 200 OK
+INFO:     2.182.1.255:56780 - "OPTIONS /broker/proposals/?skip=0&limit=10 HTTP/1.1" 200 OK
+INFO:     2.182.1.255:56780 - "GET /broker/proposals/?skip=0&limit=10 HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [45730]
+INFO:     Started server process [45751]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     2.182.13.188:36468 - "GET /docs HTTP/1.1" 200 OK
+/home/kasra/source/kasra/venv/lib/python3.12/site-packages/fastapi/openapi/utils.py:246: UserWarning: Duplicate Operation ID add_proposal_seed_seed__get for function add_proposal at /home/kasra/source/kasra/routers/seed.py
+  warnings.warn(message, stacklevel=1)
+INFO:     2.182.13.188:36468 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     2.182.1.255:56803 - "GET /broker/proposals/?skip=0&limit=10 HTTP/1.1" 200 OK
+INFO:     2.182.1.255:56808 - "GET /users/me HTTP/1.1" 401 Unauthorized
+(trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+INFO:     2.182.1.255:56809 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     2.182.1.255:56809 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     2.182.13.188:58942 - "POST /token HTTP/1.1" 200 OK
+INFO:     37.228.137.57:56872 - "GET / HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     37.228.137.57:56872 - "GET /docs HTTP/1.1" 200 OK
+INFO:     37.228.137.57:56872 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     37.228.137.57:56921 - "GET /seed/seed/ HTTP/1.1" 200 OK
+INFO:     37.228.137.57:56930 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     37.228.137.57:56930 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     37.228.137.57:56938 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     37.228.137.57:56938 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     37.228.137.57:56951 - "POST /token HTTP/1.1" 200 OK
+INFO:     37.228.137.57:56952 - "OPTIONS /users/me HTTP/1.1" 200 OK
+INFO:     37.228.137.57:56952 - "GET /users/me HTTP/1.1" 200 OK
+INFO:     37.228.137.57:56952 - "OPTIONS /broker/proposals/?skip=0&limit=10 HTTP/1.1" 200 OK
+INFO:     37.228.137.57:56952 - "GET /broker/proposals/?skip=0&limit=10 HTTP/1.1" 200 OK
+INFO:     37.228.137.57:56955 - "GET /users/me HTTP/1.1" 401 Unauthorized
+INFO:     37.228.137.57:56956 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     37.228.137.57:56957 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     37.228.137.57:56959 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     37.228.137.57:56959 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     37.228.137.57:56960 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     37.228.137.57:56961 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     37.228.137.57:56962 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     37.228.137.57:56963 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     37.228.137.57:57004 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     37.228.137.57:57004 - "POST /token HTTP/1.1" 404 Not Found
+INFO:     37.228.137.57:57006 - "POST /token HTTP/1.1" 200 OK
+INFO:     37.228.137.57:57006 - "OPTIONS /explorer/rfps/?skip=0&limit=10 HTTP/1.1" 200 OK
+INFO:     37.228.137.57:57008 - "OPTIONS /users/me HTTP/1.1" 200 OK
+INFO:     37.228.137.57:57006 - "GET /explorer/rfps/?skip=0&limit=10 HTTP/1.1" 200 OK
+INFO:     37.228.137.57:57008 - "GET /users/me HTTP/1.1" 200 OK
+INFO:     2.182.13.188:54290 - "POST /token HTTP/1.1" 200 OK
+INFO:     37.228.137.57:57080 - "GET /users/me HTTP/1.1" 401 Unauthorized
+INFO:     188.213.192.134:28162 - "POST /token HTTP/1.1" 200 OK
+INFO:     188.213.192.134:10225 - "OPTIONS /users/me HTTP/1.1" 200 OK
+INFO:     188.213.192.134:10225 - "GET /users/me HTTP/1.1" 200 OK
+INFO:     188.213.192.134:25106 - "POST /token HTTP/1.1" 200 OK
+INFO:     188.213.192.134:25106 - "GET /users/me HTTP/1.1" 200 OK
+INFO:     188.213.192.134:12377 - "GET /users/me HTTP/1.1" 200 OK
+INFO:     188.213.192.134:12377 - "OPTIONS /supervisor/reports/?skip=0&limit=10 HTTP/1.1" 200 OK
+INFO:     188.213.192.134:12377 - "GET /supervisor/reports/?skip=0&limit=10 HTTP/1.1" 200 OK
+INFO:     188.213.192.134:51860 - "GET /users/me HTTP/1.1" 200 OK
+INFO:     188.213.192.134:51860 - "GET /supervisor/reports/?skip=0&limit=10 HTTP/1.1" 200 OK
+INFO:     188.213.192.134:19121 - "GET /users/me HTTP/1.1" 200 OK
+INFO:     188.213.192.134:19121 - "GET /users/me HTTP/1.1" 200 OK
+INFO:     188.213.192.134:19121 - "GET /supervisor/reports/?skip=0&limit=10 HTTP/1.1" 200 OK
+INFO:     188.213.192.134:62168 - "GET /users/me HTTP/1.1" 401 Unauthorized
+INFO:     188.213.192.134:56372 - "POST /token HTTP/1.1" 200 OK
+INFO:     188.213.192.134:56372 - "GET /users/me HTTP/1.1" 200 OK
+INFO:     188.213.192.134:56372 - "OPTIONS /broker/proposals/?skip=0&limit=10 HTTP/1.1" 200 OK
+INFO:     188.213.192.134:56372 - "GET /broker/proposals/?skip=0&limit=10 HTTP/1.1" 200 OK
+INFO:     188.213.192.134:38107 - "OPTIONS /broker/proposals/1 HTTP/1.1" 200 OK
+INFO:     188.213.192.134:48769 - "OPTIONS /users/proposals/1 HTTP/1.1" 200 OK
+INFO:     188.213.192.134:38107 - "GET /broker/proposals/1 HTTP/1.1" 200 OK
+INFO:     188.213.192.134:48769 - "GET /users/proposals/1 HTTP/1.1" 200 OK
+INFO:     188.213.192.134:56068 - "OPTIONS /broker/users-master/ HTTP/1.1" 200 OK
+INFO:     188.213.192.134:10839 - "OPTIONS /broker/users-supervisor/ HTTP/1.1" 200 OK
+INFO:     188.213.192.134:29106 - "OPTIONS /broker/users-discoverer/ HTTP/1.1" 200 OK
+INFO:     188.213.192.134:10839 - "GET /broker/users-master/ HTTP/1.1" 200 OK
+INFO:     188.213.192.134:56068 - "GET /broker/users-supervisor/ HTTP/1.1" 200 OK
+INFO:     188.213.192.134:29106 - "GET /broker/users-discoverer/ HTTP/1.1" 200 OK
+INFO:     188.213.192.134:12827 - "OPTIONS /broker/commissions/ HTTP/1.1" 200 OK
+INFO:     188.213.192.134:12827 - "POST /broker/commissions/ HTTP/1.1" 200 OK
+INFO:     188.213.192.134:12827 - "GET /broker/proposals/?skip=0&limit=10 HTTP/1.1" 200 OK
+INFO:     188.213.192.134:46124 - "OPTIONS /broker/proposals/?skip=10&limit=10 HTTP/1.1" 200 OK
+INFO:     188.213.192.134:46124 - "GET /broker/proposals/?skip=10&limit=10 HTTP/1.1" 200 OK
+INFO:     188.213.192.134:46124 - "OPTIONS /users/proposals/12 HTTP/1.1" 200 OK
+INFO:     188.213.192.134:29552 - "GET /broker/users-master/ HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/uvicorn/protocols/http/h11_impl.py", line 403, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/middleware/cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/fastapi/routing.py", line 291, in app
+    async with AsyncExitStack() as async_exit_stack:
+  File "/usr/lib/python3.12/contextlib.py", line 754, in __aexit__
+    raise exc_details[1]
+  File "/usr/lib/python3.12/contextlib.py", line 737, in __aexit__
+    cb_suppress = await cb(*exc_details)
+                  ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/contextlib.py", line 217, in __aexit__
+    await anext(self.gen)
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/fastapi/concurrency.py", line 37, in contextmanager_in_threadpool
+    await anyio.to_thread.run_sync(
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 2470, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/contextlib.py", line 144, in __exit__
+    next(self.gen)
+  File "/home/kasra/source/kasra/util/util.py", line 55, in get_db
+    db.close_all()
+  File "<string>", line 2, in close_all
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/util/deprecations.py", line 386, in warned
+    return fn(*args, **kwargs)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 214, in close_all
+    close_all_sessions()
+  File "/home/kasra/source/kasra/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 5170, in close_all_sessions
+    for sess in _sessions.values():
+  File "/usr/lib/python3.12/weakref.py", line 247, in values
+    for wr in self.data.values():
+RuntimeError: dictionary changed size during iteration
+INFO:     188.213.192.134:46124 - "GET /users/proposals/12 HTTP/1.1" 200 OK
+INFO:     188.213.192.134:55299 - "GET /broker/users-supervisor/ HTTP/1.1" 200 OK
+INFO:     188.213.192.134:55669 - "GET /broker/users-discoverer/ HTTP/1.1" 200 OK
+INFO:     188.213.192.134:55669 - "GET /broker/users-master/ HTTP/1.1" 200 OK
+INFO:     2.182.13.188:33026 - "GET /docs HTTP/1.1" 200 OK
+INFO:     2.182.13.188:33026 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     Started server process [15257]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 98] error while attempting to bind on address ('127.0.0.1', 8000): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Started server process [17088]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 98] error while attempting to bind on address ('127.0.0.1', 8000): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.

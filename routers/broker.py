@@ -12,6 +12,14 @@ from repository.user import *
 from repository.rfp import *
 from util.util import *
 
+BROKER, EXPLORER, ORDENARYUSER, SPUERVIOR, MENTOR = (
+    1,
+    2,
+    3,
+    4,
+    5,
+)
+
 
 router = APIRouter(tags=["broker"], prefix="/broker")
 

@@ -184,7 +184,7 @@ async def add_proposal(db: Session = Depends(get_db)):
             info="پروپوزال۱ ",
             RFP_id=RFP_id,
             user_id=user_id,
-            state=1,
+            state=2,
             comment="",
         ),
         Proposal(
@@ -192,7 +192,7 @@ async def add_proposal(db: Session = Depends(get_db)):
             RFP_id=RFP_id,
             user_id=user_id,
             file_id=file_id,
-            state=1,
+            state=3,
             comment="",
         ),
         Proposal(
@@ -327,7 +327,9 @@ async def add_proposal(db: Session = Depends(get_db)):
             project_id=project_id,
             comment="none",
             state=project_id,
-            file_id=file_id,
+            file_pdf_id=file_id,
+            file_docx_id=file_id,
+            file_pptx_id=file_id,
             percent=30,
         ),
         Report(
@@ -335,7 +337,6 @@ async def add_proposal(db: Session = Depends(get_db)):
             project_id=project_id,
             comment="none",
             state=2,
-            file_id=file_id,
             file_pdf_id=file_id,
             file_docx_id=file_id,
             file_pptx_id=file_id,
@@ -346,7 +347,9 @@ async def add_proposal(db: Session = Depends(get_db)):
             project_id=project_id,
             comment="none",
             state=3,
-            file_id=file_id,
+            file_pdf_id=file_id,
+            file_docx_id=file_id,
+            file_pptx_id=file_id,
             percent=30,
         ),
     ]

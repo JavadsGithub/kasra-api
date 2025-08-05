@@ -15,16 +15,13 @@ import yaml
 
 from model.model import User
 
-"""""" """""" """""" """""" """""" """""" """""" """""" """""" """""" """
-    
-    I'm well aware of security problem with my SECRET_KEY implementation
-      I have done it like this for the sake of easy initialization of 
-      backend for Javad.
-      The SECRET_KEY will be changed after Javad is done with the front.
-
-
- """ """""" """""" """""" """""" """""" """""" """""" """""" """""" """"""
-
+BROKER, EXPLORER, ORDENARYUSER, SPUERVIOR, MENTOR = (
+    1,
+    2,
+    3,
+    4,
+    5,
+)
 
 SECRET_KEY = "09d15e094aaa6ca2556c518166b7a9563b93f7099f6f0f4caa6cf45b88e8d3e7"
 ALGORITHM = "HS256"

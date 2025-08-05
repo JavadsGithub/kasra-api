@@ -15,8 +15,8 @@ def broker_get_proposals_like(
 ):
     query = db.query(Proposal)
     if info:
-        query = query.filter(Proposal.info.ilike(f"%{info}%"))
-    return query.offset(skip).limit(limit).all()
+        query = query.filter(Proposal.info.ilike(f"%{info}%")& Proposal.state != 1)
+    return query.filter(Proposal.state != 1).offset(skip).limit(limit).all()
 
 
 def broker_get_proposal_by_id(db: Session, proposal_id: int):
