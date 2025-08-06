@@ -52,7 +52,10 @@ def user_create_report(db: Session, report: ReportRequest):
         info=report.info,
         project_id=report.project_id,
         comment=report.comment,
-        file_id=report.file_id,
+        file_pdf_id = report.file_pdf_id,
+        file_docx_id = report.file_docx_id,
+        file_pptx_id = report.file_pptx_id,
+        percent = report.percent,
         state=3,
     )
     db.add(db_report)
