@@ -22,15 +22,14 @@ class ProposalState(enum.Enum):
 
 
 class ReportState(enum.Enum):
-    active = "active"
-    inactive = "inactive"
-    pending = "pending"
+    rejected = "رد شده"
+    eccepted = "تایید شده"
+    pending = "در انتظار تایید"
 
 
 class ProjectState(enum.Enum):
-    active = "active"
-    ended = "ended"
-    pending = "pending"
+    active = "فعال"
+    ended = "غیر فعال"
 # login
 
 
@@ -314,7 +313,7 @@ class ReportResponse(BaseModel):
 
 
 class ReportUpdate(BaseModel):
-    state: int
+    state: str
     comment: str
 
 
