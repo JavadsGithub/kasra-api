@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from datetime import time
 import datetime
 from model import schemas
+from repository.allocate import user_allocate_single, user_search_allocate, user_update_allocate
 from repository.proposal import user_get_proposals_like, user_update_proposal
 from repository.reports import user_get_reports_by_project
 from repository.rfp import user_search_rfps
@@ -221,3 +222,40 @@ async def read_proposals(
 ):
     proposals = user_get_proposals_like(db, skip=skip, limit=limit, info=info)
     return proposals
+# old ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+@router.get("/allocates/", response_model=List[AllocateResponse])
+async def get_allocates(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    skip: int = 0,
+    limit: int = 10,
+    db: Session = Depends(get_db),
+):
+    allocate = user_search_allocate(
+        db, user_id=current_user.id, skip=skip, limit=limit)
+    if not allocate:
+        raise HTTPException(status_code=404, detail="No allocate found")
+    return allocate
+
+
+@router.get("/single-allocate/{allocate_id}", response_model=AllocateResponse)
+async def single_allocate(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    allocate_id: int,
+    db: Session = Depends(get_db),
+):
+    allocate = user_allocate_single(db, allocate_id=allocate_id)
+    if not allocate:
+        raise HTTPException(status_code=404, detail="No allocate found")
+    return allocate
+
+
+@router.put("/allocates/{allocate_id}", response_model=AllocateResponse)
+async def edit_allocate(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    allocate_id: BrokerUpdateAllocate,
+    allocate_update: BrokerUpdateAllocate,
+    db: Session = Depends(get_db),
+):
+    return user_update_allocate(db=db, allocate_update=allocate_update, allocate_id=allocate_id)

@@ -1,5 +1,9 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status, Response
+from repository.allocate import explorer_allocate_single, explorer_search_allocate, explorer_update_allocate
+from repository.proposal import explorer_get_proposals_like, explorer_update_proposal
+from repository.user import explorer_get_users_supervisor
+from service import explorer
 from service.explorer import rfps_exist
 from model import model
 from model.schemas import *
@@ -13,31 +17,6 @@ from util.util import *
 
 
 router = APIRouter(tags=["explorer"], prefix="/explorer")
-
-
-# @router.get("/seed/")
-# async def add_proposal(db: Session = Depends(get_db)):
-#     new_RFP_fields = [
-#         model.RFPField(title="صنعت خودرو"),
-#         model.RFPField(title="کامپیوتر و it"),
-#         model.RFPField(title="کشاورزی"),
-#         model.RFPField(title="صنایع شیمی"),
-#         model.RFPField(title="صنایع هوافضا"),
-#         model.RFPField(title="امنیت سایبری"),
-#         model.RFPField(title="هوش مصنوعی"),
-#         model.RFPField(title="صنایع دفاعی"),
-#         model.RFPField(title="علوم انسانی"),
-#     ]
-#     db.add_all(new_RFP_fields)
-#     db.commit()
-#     return {"response": "ok"}
-
-
-# @router.get("/rfps/", response_model=List[RFPResponse])
-# async def read_rfps(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-#     rfps = explorer_get_rfps(db, skip=skip, limit=limit)
-#     rfps_exist(rfps)
-#     return rfps
 
 
 @router.get("/rfp-fields/", response_model=List[RFPFieldResponse])
@@ -79,17 +58,89 @@ async def search_rfps(
 @router.post("/rfps/", response_model=RFPResponse)
 async def add_rfp(
     current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
-    rfp: RFPRequest,
+    rfp: ExplorerCreateUpdateRFP,
     db: Session = Depends(get_db),
 ):
-    return explorer_create_rfp(db=db, rfp=rfp)
+    return explorer_create_rfp(db=db, rfp=rfp, creator_id=current_user.id)
 
 
 @router.put("/rfps/{rfp_id}", response_model=RFPResponse)
 async def edit_rfp(
     current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
     rfp_id: int,
-    rfp_update: RFPRequest,
+    rfp_update: ExplorerCreateUpdateRFP,
     db: Session = Depends(get_db),
 ):
     return explorer_update_rfp(db=db, rfp_id=rfp_id, rfp_update=rfp_update)
+
+
+@router.get("/users-supervisor/", response_model=List[UserInfoResponse])
+async def read_users_supervisor(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    db: Session = Depends(get_db),
+):
+    users = explorer_get_users_supervisor(db)
+    return users
+
+# Proposal-like:
+
+
+@router.get("/proposals/", response_model=List[ProposalResponse])
+async def read_proposals(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    skip: int = 0,
+    limit: int = 10,
+    info: str = None,
+    db: Session = Depends(get_db),
+):
+    proposals = explorer_get_proposals_like(
+        db, skip=skip, limit=limit, info=info, creator_id=current_user.id)
+    return proposals
+
+
+@router.put("/proposal/{proposal_id}", response_model=ProposalResponse)
+async def edit_proposal(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    proposal_id: int,
+    proposal_update: ExplorerUpdateProposal,
+    db: Session = Depends(get_db),
+):
+    return explorer_update_proposal(
+        db=db, proposal_id=proposal_id, proposal_update=proposal_update
+    )
+
+
+@router.put("/allocates/{allocate_id}", response_model=AllocateResponse)
+async def edit_allocate(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    allocate_id: BrokerUpdateAllocate,
+    allocate_update: BrokerUpdateAllocate,
+    db: Session = Depends(get_db),
+):
+    return explorer_update_allocate(db=db, allocate_update=allocate_update, allocate_id=allocate_id)
+
+
+@router.get("/allocates/", response_model=List[AllocateResponse])
+async def get_allocates(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    skip: int = 0,
+    limit: int = 10,
+    db: Session = Depends(get_db),
+):
+    allocate = explorer_search_allocate(
+        db, creator_id=current_user.id, skip=skip, limit=limit)
+    if not allocate:
+        raise HTTPException(status_code=404, detail="No allocate found")
+    return allocate
+
+
+@router.get("/single-allocate/{allocate_id}", response_model=AllocateResponse)
+async def single_allocate(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    allocate_id: int,
+    db: Session = Depends(get_db),
+):
+    allocate = explorer_allocate_single(db, allocate_id=allocate_id)
+    if not allocate:
+        raise HTTPException(status_code=404, detail="No allocate found")
+    return allocate

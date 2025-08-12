@@ -21,9 +21,16 @@ def broker_create_commission(db: Session, commission: CommissionRequest):
     return db_commission
 
 
-def broker_get_commission(db: Session, proposal_id: int):
-    commission = (
-        db.query(Commission).filter(Commission.proposal_id == proposal_id).first()
-    )
+# def broker_get_commission(db: Session, proposal_id: int):
+#     commission = (
+#         db.query(Commission).filter(Commission.proposal_id == proposal_id).first()
+#     )
 
-    return commission
+#     return commission
+
+
+def broker_get_commission(
+    db: Session, proposal_id: int, skip: int = 0, limit: int = 10,
+):
+    query = db.query(Commission)
+    return query.filter(Commission.proposal_id == proposal_id).offset(skip).limit(limit).all()

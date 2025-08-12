@@ -76,5 +76,5 @@ def broker_get_users_discoverer(db: Session):
     return db.query(User).filter(User.user_type_id == 1)
 
 
-def broker_get_users_supervisor(db: Session):
+def explorer_get_users_supervisor(db: Session):
     return db.query(User).filter(User.user_type_id == 3)

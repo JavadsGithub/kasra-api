@@ -1,7 +1,38 @@
-from sqlalchemy import Boolean, Column, Integer, String, ForeignKey, Date
+from doctest import master
+from sre_parse import State
+import enum
+from sqlalchemy import Boolean, Column, Enum, Integer, String, ForeignKey, Date, DateTime
 from sqlalchemy.orm import relationship, declarative_base
 
 Base = declarative_base()
+
+
+class AllocatetState(enum.Enum):
+    pending_to_specify_title = "ارجرا جهت تعیین موضوع"
+    pending_to_specify_supervisor = "در انتظار انتخاب ناظر"
+    pending_to_accept = "در انتطار تایید نهایی"
+    eccepted = "تایید شده"
+    rejected = "رود شده"
+
+
+class ProposalState(enum.Enum):
+    pending_to_fill = "در انتظار تکمیل"
+    pending_to_explorer_accept = "در انتظار تایید کاشفف"
+    pending_to_accept = "در انتظار تایید نهایی"
+    eccepted = "تایید شده"
+    rejected = "رد شده"
+
+
+class ReportState(enum.Enum):
+    active = "active"
+    inactive = "inactive"
+    pending = "pending"
+
+
+class ProjectState(enum.Enum):
+    active = "active"
+    ended = "ended"
+    pending = "pending"
 
 
 class UserRole(Base):
@@ -36,86 +67,117 @@ class RFP(Base):
     __tablename__ = "RFP"
     id = Column(Integer, primary_key=True)
     info = Column(String(999))
+    creator_id = Column(Integer, ForeignKey("user.id"))
+    created_at = Column(DateTime)
+
     file_id = Column(Integer, ForeignKey("file.id"))
     RFP_field_id = Column(Integer, ForeignKey("RFP_field.id"))
 
     RFP_field = relationship("RFPField", foreign_keys=[RFP_field_id])
 
 
+class Allocate(Base):
+    __tablename__ = "allocate"
+    id = Column(Integer, primary_key=True)
+    creator_id = Column(Integer, ForeignKey("user.id"))
+    created_at = Column(DateTime)
+
+    RFP_id = Column(Integer, ForeignKey("RFP.id"))
+    allocated_to_user_id = Column(Integer, ForeignKey("user.id"))
+    project_title = Column(String(999), nullable=True)
+    project_description = Column(String(999), nullable=True)
+    state = Column(Enum(AllocatetState))
+    supervisor_id = Column(Integer, ForeignKey("user.id"), nullable=True)
+
+    rfp = relationship("RFP", foreign_keys=[RFP_id])
+    allocated_to_user = relationship(
+        "User", foreign_keys=[allocated_to_user_id]
+    )
+    supervisor = relationship("User", foreign_keys=[supervisor_id])
+
+
 class File(Base):
     __tablename__ = "file"
     id = Column(Integer, primary_key=True)
+    creator_id = Column(Integer, ForeignKey("user.id"))
+    created_at = Column
+
     info = Column(String(999))
-    access_id = Column(Integer, ForeignKey("user_role.id"))
-    # access = relationship("UserRole")
 
 
 class Proposal(Base):
     __tablename__ = "proposal"
     id = Column(Integer, primary_key=True)
-    info = Column(String(999))
+    creator_id = Column(Integer, ForeignKey("user.id"))
+    created_at = Column(DateTime)
+    master_name_and_family = Column(String(999), nullable=True)
+    title = Column(String(999))
+    description = Column(String(999))
     RFP_id = Column(Integer, ForeignKey("RFP.id"))
+    allocate_id = Column(Integer, ForeignKey("allocate.id"))
+
+    supervisor_id = Column(Integer, ForeignKey("user.id"), nullable=True)
     user_id = Column(Integer, ForeignKey("user.id"))
-    file_id = Column(Integer, ForeignKey("file.id"))
-    state = Column(Integer)  # ENUM
+    file_id = Column(Integer, ForeignKey("file.id"), nullable=True)
+    state = Column(Enum(ProposalState))  # ENUM
     comment = Column(String(999))
 
     rfp = relationship("RFP", foreign_keys=[RFP_id])
     user = relationship("User", foreign_keys=[user_id])
-    # file = relationship("File")
-
-
-class Commission(Base):
-    __tablename__ = "commission"
-    id = Column(Integer, primary_key=True)
-    title = Column(String(999))
-    comment = Column(String(999))
-    state = Column(Integer)  # ENUM
-    proposal_id = Column(Integer, ForeignKey("proposal.id"))
-    user_supervisor_id = Column(Integer, ForeignKey("user.id"))
-    user_discoverer_id = Column(Integer, ForeignKey("user.id"))
-    user_master_id = Column(Integer, ForeignKey("user.id"))
-
-    # file_id = Column(Integer, ForeignKey("file.id"))
-    proposal = relationship("Proposal", foreign_keys=[proposal_id])
-    supervisor = relationship("User", foreign_keys=[user_supervisor_id])
-    discoverer = relationship("User", foreign_keys=[user_discoverer_id])
-    master = relationship("User", foreign_keys=[user_master_id])
+    supervisor = relationship("User", foreign_keys=[supervisor_id])
 
 
 class Project(Base):
     __tablename__ = "project"
     id = Column(Integer, primary_key=True)
+    creator_id = Column(Integer, ForeignKey("user.id"))
+    created_at = Column(DateTime)
+
+    start_at = Column(Date)
+    end_at = Column(Date)
     title = Column(String(999))
     proposal_id = Column(Integer, ForeignKey("proposal.id"))
     user_supervisor_id = Column(Integer, ForeignKey("user.id"))
-    user_discoverer_id = Column(Integer, ForeignKey("user.id"))
-    user_master_id = Column(Integer, ForeignKey("user.id"))
-    user_broker_id = Column(Integer, ForeignKey("user.id"))
+    user_researcher_id = Column(Integer, ForeignKey("user.id"))
     user_user_id = Column(Integer, ForeignKey("user.id"))
+    master = Column(String(999))
+
+    accepted_percent = Column(Integer)
+    state = Column(Enum(ProjectState))
 
     proposal = relationship("Proposal", foreign_keys=[proposal_id])
     supervisor = relationship("User", foreign_keys=[user_supervisor_id])
-    discoverer = relationship("User", foreign_keys=[user_discoverer_id])
-    master = relationship("User", foreign_keys=[user_master_id])
-    broker = relationship("User", foreign_keys=[user_broker_id])
-    # user = relationship("User", foreign_keys=[user_user_id])
+    researcher = relationship("User", foreign_keys=[user_researcher_id])
+    user = relationship("User", foreign_keys=[user_user_id])
+
+
+class Notification(Base):
+    __tablename__ = "notification"
+    id = Column(Integer, primary_key=True)
+    owner = Column(Integer, ForeignKey("user.id"))
+    created_at = Column(DateTime)
+    title = Column(String(999))
+    description = Column(String(999))
 
 
 class Report(Base):
     __tablename__ = "report"
     id = Column(Integer, primary_key=True)
-    info = Column(String(999))
-    project_id = Column(Integer, ForeignKey("project.id"))
+    creator_id = Column(Integer, ForeignKey("user.id"))
+    created_at = Column(DateTime)
+
+    title = Column(String(999))
+
     comment = Column(String(999))
-    state = Column(Integer)  # ENUM
+    state = Column(Enum(ReportState))  # ENUM
+    anounced_percent = Column(Integer)
+    accepted_percent = Column(Integer)
+    project_id = Column(Integer, ForeignKey("project.id"))
     file_pdf_id = Column(Integer, ForeignKey("file.id"))
     file_docx_id = Column(Integer, ForeignKey("file.id"))
     file_pptx_id = Column(Integer, ForeignKey("file.id"))
-    percent = Column(Integer)
 
     project = relationship("Project", foreign_keys=[project_id])
-    # report_files = relationship("ReportFile", back_populates="report")
 
 
 # class ReportFile(Base):

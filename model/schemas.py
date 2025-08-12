@@ -1,9 +1,39 @@
+import datetime
+import enum
 from typing import Optional
 from pydantic import BaseModel
 from datetime import date
 
 
+class AllocatetState(enum.Enum):
+    pending_to_specify_title = "ارجرا جهت تعیین موضوع"
+    pending_to_specify_supervisor = "در انتظار انتخاب ناظر"
+    pending_to_accept = "در انتطار تایید نهایی"
+    eccepted = "تایید شده"
+    rejected = "رد شده"
+
+
+class ProposalState(enum.Enum):
+    pending_to_fill = "در انتظار تکمیل"
+    pending_to_explorer = "در انتظار تایید کاشف"
+    pending_to_accept = "در انتظار تایید نهایی"
+    eccepted = "تایید شده"
+    rejected = "رد شده"
+
+
+class ReportState(enum.Enum):
+    active = "active"
+    inactive = "inactive"
+    pending = "pending"
+
+
+class ProjectState(enum.Enum):
+    active = "active"
+    ended = "ended"
+    pending = "pending"
 # login
+
+
 class Token(BaseModel):
     access_token: str
     token_type: str
@@ -13,12 +43,6 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: str | None = None
-
-
-# # Define UserTypeInfo as needed
-# class UserTypeInfo(BaseModel):
-#     id: int
-#     info: str
 
 
 # User schemas
@@ -105,105 +129,126 @@ class RFPFieldResponse(BaseModel):
 
 
 # RFP schemas
-class RFPRequest(BaseModel):
+class ExplorerCreateUpdateRFP(BaseModel):
     info: str
-    RFP_field_id: int
     file_id: Optional[int] = None
+    RFP_field_id: int
+
+    class Config:
+        orm_mode = True
 
 
 class RFPResponse(BaseModel):
     id: int
     info: str
-    RFP_field: RFPFieldResponse
+    created_at: datetime
     file_id: Optional[int] = None
+    creator_id: int
+    RFP_field: RFPFieldResponse
 
     class Config:
-        from_attributes = True
+        orm_mode = True
+
+
+# allocate
+
+class BrokerCreateAllocate(BaseModel):
+    RFP_id: int
+    allocated_to_user_id: int
+
+    class Config:
+        orm_mode = True
+
+
+class UserUpdateAllocate(BaseModel):
+    project_title: str
+    project_description: str
+
+    class Config:
+        orm_mode = True
+
+
+class BrokerUpdateAllocate(BaseModel):
+    supervisor_id: int
+
+    class Config:
+        orm_mode = True
+
+
+class ResearcherUpdateAllocate(BaseModel):
+    state: str
+
+    class Config:
+        orm_mode = True
+
+
+class AllocateResponse(BaseModel):
+    id: int
+    creator_id: int
+    created_at: datetime
+
+    RFP: RFPResponse
+    allocated_to_user: UserInfoLimitedResponse
+    project_title: Optional[str]
+    project_description: Optional[str]
+    state: str
+
+    class Config:
+        orm_mode = True
 
 
 # Proposal schemas
-class ProposalRequest(BaseModel):
-    info: str
-    RFP_id: int
-    # user_id: int
-    # state: int  # ENUM
-    comment: str
-    file_id: Optional[int] = None
-
-
-class ProposalAllResponse(BaseModel):
-    id: int
-    info: str
-    rfp: RFPResponse
+class ExplorerCreateProposal(BaseModel):
+    master_name_and_family: str
+    # add title, description and RFP based on Allocate_id
 
     class Config:
-        from_attributes = True
+        orm_mode = True
+
+
+class UserUpdateProposal(BaseModel):
+    file_id: int
+
+    class Config:
+        orm_mode = True
+
+
+class ExplorerUpdateProposal(BaseModel):
+    comment: str
+    supervisor_id: int
+
+    class Config:
+        orm_mode = True
+
+
+class ResearcherUpdateProposal(BaseModel):
+    state: str
+
+    class Config:
+        orm_mode = True
 
 
 class ProposalResponse(BaseModel):
     id: int
-    info: str
-    rfp: RFPResponse
-    user: UserInfoLimitedResponse
-    comment: str
-    state: int
-    comment: str
-    file_id: Optional[int] = None
-
-    class Config:
-        from_attributes = True
-
-
-class ProposalSingleResponse(BaseModel):
-    info: str
-    rfp: RFPResponse
-    comment: str
-    file_id: Optional[int] = None
-
-    class Config:
-        from_attributes = True
-
-
-class ProposalUpdate(BaseModel):
-    state: int  # ENUM
-    comment: str
-
-
-class ProposalUserUpdateRequest(BaseModel):
-    info: Optional[str]
-    RFP_id: Optional[int]
+    creator_id: int
+    created_at: datetime
+    master_name_and_family: str
+    title: str
+    description: str
+    RFP_id: int
+    allocate_id: Optional[int]  # اگر ممکن است None باشد
+    supervisor_id: Optional[int]  # اگر ممکن است None باشد
+    user_id: int
     file_id: Optional[int]
-
-
-# Commission schemas
-class CommissionRequest(BaseModel):
-    title: str
-    comment: str
-    state: int
-    proposal_id: int
-    user_supervisor_id: int
-    user_discoverer_id: int
-    user_master_id: int
-
-    # file_id: Optional[int] = None
-
-
-class CommissionResponse(BaseModel):
-    id: int
-    title: str
-    comment: str
-    state: int
-    proposal: ProposalSingleResponse
-    supervisor: UserInfoLimitedResponse
-    discoverer: UserInfoLimitedResponse
-    master: UserInfoLimitedResponse
-    # file_id: Optional[int] = None
+    state: ProposalState
+    comment: Optional[str]  # اگر ممکن است None باشد
 
     class Config:
-        from_attributes = True
-
+        orm_mode = True
 
 # Project schemas
+
+
 class ProjectRequest(BaseModel):
     title: str
     proposal_id: int

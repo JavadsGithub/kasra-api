@@ -23,7 +23,8 @@ async def login(
     request: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(get_db),
 ):
-    user = db.query(model.User).filter(model.User.username == request.username).first()
+    user = db.query(model.User).filter(
+        model.User.username == request.username).first()
     if not user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="invalid username"
@@ -80,7 +81,8 @@ async def read_users_me(
     db: Session = Depends(get_db),
 ):
 
-    user = db.query(model.User).filter(model.User.id == current_user.id).first()
+    user = db.query(model.User).filter(
+        model.User.id == current_user.id).first()
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return schemas.UserMeInfoResponse(
@@ -106,6 +108,5 @@ async def read_users_me(
             1: "تایید",
             2: "رد",
             3: "در انتظار",
-            4: "اصلاح",
         },
     )

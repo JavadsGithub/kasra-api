@@ -3,6 +3,7 @@ from model import schemas
 from model.model import RFP, RFPField
 from model.schemas import *
 from fastapi import HTTPException
+from datetime import datetime
 
 
 def explorer_search_rfps(db: Session, skip: int = 0, limit: int = 10, info: str = None):
@@ -31,11 +32,13 @@ def explorer_get_rfp_fields(db: Session, skip: int = 0, limit: int = 10):
     return db.query(RFPField).offset(skip).limit(limit).all()
 
 
-def explorer_create_rfp(db: Session, rfp: RFPRequest):
+def explorer_create_rfp(db: Session, rfp: ExplorerCreateUpdateRFP, creator_id: int):
     new_rfp = RFP(
         info=rfp.info,
         RFP_field_id=rfp.RFP_field_id,
         file_id=rfp.file_id,
+        creator_id=creator_id,
+        created_at=datetime.now()
     )
     db.add(new_rfp)
     db.commit()
@@ -43,7 +46,7 @@ def explorer_create_rfp(db: Session, rfp: RFPRequest):
     return new_rfp
 
 
-def explorer_update_rfp(db: Session, rfp_id: int, rfp_update: RFPRequest):
+def explorer_update_rfp(db: Session, rfp_id: int, rfp_update: ExplorerCreateUpdateRFP):
     rfp = db.query(RFP).filter(RFP.id == rfp_id).first()
     if not rfp:
         raise HTTPException(status_code=404, detail="RFP not found")
@@ -51,7 +54,8 @@ def explorer_update_rfp(db: Session, rfp_id: int, rfp_update: RFPRequest):
         rfp.info = rfp_update.info
     if rfp_update.file_id is not None:
         rfp.file_id = rfp_update.file_id
-
+    if rfp_update.RFP_field_id is not None:
+        rfp.RFP_field_id = rfp_update.RFP_field_id
     db.commit()
     db.refresh(rfp)
     return rfp

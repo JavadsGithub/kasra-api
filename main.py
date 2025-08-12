@@ -1,3 +1,4 @@
+
 from fastapi import FastAPI
 import routers
 from model import database, model
@@ -6,7 +7,7 @@ from routers import (
     authentication,
     broker,
     explorer,
-    mentor,
+    researcher,
     supervisor,
     user,
     file,
@@ -15,7 +16,6 @@ from routers import (
 from fastapi.middleware.cors import CORSMiddleware
 
 # from seed import seeding
-
 app = FastAPI()
 
 app.add_middleware(
@@ -35,7 +35,7 @@ app.include_router(seed.router)
 app.include_router(broker.router)
 app.include_router(user.router)
 app.include_router(explorer.router)
-app.include_router(mentor.router)
+app.include_router(researcher.router)
 app.include_router(file.router)
 app.include_router(supervisor.router)
 app.include_router(seed.router)
