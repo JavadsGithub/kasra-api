@@ -13,7 +13,7 @@ from model.schemas import *
 from util.util import *
 from service.mentor import *
 
-router = APIRouter(tags=["mentor"], prefix="/mentor")
+router = APIRouter(tags=["researcher"], prefix="/researcher")
 
 
 @router.get("/projects/", response_model=List[ProjectResponse])
@@ -23,11 +23,9 @@ async def get_project(
     limit: int = 10,
     db: Session = Depends(get_db),
 ):
-    # if not current_user.user_type_id == 5:
-    #     raise HTTPException(status_code=401, detail="Not Allowed")
-
     user_id = current_user.id
-    projects = mentor_get_projects(db, user_id=user_id, skip=skip, limit=limit)
+    projects = researcher_get_projects(
+        db, user_id=user_id, skip=skip, limit=limit)
     return projects
 
 
@@ -40,7 +38,7 @@ async def get_reports(
     db: Session = Depends(get_db),
 ):
 
-    return mentor_get_report(db, project_id=project_id, skip=skip, limit=limit)
+    return researcher_get_report(db, project_id=project_id, skip=skip, limit=limit)
 
 
 @router.get("/single-report/{report_id}")
@@ -49,7 +47,7 @@ async def get_single_reports(
     report_id: int = 0,
     db: Session = Depends(get_db),
 ):
-    return mentor_get_one_report(db, report_id=report_id,)
+    return researcher_get_one_report(db, report_id=report_id,)
 
 
 @router.get("/all-reports/")
@@ -60,14 +58,14 @@ async def get_all_reports(
     db: Session = Depends(get_db),
 ):
 
-    return mentor_get_all_report(db, skip=skip, limit=limit)
+    return researcher_get_all_report(db, skip=skip, limit=limit)
 # OLD ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^6
 
 
 @router.put("/allocates/{allocate_id}", response_model=AllocateResponse)
 async def edit_allocate(
     current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
-    allocate_id: BrokerUpdateAllocate,
+    allocate_id: int,
     accept: bool = False,
     db: Session = Depends(get_db),
 ):
@@ -101,3 +99,12 @@ async def single_allocate(
     if not allocate:
         raise HTTPException(status_code=404, detail="No allocate found")
     return allocate
+
+
+@router.put("/projects/{project_id}", response_model=AllocateResponse)
+async def edit_accepting_project(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    project_id: int,
+    db: Session = Depends(get_db),
+):
+    return researcher_accept_project(db=db, project_id=project_id)

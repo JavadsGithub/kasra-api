@@ -102,17 +102,6 @@ async def single_allocate(
 # ):
 #     proposals = broker_get_proposals_like(
 #         db, skip=skip, limit=limit, info=info)
-
-#     # proposals_list = []
-#     # for i in proposals:
-#     #     rfp = broker_get_rfp_by_id(db=db, rfp_id=i.RFP_id)
-#     #     proposals_list.append(
-#     #         ProposalAllResponse(
-#     #             id=i.id,
-#     #             info=i.info,
-#     #             RFP_info=rfp.info,
-#     #         )
-#     #     )
 #     return proposals
 
 

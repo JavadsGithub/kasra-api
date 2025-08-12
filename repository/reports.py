@@ -16,8 +16,8 @@ def supervisor_get_reports_by_id(db: Session, id: int):
     return db.query(Report).filter(Report.id == id).first()
 
 
-def user_get_reports_by_project(db: Session, project_id: int):
-    return db.query(Report).filter(Report.project_id == project_id).all()
+def user_get_reports_by_project(db: Session, project_id: int, creator_id: int):
+    return db.query(Report).filter(Report.project_id == project_id & Report.creator_id == creator_id).all()
 
 
 # def supervisor_get_report_with_files(db: Session, report_id: int):
@@ -42,7 +42,7 @@ def supervisor_update_report(db: Session, report_id: int, report_update: ReportU
     return report
 
 
-def mentor_get_report(db: Session, project_id: int, skip: int, limit: int):
+def researcher_get_report(db: Session, project_id: int, skip: int, limit: int):
     return (
         db.query(Report)
         .filter(Report.project_id == project_id)
@@ -52,7 +52,7 @@ def mentor_get_report(db: Session, project_id: int, skip: int, limit: int):
     )
 
 
-def mentor_get_one_report(db: Session, report_id: int):
+def researcher_get_one_report(db: Session, report_id: int):
     return (
         db.query(Report)
         .filter(Report.id == report_id)
@@ -60,5 +60,5 @@ def mentor_get_one_report(db: Session, report_id: int):
     )
 
 
-def mentor_get_all_report(db: Session, skip: int, limit: int):
+def researcher_get_all_report(db: Session, skip: int, limit: int):
     return db.query(Report).offset(skip).limit(limit).all()

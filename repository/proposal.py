@@ -58,23 +58,12 @@ def suoervisor_get_proposals_like(
 
 
 def user_get_proposals_like(
-    db: Session, skip: int = 0, limit: int = 10, info: str = None
+    db: Session, user_id: int, skip: int = 0, limit: int = 10, info: str = None
 ):
     query = db.query(Proposal)
-
     if info:
         query = query.filter(Proposal.info.ilike(f"%{info}%"))
-    return query.offset(skip).limit(limit).all()
-
-
-def user_get_proposals_like(
-    db: Session, skip: int = 0, limit: int = 10, info: str = None
-):
-    query = db.query(Proposal)
-
-    if info:
-        query = query.filter(Proposal.info.ilike(f"%{info}%"))
-    return query.offset(skip).limit(limit).all()
+    return query.filter(Proposal.user_id == user_id).offset(skip).limit(limit).all()
 
 
 def suoervisor_get_proposal_by_id(db: Session, proposal_id: int):
@@ -107,16 +96,12 @@ def explorer_search_proposals(creator_id: int, db: Session, skip: int = 0, limit
 
 
 def user_update_proposal(
-    db: Session, proposal_id: int, proposal_update: ProposalUserUpdateRequest
+    db: Session, proposal_id: int, proposal_update: UserUpdateProposal
 ):
 
     proposal = db.query(Proposal).filter(Proposal.id == proposal_id).first()
     if not proposal:
         raise HTTPException(status_code=404, detail="Proposal not found")
-    if proposal_update.info:
-        proposal.info = proposal_update.info
-    if proposal_update.RFP_id:
-        proposal.RFP_id = proposal_update.RFP_id
     if proposal_update.file_id:
         proposal.file_id = proposal_update.file_id
     db.commit()

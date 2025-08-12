@@ -111,19 +111,19 @@ router = APIRouter(tags=["user"], prefix="/users")
 #     return {"response": "ok"}
 
 
-@router.post("/proposals/", response_model=ProposalResponse)
-async def add_proposal(
-    current_user: Annotated[UserInfoResponse, Depends(get_current_user)],
-    proposal_request: ProposalRequest,
-    db: Session = Depends(get_db),
-):
+# @router.post("/proposals/", response_model=ProposalResponse)
+# async def add_proposal(
+#     current_user: Annotated[UserInfoResponse, Depends(get_current_user)],
+#     proposal_request: ProposalRequest,
+#     db: Session = Depends(get_db),
+# ):
 
-    return user_create_proposal(
-        db=db, proposal=proposal_request, user_id=current_user.id
-    )
+#     return user_create_proposal(
+#         db=db, proposal=proposal_request, user_id=current_user.id
+#     )
 
 
-@router.get("/proposals/{proposal_id}", response_model=ProposalResponse)
+@router.get("/single-proposal/{proposal_id}", response_model=ProposalResponse)
 async def read_proposal(
     current_user: Annotated[UserInfoResponse, Depends(get_current_user)],
     proposal_id: int,
@@ -141,7 +141,7 @@ async def read_projects(
 ):
 
     user_id = current_user.id
-    projects = user_get_projects(db, skip=skip, limit=limit, user_id=user_id)
+    projects = user_get_projects(db, skip=skip, limit=limit, user_id=user_id,)
     if not projects:
         raise HTTPException(status_code=404, detail="No Projects found")
     return projects
@@ -163,7 +163,8 @@ async def read_reports_by_project_id(
     project_id: int,
     db: Session = Depends(get_db),
 ):
-    reports = user_get_reports_by_project(db=db, project_id=project_id)
+    reports = user_get_reports_by_project(
+        db=db, project_id=project_id, creator_id=current_user.id)
     # reports_exist(reports)
     return reports
 
@@ -186,25 +187,25 @@ async def read_report(
     return user_get_report_by_id(db=db, report_id=report_id)
 
 
-@router.get("/rfps/", response_model=List[RFPResponse])
-async def search_rfps_endpoint(
-    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
-    info: str = None,
-    skip: int = 0,
-    limit: int = 10,
-    db: Session = Depends(get_db),
-):
-    rfps = user_search_rfps(db, info=info, skip=skip, limit=limit)
-    if not rfps:
-        raise HTTPException(status_code=404, detail="No RFPs found")
-    return rfps
+# @router.get("/rfps/", response_model=List[RFPResponse])
+# async def search_rfps_endpoint(
+#     current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+#     info: str = None,
+#     skip: int = 0,
+#     limit: int = 10,
+#     db: Session = Depends(get_db),
+# ):
+#     rfps = user_search_rfps(db, info=info, skip=skip, limit=limit)
+#     if not rfps:
+#         raise HTTPException(status_code=404, detail="No RFPs found")
+#     return rfps
 
 
 @router.put("/proposals/{proposal_id}", response_model=ProposalResponse)
 async def edit_proposal(
     current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
     proposal_id: int,
-    proposal_update: ProposalUserUpdateRequest,
+    proposal_update: UserUpdateProposal,
     db: Session = Depends(get_db),
 ):
     return user_update_proposal(
@@ -220,7 +221,8 @@ async def read_proposals(
     info: str = None,
     db: Session = Depends(get_db),
 ):
-    proposals = user_get_proposals_like(db, skip=skip, limit=limit, info=info)
+    proposals = user_get_proposals_like(
+        db, skip=skip, limit=limit, info=info, user_id=current_user.id)
     return proposals
 # old ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

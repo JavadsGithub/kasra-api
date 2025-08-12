@@ -15,7 +15,7 @@ class AllocatetState(enum.Enum):
 
 class ProposalState(enum.Enum):
     pending_to_fill = "در انتظار تکمیل"
-    pending_to_explorer = "در انتظار تایید کاشف"
+    pending_to_explorer_accept = "در انتظار تایید کاشف"
     pending_to_accept = "در انتظار تایید نهایی"
     eccepted = "تایید شده"
     rejected = "رد شده"
@@ -228,6 +228,13 @@ class ResearcherUpdateProposal(BaseModel):
         orm_mode = True
 
 
+class UserUpdateProposal(BaseModel):
+    file_id: int
+
+    class Config:
+        orm_mode = True
+
+
 class ProposalResponse(BaseModel):
     id: int
     creator_id: int
@@ -287,14 +294,20 @@ class ReportRequest(BaseModel):
 
 class ReportResponse(BaseModel):
     id: int
-    info: str
-    project: ProjectResponse
+    creator_id: int
+    created_at: datetime
+
+    title: str
+
     comment: str
-    state: int
+    state: str
+    anounced_percent: int
+    accepted_percent: int
+    project_id: int
     file_pdf_id: int
     file_docx_id: int
     file_pptx_id: int
-    percent: int
+    project: ProjectResponse
 
     class Config:
         from_attributes = True
