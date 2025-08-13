@@ -113,7 +113,7 @@ async def edit_proposal(
 @router.put("/allocates/{allocate_id}", response_model=AllocateResponse)
 async def edit_allocate(
     current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
-    allocate_id: BrokerUpdateAllocate,
+    allocate_id: int,
     allocate_update: BrokerUpdateAllocate,
     db: Session = Depends(get_db),
 ):

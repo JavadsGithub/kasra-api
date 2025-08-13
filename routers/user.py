@@ -175,7 +175,7 @@ async def add_report(
     report_request: ReportRequest,
     db: Session = Depends(get_db),
 ):
-    return user_create_report(db=db, report=report_request)
+    return user_create_report(db=db, report=report_request, creator_id=current_user.id)
 
 
 @router.get("/reports/{report_id}", response_model=ReportResponse)
@@ -256,7 +256,7 @@ async def single_allocate(
 @router.put("/allocates/{allocate_id}", response_model=AllocateResponse)
 async def edit_allocate(
     current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
-    allocate_id: BrokerUpdateAllocate,
+    allocate_id: int,
     allocate_update: BrokerUpdateAllocate,
     db: Session = Depends(get_db),
 ):

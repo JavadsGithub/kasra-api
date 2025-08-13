@@ -1,4 +1,4 @@
-explorer:
+explorer: Done
     create rfp Done
     edit rfp Done
     single rfp Done
@@ -7,25 +7,31 @@ explorer:
     get users supervisor Done
 
     edit proposal Done
-    get_proposals
+    get_proposals Done
 
     get allocate Done
     edit allocate Done
 
 
-broker:
+broker: Done
     get rfp Done
     get allocates Done
     create allocates Done
 
-user:
-    get allocates Done
-    get allocate single Done
-    edit allocate -> title and description Done
 
-researcher:
+
+researcher: Done
     get allocates Done
     get allocate single Done
     edit allocate -> accept and reject Done
+    get projects Done
+    accept projects Done
 
 
+user: Done
+    get allocates Done
+    get allocate single Done
+    edit allocate -> title and description Done
+    edit proposal Done
+    get projects 
+    get reports

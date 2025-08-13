@@ -8,6 +8,7 @@ from datetime import time
 
 from repository.allocate import broker_allocate_single, broker_search_allocate, researcher_accept_allocate, researcher_reject_allocate
 from repository.projects import *
+from repository.proposal import researcher_update_proposal_and_add_project
 from repository.reports import *
 from model.schemas import *
 from util.util import *
@@ -107,4 +108,17 @@ async def edit_accepting_project(
     project_id: int,
     db: Session = Depends(get_db),
 ):
+
     return researcher_accept_project(db=db, project_id=project_id)
+
+
+@router.put("/proposal/{proposal_id}", response_model=ProposalResponse)
+async def edit_proposal_and_create_project(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    proposal_id: int,
+    proposal_update: ResearcherUpdateProposal,
+    db: Session = Depends(get_db),
+):
+    return researcher_update_proposal_and_add_project(
+        db=db, proposal_id=proposal_id, proposal_update=proposal_update, creator_id=current_user.id
+    )

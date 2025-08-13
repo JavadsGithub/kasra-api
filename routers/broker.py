@@ -7,7 +7,6 @@ from datetime import time
 
 from repository.allocate import broker_allocate_single, broker_create_allocate, broker_search_allocate
 from repository.proposal import *
-from repository.commission import *
 from repository.projects import *
 from repository.user import *
 from repository.rfp import *

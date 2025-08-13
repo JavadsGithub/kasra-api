@@ -36,6 +36,7 @@ def supervisor_update_report(db: Session, report_id: int, report_update: ReportU
 
     report.comment = report_update.comment
     report.state = report_update.state
+    report.accepted_percent = report_update.accepted_percent
 
     db.commit()
     db.refresh(report)

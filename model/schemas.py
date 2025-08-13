@@ -1,12 +1,20 @@
-import datetime
 import enum
 from typing import Optional
 from pydantic import BaseModel
-from datetime import date
+from datetime import date, datetime
+
+# allocate_state = {
+#     "اجرا جهت تعیین موضوع", "در انتظار انتخاب ناظر", "در انتطار تایید نهایی", "تایید شده", "رد شده", }
+# proposal_state = {
+#     "در انتظار تکمیل", "در انتظار تایید کاشف", "در انتظار تایید نهایی", "تایید شده", "رد شده", }
+# reportt_state = {
+#     "رد شده", "تایید شده", "در انتظار تایید", }
+# project_state = {
+#     "فعال", "غیر فعال", }
 
 
 class AllocatetState(enum.Enum):
-    pending_to_specify_title = "ارجرا جهت تعیین موضوع"
+    pending_to_specify_title = "اجرا جهت تعیین موضوع"
     pending_to_specify_supervisor = "در انتظار انتخاب ناظر"
     pending_to_accept = "در انتطار تایید نهایی"
     eccepted = "تایید شده"
@@ -229,6 +237,8 @@ class ResearcherUpdateProposal(BaseModel):
 
 class UserUpdateProposal(BaseModel):
     file_id: int
+    start_at: datetime
+    end_at: datetime
 
     class Config:
         orm_mode = True
@@ -238,6 +248,8 @@ class ProposalResponse(BaseModel):
     id: int
     creator_id: int
     created_at: datetime
+    start_at: datetime
+    end_at: datetime
     master_name_and_family: str
     title: str
     description: str
@@ -267,12 +279,18 @@ class ProjectRequest(BaseModel):
 
 class ProjectResponse(BaseModel):
     id: int
+    creator_id: int
+    created_at: datetime
+
+    start_at: date
+    end_at: date
     title: str
-    proposal: ProposalSingleResponse
+    master: str
+
+    proposal: ProposalResponse
     supervisor: UserInfoLimitedResponse
-    discoverer: UserInfoLimitedResponse
-    master: UserInfoLimitedResponse
-    broker: UserInfoLimitedResponse
+    # researcher: UserInfoLimitedResponse
+    user: UserInfoLimitedResponse
 
     class Config:
         from_attributes = True
@@ -280,13 +298,13 @@ class ProjectResponse(BaseModel):
 
 # Report schemas
 class ReportRequest(BaseModel):
-    info: str
+    title: str
     project_id: int
     comment: str
     file_pdf_id: int
     file_docx_id: int
     file_pptx_id: int
-    percent: int
+    anounced_percent: int
 
     # state: int
 
@@ -315,6 +333,7 @@ class ReportResponse(BaseModel):
 class ReportUpdate(BaseModel):
     state: str
     comment: str
+    accepted_percent: int
 
 
 # # ReportFile schemas

@@ -3,21 +3,22 @@ from sqlalchemy.orm import Session
 from model.model import *
 from model.schemas import *
 from fastapi import HTTPException
+from datetime import datetime
 
 
-def user_create_proposal(db: Session, proposal: ProposalRequest, user_id: int):
-    db_proposal = Proposal(
-        info=proposal.info,
-        RFP_id=proposal.RFP_id,
-        user_id=user_id,
-        file_id=proposal.file_id,
-        state=3,
-        comment=proposal.comment,
-    )
-    db.add(db_proposal)
-    db.commit()
-    db.refresh(db_proposal)
-    return db_proposal
+# def user_create_proposal(db: Session, proposal: ProposalRequest, user_id: int):
+#     db_proposal = Proposal(
+#         info=proposal.info,
+#         RFP_id=proposal.RFP_id,
+#         user_id=user_id,
+#         file_id=proposal.file_id,
+#         state=3,
+#         comment=proposal.comment,
+#     )
+#     db.add(db_proposal)
+#     db.commit()
+#     db.refresh(db_proposal)
+#     return db_proposal
 
 
 def user_get_proposal_by_id(db: Session, proposal_id: int):
@@ -47,13 +48,18 @@ def user_get_project(db: Session, project_id: int):
     return db.query(Project).filter(Project.id == project_id).first()
 
 
-def user_create_report(db: Session, report: ReportRequest):
+def user_create_report(db: Session, creator_id: int, report: ReportRequest):
     db_report = Report(
-        info=report.info,
+        creator_id=creator_id,
+        created_at=datetime.now(),
+        title=report.title,
         project_id=report.project_id,
-        comment=report.comment,
-        file_id=report.file_id,
-        state=3,
+        comment="",
+        file_pdf_id=report.file_pdf_id,
+        file_docx_id=report.file_docx_id,
+        file_pptx_id=report.file_pptx_id,
+        anounced_percent=report.anounced_percent,
+        state=ReportState.pending,
     )
     db.add(db_report)
     db.commit()

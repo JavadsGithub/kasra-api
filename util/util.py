@@ -54,6 +54,16 @@ def get_db():
     finally:
         db.close_all()
 
+# javad eddition
+# def get_db():
+#     db = database.SessionLocal()
+#     try:
+#         yield db
+#     except Exception as e:
+#         db.rollback()
+#         raise e
+#     finally:
+#         db.close()
 
 # user
 
@@ -86,7 +96,8 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
 
 def create_refresh_token(data: dict):
     to_encode = data.copy()
-    expire = datetime.now(timezone.utc) + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
+    expire = datetime.now(timezone.utc) + \
+        timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 

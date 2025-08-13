@@ -89,6 +89,34 @@ def explorer_update_proposal(
     return proposal
 
 
+def researcher_update_proposal_and_add_project(
+    db: Session, proposal_id: int, proposal_update: ResearcherUpdateProposal, creator_id: int
+):
+    proposal = db.query(Proposal).filter(Proposal.id == proposal_id).first()
+    if not proposal:
+        raise HTTPException(status_code=404, detail="Proposal not found")
+
+    proposal.state = proposal_update.state
+    new_project = Project(
+        user_supervisor_id=proposal.supervisor_id,
+        user_user_id=proposal.user_id,
+        state=ProjectState.active,
+        comment=proposal,
+        creator_id=creator_id,
+        created_at=datetime.now(),
+        master=proposal,
+        title=proposal,
+        proposal_id=proposal.id,
+        start_at=proposal.start_at,
+        end_at=proposal.end_at,
+        accepted_percent=0,
+    )
+    db.add(new_project)
+    db.commit()
+    db.refresh(proposal)
+    return proposal
+
+
 def explorer_search_proposals(creator_id: int, db: Session, skip: int = 0, limit: int = 10):
     query = db.query(Allocate).join(RFP)
     query = query.filter(RFP.creator_id == creator_id)
@@ -104,6 +132,10 @@ def user_update_proposal(
         raise HTTPException(status_code=404, detail="Proposal not found")
     if proposal_update.file_id:
         proposal.file_id = proposal_update.file_id
+    if proposal_update.start_at:
+        proposal.start_at = proposal_update.start_at
+    if proposal_update.end_at:
+        proposal.end_at = proposal_update.end_at
     db.commit()
     db.refresh(proposal)
     return proposal

@@ -8,7 +8,7 @@ Base = declarative_base()
 
 
 class AllocatetState(enum.Enum):
-    pending_to_specify_title = "ارجرا جهت تعیین موضوع"
+    pending_to_specify_title = "اجرا جهت تعیین موضوع"
     pending_to_specify_supervisor = "در انتظار انتخاب ناظر"
     pending_to_accept = "در انتطار تایید نهایی"
     eccepted = "تایید شده"
@@ -24,15 +24,14 @@ class ProposalState(enum.Enum):
 
 
 class ReportState(enum.Enum):
-    active = "active"
-    inactive = "inactive"
-    pending = "pending"
+    rejected = "رد شده"
+    eccepted = "تایید شده"
+    pending = "در انتظار تایید"
 
 
 class ProjectState(enum.Enum):
-    active = "active"
-    ended = "ended"
-    pending = "pending"
+    active = "فعال"
+    ended = "غیر فعال"
 
 
 class UserRole(Base):
@@ -115,6 +114,8 @@ class Proposal(Base):
     description = Column(String(999))
     RFP_id = Column(Integer, ForeignKey("RFP.id"))
     allocate_id = Column(Integer, ForeignKey("allocate.id"))
+    start_at = Column(Date, nullable=True)
+    end_at = Column(Date, nullable=True)
 
     supervisor_id = Column(Integer, ForeignKey("user.id"), nullable=True)
     user_id = Column(Integer, ForeignKey("user.id"))
@@ -136,18 +137,18 @@ class Project(Base):
     start_at = Column(Date)
     end_at = Column(Date)
     title = Column(String(999))
+    master = Column(String(999))
     proposal_id = Column(Integer, ForeignKey("proposal.id"))
     user_supervisor_id = Column(Integer, ForeignKey("user.id"))
-    user_researcher_id = Column(Integer, ForeignKey("user.id"))
+    # user_researcher_id = Column(Integer, ForeignKey("user.id"))
     user_user_id = Column(Integer, ForeignKey("user.id"))
-    master = Column(String(999))
 
     accepted_percent = Column(Integer)
     state = Column(Enum(ProjectState))
 
     proposal = relationship("Proposal", foreign_keys=[proposal_id])
     supervisor = relationship("User", foreign_keys=[user_supervisor_id])
-    researcher = relationship("User", foreign_keys=[user_researcher_id])
+    # researcher = relationship("User", foreign_keys=[user_researcher_id])
     user = relationship("User", foreign_keys=[user_user_id])
 
 
@@ -171,7 +172,7 @@ class Report(Base):
     comment = Column(String(999))
     state = Column(Enum(ReportState))  # ENUM
     anounced_percent = Column(Integer)
-    accepted_percent = Column(Integer)
+    accepted_percent = Column(Integer, nullable=True)
     project_id = Column(Integer, ForeignKey("project.id"))
     file_pdf_id = Column(Integer, ForeignKey("file.id"))
     file_docx_id = Column(Integer, ForeignKey("file.id"))
