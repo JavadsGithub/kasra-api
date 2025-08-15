@@ -5,11 +5,11 @@ from fastapi import HTTPException
 
 
 def supervisor_get_reports(db: Session, skip: int = 0, limit: int = 10):
-    return db.query(Report).offset(skip).limit(limit).all()
+    return db.query(Report).order_by(Report.id.desc()).offset(skip).limit(limit).all()
 
 
 def supervisor_get_reports_by_project(db: Session, project_id: int):
-    return db.query(Report).filter(Report.project_id == project_id).all()
+    return db.query(Report).order_by(Report.id.desc()).filter(Report.project_id == project_id).all()
 
 
 def supervisor_get_reports_by_id(db: Session, id: int):
@@ -17,7 +17,9 @@ def supervisor_get_reports_by_id(db: Session, id: int):
 
 
 def user_get_reports_by_project(db: Session, project_id: int, creator_id: int):
-    return db.query(Report).filter(Report.project_id == project_id & Report.creator_id == creator_id).all()
+    return db.query(Report).order_by(Report.id.desc()).filter(
+        (Report.project_id == project_id) & (Report.creator_id == creator_id)
+    ).all()
 
 
 # def supervisor_get_report_with_files(db: Session, report_id: int):
@@ -36,7 +38,14 @@ def supervisor_update_report(db: Session, report_id: int, report_update: ReportU
 
     report.comment = report_update.comment
     report.state = report_update.state
+    # if report_update.state == ReportState.eccepted:
     report.accepted_percent = report_update.accepted_percent
+    project = db.query(Project).filter(
+        Project.id == report.project_id).first()
+    if not project:
+        raise HTTPException(
+            status_code=404, detail="the project not found")
+    project.accepted_percent = report_update.accepted_percent
 
     db.commit()
     db.refresh(report)
@@ -45,7 +54,7 @@ def supervisor_update_report(db: Session, report_id: int, report_update: ReportU
 
 def researcher_get_report(db: Session, project_id: int, skip: int, limit: int):
     return (
-        db.query(Report)
+        db.query(Report).order_by(Report.id.desc())
         .filter(Report.project_id == project_id)
         .offset(skip)
         .limit(limit)

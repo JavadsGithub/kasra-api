@@ -5,22 +5,24 @@ from model.schemas import *
 
 
 def supervisor_get_projects(
-    db: Session, skip: int = 0, limit: int = 10, info: str = None
+    db: Session, supervisor_id: int, skip: int = 0, limit: int = 10, info: str = None
 ):
-    query = db.query(Project)
+    query = db.query(Project).order_by(Project.id.desc())
     if info:
         query = query.filter(Project.title.ilike(f"%{info}%"))
-    return query.offset(skip).limit(limit).all()
+    return query.filter(Project.user_supervisor_id == supervisor_id).offset(skip).limit(limit).all()
 
 
 def supervisor_get_single_project(db: Session, project_id: int):
     return db.query(Project).filter(Project.id == project_id).first()
 
+# sus
+
 
 def researcher_get_projects(db: Session, user_id: int, skip: int = 0, limit: int = 10):
     return (
-        db.query(Project)
-        .filter(Project.accepted_percent >= 100 & Project.state == ProjectState.active)
+        db.query(Project).order_by(Project.id.desc())
+        .filter((Project.accepted_percent >= 100) & (Project.state == ProjectState.active))
         .offset(skip)
         .limit(limit)
         .all()

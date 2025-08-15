@@ -47,23 +47,23 @@ def compute_file_hash(user_id: str, file_name: str) -> str:
 # database
 
 
-def get_db():
-    db = database.SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close_all()
-
-# javad eddition
 # def get_db():
 #     db = database.SessionLocal()
 #     try:
 #         yield db
-#     except Exception as e:
-#         db.rollback()
-#         raise e
 #     finally:
-#         db.close()
+#         db.close_all()
+
+# javad eddition
+def get_db():
+    db = database.SessionLocal()
+    try:
+        yield db
+    except Exception as e:
+        db.rollback()
+        raise e
+    finally:
+        db.close()
 
 # user
 

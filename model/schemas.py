@@ -13,31 +13,31 @@ from datetime import date, datetime
 #     "فعال", "غیر فعال", }
 
 
-class AllocatetState(enum.Enum):
-    pending_to_specify_title = "اجرا جهت تعیین موضوع"
-    pending_to_specify_supervisor = "در انتظار انتخاب ناظر"
-    pending_to_accept = "در انتطار تایید نهایی"
-    eccepted = "تایید شده"
-    rejected = "رد شده"
+# class AllocatetState(enum.Enum):
+#     pending_to_specify_title = "اجرا جهت تعیین موضوع"
+#     pending_to_specify_supervisor = "در انتظار انتخاب ناظر"
+#     pending_to_accept = "در انتطار تایید نهایی"
+#     eccepted = "تایید شده"
+#     rejected = "رد شده"
 
 
-class ProposalState(enum.Enum):
-    pending_to_fill = "در انتظار تکمیل"
-    pending_to_explorer_accept = "در انتظار تایید کاشف"
-    pending_to_accept = "در انتظار تایید نهایی"
-    eccepted = "تایید شده"
-    rejected = "رد شده"
+# class ProposalState(enum.Enum):
+#     pending_to_fill = "در انتظار تکمیل"
+#     pending_to_explorer_accept = "در انتظار تایید کاشف"
+#     pending_to_accept = "در انتظار تایید نهایی"
+#     eccepted = "تایید شده"
+#     rejected = "رد شده"
 
 
-class ReportState(enum.Enum):
-    rejected = "رد شده"
-    eccepted = "تایید شده"
-    pending = "در انتظار تایید"
+# class ReportState(enum.Enum):
+#     rejected = "رد شده"
+#     eccepted = "تایید شده"
+#     pending = "در انتظار تایید"
 
 
-class ProjectState(enum.Enum):
-    active = "فعال"
-    ended = "غیر فعال"
+# class ProjectState(enum.Enum):
+#     active = "فعال"
+#     ended = "غیر فعال"
 # login
 
 
@@ -50,6 +50,16 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: str | None = None
+
+
+class NotificationResponse(BaseModel):
+    id: int
+    owner: int
+    created_at: datetime
+    title: str
+
+    class Config:
+        from_attributes = True
 
 
 # User schemas
@@ -94,8 +104,11 @@ class UserMeInfoResponse(BaseModel):
     phone: Optional[str] = None
     active: bool
     user_type_id: int
-    STATE_COMMISSION: dict
-    STATE_PROPOSAL: dict
+    notification_count: int
+    allocate_state: dict
+    proposal_state: dict
+    report_state: dict
+    project_state: dict
 
     class Config:
         from_attributes = True
@@ -149,8 +162,10 @@ class RFPResponse(BaseModel):
     id: int
     info: str
     created_at: datetime
-    file_id: Optional[int] = None
     creator_id: int
+    creator: UserInfoLimitedResponse
+    file_id: Optional[int] = None
+
     RFP_field: RFPFieldResponse
 
     class Config:
@@ -194,7 +209,7 @@ class AllocateResponse(BaseModel):
     creator_id: int
     created_at: datetime
 
-    RFP: RFPResponse
+    rfp: RFPResponse
     allocated_to_user: UserInfoLimitedResponse
     project_title: Optional[str]
     project_description: Optional[str]
@@ -258,7 +273,7 @@ class ProposalResponse(BaseModel):
     supervisor_id: Optional[int]  # اگر ممکن است None باشد
     user_id: int
     file_id: Optional[int]
-    state: ProposalState
+    state: str
     comment: Optional[str]  # اگر ممکن است None باشد
 
     class Config:
@@ -319,7 +334,7 @@ class ReportResponse(BaseModel):
     comment: str
     state: str
     anounced_percent: int
-    accepted_percent: int
+    accepted_percent: Optional[int]
     project_id: int
     file_pdf_id: int
     file_docx_id: int

@@ -36,7 +36,7 @@ def user_get_projects(
 ):
 
     return (
-        db.query(Project)
+        db.query(Project).order_by(Project.id.desc())
         .filter(Project.user_user_id == user_id)
         .offset(skip)
         .limit(limit)
@@ -59,6 +59,7 @@ def user_create_report(db: Session, creator_id: int, report: ReportRequest):
         file_docx_id=report.file_docx_id,
         file_pptx_id=report.file_pptx_id,
         anounced_percent=report.anounced_percent,
+        accepted_percent=0,
         state=ReportState.pending,
     )
     db.add(db_report)
@@ -75,7 +76,7 @@ def user_get_report_by_id(db: Session, report_id: int):
 
 
 def broker_get_users_master(db: Session):
-    return db.query(User).filter(User.user_type_id == 4)
+    return db.query(User).filter(User.user_type_id == 3)
 
 
 def broker_get_users_discoverer(db: Session):
@@ -83,4 +84,16 @@ def broker_get_users_discoverer(db: Session):
 
 
 def explorer_get_users_supervisor(db: Session):
-    return db.query(User).filter(User.user_type_id == 3)
+    return db.query(User).filter(User.user_type_id == 4)
+
+
+def create_notif(db: Session, user_id: int, title: str):
+    new_notif = Notification(
+        owner=user_id,
+        created_at=datetime.now(),
+        title=title,
+        seen=False
+    )
+    db.add(new_notif)
+    db.commit()
+# create_notif(db=db, user_id=user_id, title="")

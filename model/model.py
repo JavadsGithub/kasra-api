@@ -9,15 +9,15 @@ Base = declarative_base()
 
 class AllocatetState(enum.Enum):
     pending_to_specify_title = "اجرا جهت تعیین موضوع"
-    pending_to_specify_supervisor = "در انتظار انتخاب ناظر"
-    pending_to_accept = "در انتطار تایید نهایی"
+    pending_to_specify_master = "در انتظار انتخاب استاد راهنما"
+    # pending_to_accept = "در انتطار تایید نهایی"
     eccepted = "تایید شده"
-    rejected = "رود شده"
+    rejected = "رد شده"
 
 
 class ProposalState(enum.Enum):
     pending_to_fill = "در انتظار تکمیل"
-    pending_to_explorer_accept = "در انتظار تایید کاشفف"
+    pending_to_explorer_accept = "در انتظار تایید کاشف"
     pending_to_accept = "در انتظار تایید نهایی"
     eccepted = "تایید شده"
     rejected = "رد شده"
@@ -73,6 +73,7 @@ class RFP(Base):
     RFP_field_id = Column(Integer, ForeignKey("RFP_field.id"))
 
     RFP_field = relationship("RFPField", foreign_keys=[RFP_field_id])
+    creator = relationship("User", foreign_keys=[creator_id])
 
 
 class Allocate(Base):
@@ -93,13 +94,14 @@ class Allocate(Base):
         "User", foreign_keys=[allocated_to_user_id]
     )
     supervisor = relationship("User", foreign_keys=[supervisor_id])
+    creator = relationship("User", foreign_keys=[creator_id])
 
 
 class File(Base):
     __tablename__ = "file"
     id = Column(Integer, primary_key=True)
-    creator_id = Column(Integer, ForeignKey("user.id"))
-    created_at = Column
+    # creator_id = Column(Integer, ForeignKey("user.id"))
+    created_at = Column(DateTime)
 
     info = Column(String(999))
 
@@ -126,6 +128,7 @@ class Proposal(Base):
     rfp = relationship("RFP", foreign_keys=[RFP_id])
     user = relationship("User", foreign_keys=[user_id])
     supervisor = relationship("User", foreign_keys=[supervisor_id])
+    creator = relationship("User", foreign_keys=[creator_id])
 
 
 class Project(Base):
@@ -150,6 +153,7 @@ class Project(Base):
     supervisor = relationship("User", foreign_keys=[user_supervisor_id])
     # researcher = relationship("User", foreign_keys=[user_researcher_id])
     user = relationship("User", foreign_keys=[user_user_id])
+    creator = relationship("User", foreign_keys=[creator_id])
 
 
 class Notification(Base):
@@ -158,7 +162,8 @@ class Notification(Base):
     owner = Column(Integer, ForeignKey("user.id"))
     created_at = Column(DateTime)
     title = Column(String(999))
-    description = Column(String(999))
+    seen = Column(Boolean)
+    # description = Column(String(999))
 
 
 class Report(Base):
@@ -179,6 +184,7 @@ class Report(Base):
     file_pptx_id = Column(Integer, ForeignKey("file.id"))
 
     project = relationship("Project", foreign_keys=[project_id])
+    creator = relationship("User", foreign_keys=[creator_id])
 
 
 # class ReportFile(Base):

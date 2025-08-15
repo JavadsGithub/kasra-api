@@ -36,7 +36,7 @@ async def add_proposal(db: Session = Depends(get_db)):
     db.commit()
 
     rolese = db.query(UserRole).all()
-    new_file = File(info="file.pdf", access_id=rolese[0].id)
+    new_file = File(info="file.pdf", created_at=datetime.now(),)
     db.add(new_file)
     db.commit()
     file_id = db.query(File).first().id
@@ -134,8 +134,7 @@ async def add_proposal(db: Session = Depends(get_db)):
             creator_id=2,
             created_at=datetime.now(),
         ),
-        RFP(info="طرح برای بهبود کشاورزی",
-            file_id=file_id, RFP_field_id=fieldss[2].id),
+
         RFP(
             info="نیاز به تأمین مواد شیمیایی",
             file_id=file_id,
@@ -166,7 +165,8 @@ async def add_proposal(db: Session = Depends(get_db)):
         ),
         RFP(
             info="پروژه در علوم انسانی",
-            file_id=file_id, RFP_field_id=fieldss[7].id, creator_id=2,
+            file_id=file_id, RFP_field_id=fieldss[7].id,
+            creator_id=2,
             created_at=datetime.now(),
         ),
 
@@ -179,12 +179,14 @@ async def add_proposal(db: Session = Depends(get_db)):
         ),
         RFP(
             info="توسعه نرم‌افزارهای IT",
-            file_id=file_id, RFP_field_id=fieldss[1].id, creator_id=2,
+            file_id=file_id, RFP_field_id=fieldss[1].id,
+            creator_id=2,
             created_at=datetime.now(),
         ),
         RFP(
             info="بهینه‌سازی در کشاورزی",
-            file_id=file_id, RFP_field_id=fieldss[2].id, creator_id=2,
+            file_id=file_id, RFP_field_id=fieldss[2].id,
+            creator_id=2,
             created_at=datetime.now(),
         ),
         RFP(
@@ -196,7 +198,8 @@ async def add_proposal(db: Session = Depends(get_db)):
         ),
         RFP(
             info="نوآوری در صنعت هوافضا",
-            file_id=file_id, RFP_field_id=fieldss[4].id, creator_id=2,
+            file_id=file_id, RFP_field_id=fieldss[4].id,
+            creator_id=2,
             created_at=datetime.now(),
         ),
         RFP(
@@ -400,7 +403,7 @@ async def add_proposal(db: Session = Depends(get_db)):
         Report(
             creator_id=3,
             created_at=datetime.now(),
-            info="report 1",
+            title="report 1",
             project_id=project_id,
             comment="none",
             state=ReportState.eccepted,
@@ -413,7 +416,7 @@ async def add_proposal(db: Session = Depends(get_db)):
         Report(
             creator_id=3,
             created_at=datetime.now(),
-            info="report 2",
+            title="report 2",
             project_id=project_id,
             comment="none",
             state=ReportState.pending,
@@ -426,7 +429,7 @@ async def add_proposal(db: Session = Depends(get_db)):
         Report(
             creator_id=3,
             created_at=datetime.now(),
-            info="report 3",
+            title="report 3",
             project_id=project_id,
             comment="none",
             state=ReportState.rejected,
@@ -439,7 +442,7 @@ async def add_proposal(db: Session = Depends(get_db)):
         Report(
             creator_id=3,
             created_at=datetime.now(),
-            info="report 4",
+            title="report 4",
             project_id=project_id,
             comment="none",
             state=ReportState.eccepted,

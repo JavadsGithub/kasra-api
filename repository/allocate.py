@@ -1,9 +1,11 @@
 from sqlalchemy.orm import Session
 from model import schemas
-from model.model import RFP, Allocate, RFPField
+from model.model import RFP, Allocate, AllocatetState, RFPField
 from model.schemas import *
 from fastapi import HTTPException
 from datetime import datetime
+
+from repository.user import create_notif
 
 
 def broker_create_allocate(db: Session, allocate: BrokerCreateAllocate, creator_id: int):
@@ -12,6 +14,7 @@ def broker_create_allocate(db: Session, allocate: BrokerCreateAllocate, creator_
         allocated_to_user_id=allocate.allocated_to_user_id,
         creator_id=creator_id,
         created_at=datetime.now(),
+        state=AllocatetState.pending_to_specify_title
     )
     db.add(new_rfp)
     db.commit()
@@ -20,8 +23,8 @@ def broker_create_allocate(db: Session, allocate: BrokerCreateAllocate, creator_
 
 
 def broker_search_allocate(creator_id: int, db: Session, skip: int = 0, limit: int = 10):
-    query = db.query(Allocate)
-    query = query.filter(Allocate.creator_id == creator_id)
+    query = db.query(Allocate).order_by(Allocate.id.desc())
+    # query = query.filter(Allocate.state == AllocatetState.pending_to_accept)
     return query.offset(skip).limit(limit).all()
 
 
@@ -31,7 +34,7 @@ def broker_allocate_single(db: Session, allocate_id: int):
 
 # SUS
 def explorer_search_allocate(creator_id: int, db: Session, skip: int = 0, limit: int = 10):
-    query = db.query(Allocate).join(RFP)
+    query = db.query(Allocate).join(RFP).order_by(Allocate.id.desc())
     query = query.filter(RFP.creator_id == creator_id)
     return query.offset(skip).limit(limit).all()
 
@@ -47,8 +50,8 @@ def explorer_update_allocate(
     if not allocate:
         raise HTTPException(status_code=404, detail="allocate not found")
 
-    allocate.state = AllocatetState.pending_to_accept
-    allocate.supervisor_id = allocate_update.supervisor_id
+    allocate.state = AllocatetState.eccepted
+    allocate.master = allocate_update.supervisor_id
 
     db.commit()
     db.refresh(allocate)
@@ -61,7 +64,8 @@ def researcher_accept_allocate(
     allocate = db.query(Allocate).filter(Allocate.id == allocate_id).first()
     if not allocate:
         raise HTTPException(status_code=404, detail="allocate not found")
-
+    create_notif(db=db, user_id=allocate.allocated_to_user_id,
+                 title="موضوع پروژه شما تایید شد و در انتطار ویرایش پروپوزال میباشد")
     allocate.state = AllocatetState.eccepted
 
     db.commit()

@@ -24,6 +24,8 @@ from util.util import *
 
 router = APIRouter(tags=["broker"], prefix="/broker")
 
+#
+
 
 @router.get("/rfps/", response_model=List[RFPResponse])
 async def search_rfps_endpoint(
@@ -34,8 +36,10 @@ async def search_rfps_endpoint(
     db: Session = Depends(get_db),
 ):
     rfps = explorer_search_rfps(db, info=info, skip=skip, limit=limit)
-    rfps_exist(rfps)
+    # rfps_exist(rfps)
     return rfps
+
+#
 
 
 @router.get("/single-rfp/{rfp_id}", response_model=RFPResponse)
@@ -45,8 +49,11 @@ async def search_rfps(
     db: Session = Depends(get_db),
 ):
     rfp = explorer_rfp_single(db, rfp_id=rfp_id)
-    rfps_exist(rfp)
+    # rfps_exist(rfp)
     return rfp
+
+#
+#  ///////////////////////////////////////////////
 
 
 @router.post("/allocates/", response_model=AllocateResponse)
@@ -55,7 +62,11 @@ async def add_allocate(
     allocate: BrokerCreateAllocate,
     db: Session = Depends(get_db),
 ):
+    create_notif(db=db, user_id=allocate.allocated_to_user_id,
+                 title="rfp جدید به شما تخصیص داده شد!")
     return broker_create_allocate(db=db, allocate=allocate, creator_id=current_user.id)
+
+#
 
 
 @router.get("/allocates/", response_model=List[AllocateResponse])
@@ -66,10 +77,11 @@ async def get_allocates(
     db: Session = Depends(get_db),
 ):
     allocate = broker_search_allocate(
-        db, creator_id=current_user.id, skip=skip, limit=limit)
+        db=db, creator_id=current_user.id, skip=skip, limit=limit)
     if not allocate:
         raise HTTPException(status_code=404, detail="No allocate found")
     return allocate
+#
 
 
 @router.get("/single-allocate/{allocate_id}", response_model=AllocateResponse)
@@ -163,14 +175,14 @@ async def single_allocate(
 #     return commissions
 
 
-# @router.get("/users-master/", response_model=List[UserInfoResponse])
-# async def read_users_master(
-#     current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
-#     db: Session = Depends(get_db),
-# ):
-#     users = broker_get_users_master(db)
+@router.get("/users/", response_model=List[UserInfoResponse])
+async def read_users_master(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    db: Session = Depends(get_db),
+):
+    users = broker_get_users_master(db)
 
-#     return users
+    return users
 
 
 # @router.get("/users-discoverer/", response_model=List[UserInfoResponse])

@@ -16,6 +16,8 @@ from service.mentor import *
 
 router = APIRouter(tags=["researcher"], prefix="/researcher")
 
+#
+
 
 @router.get("/projects/", response_model=List[ProjectResponse])
 async def get_project(
@@ -26,8 +28,10 @@ async def get_project(
 ):
     user_id = current_user.id
     projects = researcher_get_projects(
-        db, user_id=user_id, skip=skip, limit=limit)
+        db=db, user_id=user_id, skip=skip, limit=limit)
     return projects
+
+#
 
 
 @router.get("/reports/{project_id}")
@@ -39,7 +43,9 @@ async def get_reports(
     db: Session = Depends(get_db),
 ):
 
-    return researcher_get_report(db, project_id=project_id, skip=skip, limit=limit)
+    return researcher_get_report(db=db, project_id=project_id, skip=skip, limit=limit)
+
+#
 
 
 @router.get("/single-report/{report_id}")
@@ -48,7 +54,9 @@ async def get_single_reports(
     report_id: int = 0,
     db: Session = Depends(get_db),
 ):
-    return researcher_get_one_report(db, report_id=report_id,)
+    return researcher_get_one_report(db=db, report_id=report_id,)
+
+#
 
 
 @router.get("/all-reports/")
@@ -59,8 +67,10 @@ async def get_all_reports(
     db: Session = Depends(get_db),
 ):
 
-    return researcher_get_all_report(db, skip=skip, limit=limit)
+    return researcher_get_all_report(db=db, skip=skip, limit=limit)
 # OLD ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^6
+
+#
 
 
 @router.put("/allocates/{allocate_id}", response_model=AllocateResponse)
@@ -71,9 +81,12 @@ async def edit_allocate(
     db: Session = Depends(get_db),
 ):
     if accept:
+
         return researcher_accept_allocate(db=db, allocate_id=allocate_id)
     else:
         return researcher_reject_allocate(db=db, allocate_id=allocate_id)
+
+#
 
 
 @router.get("/allocates/", response_model=List[AllocateResponse])
@@ -84,10 +97,12 @@ async def get_allocates(
     db: Session = Depends(get_db),
 ):
     allocate = broker_search_allocate(
-        db, creator_id=current_user.id, skip=skip, limit=limit)
+        db=db, creator_id=current_user.id, skip=skip, limit=limit)
     if not allocate:
         raise HTTPException(status_code=404, detail="No allocate found")
     return allocate
+
+#
 
 
 @router.get("/single-allocate/{allocate_id}", response_model=AllocateResponse)
@@ -96,19 +111,20 @@ async def single_allocate(
     allocate_id: int,
     db: Session = Depends(get_db),
 ):
-    allocate = broker_allocate_single(db, allocate_id=allocate_id)
+    allocate = broker_allocate_single(db=db, allocate_id=allocate_id)
     if not allocate:
         raise HTTPException(status_code=404, detail="No allocate found")
     return allocate
 
+#
 
-@router.put("/projects/{project_id}", response_model=AllocateResponse)
+
+@router.put("/projects/{project_id}", response_model=ProjectResponse)
 async def edit_accepting_project(
     current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
     project_id: int,
     db: Session = Depends(get_db),
 ):
-
     return researcher_accept_project(db=db, project_id=project_id)
 
 

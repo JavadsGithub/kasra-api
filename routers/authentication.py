@@ -1,3 +1,5 @@
+
+from typing import List
 from fastapi import APIRouter, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import Depends, status
@@ -85,6 +87,12 @@ async def read_users_me(
         model.User.id == current_user.id).first()
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
+    notification_count = 0
+    db_notification_count = db.query(model.Notification).filter(
+        (model.Notification.owner == current_user.id) & (model.Notification.seen == False)).count()
+    if db_notification_count > 0:
+        notification_count = db_notification_count
+
     return schemas.UserMeInfoResponse(
         id=user.id,
         username=user.username,
@@ -97,12 +105,46 @@ async def read_users_me(
         phone=user.phone,
         active=user.active,
         user_type_id=user.user_type_id,
+        notification_count=notification_count,
         allocate_state={
-            "اجرا جهت تعیین موضوع", "در انتظار انتخاب ناظر", "در انتطار تایید نهایی", "تایید شده", "رد شده", },
+            "pending_to_specify_title": "اجرا جهت تعیین موضوع",
+            "pending_to_specify_supervisor": "در انتظار انتخاب ناظر",
+            "pending_to_accept": "در انتطار تایید نهایی",
+            "eccepted": "تایید شده",
+            "rejected": "رد شده"},
+
+
         proposal_state={
-            "در انتظار تکمیل", "در انتظار تایید کاشف", "در انتظار تایید نهایی", "تایید شده", "رد شده", },
-        reportt_state={
-            "رد شده", "تایید شده", "در انتظار تایید", },
+            "pending_to_fill": "در انتظار تکمیل",
+            "pending_to_explorer_accept": "در انتظار تایید کاشف",
+            "pending_to_accept": "در انتظار تایید نهایی",
+            "eccepted": "تایید شده",
+            "rejected": "رد شده"},
+
+
+        report_state={
+            "rejected": "رد شده",
+            "eccepted": "تایید شده",
+            "pending": "در انتظار تایید"},
+
+
         project_state={
-            "فعال", "غیر فعال", },
+            "active": "فعال",
+            "ended": "غیر فعال"}
     )
+
+
+@router.get("/notif/me", response_model=List[schemas.NotificationResponse])
+async def read_users_me(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    db: Session = Depends(get_db),
+):
+    notifs = db.query(model.Notification).filter(
+        (model.Notification.owner == current_user.id) & model.Notification.seen == False).all()
+    if notifs:
+        db.query(model.Notification).filter(
+            model.Notification.owner == current_user.id,
+            model.Notification.seen == False
+        ).update({"seen": True})
+        db.commit()
+    return notifs

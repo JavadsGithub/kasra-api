@@ -32,7 +32,7 @@ async def upload_file(
     return file_create_file(
         db=db,
         file_hash=file_name,
-        access_id=access_id,
+        created_at=datetime.now(),
         # access_id=access_id
     )
 

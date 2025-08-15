@@ -14,7 +14,7 @@ from service.user import reports_exist
 from repository.user import *
 from util.util import *
 from util import util
-
+from datetime import datetime, timedelta
 router = APIRouter(tags=["user"], prefix="/users")
 
 
@@ -122,7 +122,7 @@ router = APIRouter(tags=["user"], prefix="/users")
 #         db=db, proposal=proposal_request, user_id=current_user.id
 #     )
 
-
+#
 @router.get("/single-proposal/{proposal_id}", response_model=ProposalResponse)
 async def read_proposal(
     current_user: Annotated[UserInfoResponse, Depends(get_current_user)],
@@ -130,6 +130,8 @@ async def read_proposal(
     db: Session = Depends(get_db),
 ):
     return user_get_proposal_by_id(db=db, proposal_id=proposal_id)
+
+#
 
 
 @router.get("/projects/", response_model=List[ProjectResponse])
@@ -146,8 +148,10 @@ async def read_projects(
         raise HTTPException(status_code=404, detail="No Projects found")
     return projects
 
+#
 
-@router.get("/projects/{project_id}", response_model=List[ProjectResponse])
+
+@router.get("/projects/{project_id}", response_model=ProjectResponse)
 async def read_projects_single(
     current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
     project_id: int,
@@ -155,6 +159,8 @@ async def read_projects_single(
 ):
     project = user_get_project(db, project_id=project_id)
     return project
+
+#
 
 
 @router.get("/reports-by-project/{project_id}", response_model=List[ReportResponse])
@@ -168,6 +174,8 @@ async def read_reports_by_project_id(
     # reports_exist(reports)
     return reports
 
+#
+
 
 @router.post("/reports/", response_model=ReportResponse)
 async def add_report(
@@ -176,6 +184,8 @@ async def add_report(
     db: Session = Depends(get_db),
 ):
     return user_create_report(db=db, report=report_request, creator_id=current_user.id)
+
+#
 
 
 @router.get("/reports/{report_id}", response_model=ReportResponse)
@@ -200,7 +210,7 @@ async def read_report(
 #         raise HTTPException(status_code=404, detail="No RFPs found")
 #     return rfps
 
-
+#
 @router.put("/proposals/{proposal_id}", response_model=ProposalResponse)
 async def edit_proposal(
     current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
@@ -208,9 +218,14 @@ async def edit_proposal(
     proposal_update: UserUpdateProposal,
     db: Session = Depends(get_db),
 ):
+    proposal = user_get_proposal_by_id(db=db, proposal_id=proposal_id)
+    if datetime.now() - proposal.created_at > timedelta(days=21):
+        raise HTTPException(status_code=403, detail="time limit has passed")
     return user_update_proposal(
         db=db, proposal_id=proposal_id, proposal_update=proposal_update
     )
+
+#
 
 
 @router.get("/proposals/", response_model=List[ProposalResponse])
@@ -226,6 +241,8 @@ async def read_proposals(
     return proposals
 # old ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+#
+
 
 @router.get("/allocates/", response_model=List[AllocateResponse])
 async def get_allocates(
@@ -235,10 +252,12 @@ async def get_allocates(
     db: Session = Depends(get_db),
 ):
     allocate = user_search_allocate(
-        db, user_id=current_user.id, skip=skip, limit=limit)
+        db=db, user_id=current_user.id, skip=skip, limit=limit)
     if not allocate:
         raise HTTPException(status_code=404, detail="No allocate found")
     return allocate
+
+#
 
 
 @router.get("/single-allocate/{allocate_id}", response_model=AllocateResponse)
@@ -252,12 +271,17 @@ async def single_allocate(
         raise HTTPException(status_code=404, detail="No allocate found")
     return allocate
 
+#
+
 
 @router.put("/allocates/{allocate_id}", response_model=AllocateResponse)
 async def edit_allocate(
     current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
     allocate_id: int,
-    allocate_update: BrokerUpdateAllocate,
+    allocate_update: UserUpdateAllocate,
     db: Session = Depends(get_db),
 ):
+    allocate = user_allocate_single(db, allocate_id=allocate_id)
+    if datetime.now() - allocate.created_at > timedelta(days=7):
+        raise HTTPException(status_code=403, detail="time limit has passed")
     return user_update_allocate(db=db, allocate_update=allocate_update, allocate_id=allocate_id)

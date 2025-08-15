@@ -7,14 +7,14 @@ from datetime import datetime
 
 
 def explorer_search_rfps(db: Session, skip: int = 0, limit: int = 10, info: str = None):
-    query = db.query(RFP)
+    query = db.query(RFP).order_by(RFP.id.desc())
     if info:
         query = query.filter(RFP.info.ilike(f"%{info}%"))
     return query.offset(skip).limit(limit).all()
 
 
 def user_search_rfps(db: Session, skip: int = 0, limit: int = 10, info: str = None):
-    query = db.query(RFP)
+    query = db.query(RFP).order_by(RFP.id.desc())
     if info:
         query = query.filter(RFP.info.ilike(f"%{info}%"))
     return query.offset(skip).limit(limit).all()
@@ -25,7 +25,7 @@ def explorer_rfp_single(db: Session, rfp_id: int):
 
 
 def explorer_get_rfps(db: Session, skip: int = 0, limit: int = 10):
-    return db.query(RFP).offset(skip).limit(limit).all()
+    return db.query(RFP).order_by(RFP.id.desc()).offset(skip).limit(limit).all()
 
 
 def explorer_get_rfp_fields(db: Session, skip: int = 0, limit: int = 10):

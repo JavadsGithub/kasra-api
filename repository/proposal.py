@@ -6,33 +6,36 @@ from fastapi import HTTPException
 
 def broker_get_proposals(db: Session, skip: int = 0, limit: int = 10):
     return (
-        db.query(Proposal).filter(Proposal.state ==
-                                  2).offset(skip).limit(limit).all()
+        db.query(Proposal).order_by(Proposal.id.desc()).filter(Proposal.state ==
+                                                               2).offset(skip).limit(limit).all()
     )
 
 
 def broker_get_proposals_like(
     db: Session, skip: int = 0, limit: int = 10, info: str = None
 ):
-    query = db.query(Proposal)
+    query = db.query(Proposal).order_by(Proposal.id.desc())
     if info:
         query = query.filter(Proposal.info.ilike(
             f"%{info}%") & Proposal.state != 1)
     return query.filter(Proposal.state != 1).offset(skip).limit(limit).all()
 
+# SUS
+
 
 def explorer_get_proposals_like(
     db: Session, creator_id: int, skip: int = 0, limit: int = 10, info: str = None
 ):
-    query = db.query(Proposal).join(RFP)
+    query = db.query(Proposal).join(RFP).order_by(Proposal.id.desc())
     if info:
         query = query.filter(
             Proposal.info.ilike(
                 f"%{info}%") & RFP.creator_id == creator_id
         )
     return query.filter(
-        RFP.creator_id == creator_id &
-        Proposal.state == ProposalState.pending_to_explorer_accept,
+
+        (Proposal.state == ProposalState.pending_to_explorer_accept) &
+        (RFP.creator_id == creator_id)
     ).offset(skip).limit(limit).all()
 
 
@@ -60,7 +63,7 @@ def suoervisor_get_proposals_like(
 def user_get_proposals_like(
     db: Session, user_id: int, skip: int = 0, limit: int = 10, info: str = None
 ):
-    query = db.query(Proposal)
+    query = db.query(Proposal).order_by(Proposal.id.desc())
     if info:
         query = query.filter(Proposal.info.ilike(f"%{info}%"))
     return query.filter(Proposal.user_id == user_id).offset(skip).limit(limit).all()
@@ -97,11 +100,11 @@ def researcher_update_proposal_and_add_project(
         raise HTTPException(status_code=404, detail="Proposal not found")
 
     proposal.state = proposal_update.state
+
     new_project = Project(
         user_supervisor_id=proposal.supervisor_id,
         user_user_id=proposal.user_id,
         state=ProjectState.active,
-        comment=proposal,
         creator_id=creator_id,
         created_at=datetime.now(),
         master=proposal,
