@@ -359,6 +359,12 @@ class ReportUpdate(BaseModel):
     accepted_percent: int
 
 
+class MasterResponse(BaseModel):
+
+    class Config:
+        from_attributes = True
+
+
 # # ReportFile schemas
 # class ReportFileRequest(BaseModel):
 #     info: str

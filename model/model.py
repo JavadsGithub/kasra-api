@@ -189,6 +189,11 @@ class Report(Base):
     creator = relationship("User", foreign_keys=[creator_id])
 
 
+class Master(Base):
+    __tablename__ = "masterr"
+    id = Column(Integer, primary_key=True)
+    name = Column(String(999))
+
 # class ReportFile(Base):
 #     __tablename__ = "report_file"
 #     id = Column(Integer, primary_key=True)
