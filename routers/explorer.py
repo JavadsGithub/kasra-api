@@ -132,13 +132,28 @@ async def edit_proposal(
 async def edit_allocate(
     current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
     allocate_id: int,
-    allocate_update: BrokerUpdateAllocate,
-    master: str,
+    allocate_update: ExplorerUpdateAllocate,
     db: Session = Depends(get_db),
 ):
+    allocate = explorer_allocate_single(db, allocate_id=allocate_id)
+    if not allocate:
+        raise HTTPException(status_code=404, detail="No allocate found")
     new_proposal = model.Proposal(
+        creator_id=current_user.id,
+        created_at=datetime.now(),
+        master_name_and_family=allocate_update.master,
+        title=allocate.project_title,
+        description=allocate.project_description,
+        RFP_id=allocate.RFP_id,
+        allocate_id=allocate_id,
 
+        # supervisor_id=Column(Integer, ForeignKey("user.id"), nullable=True),
+        user_id=allocate.allocated_to_user_id,
+        state=model.ProposalState.pending_to_fill,  # ENUM
+        comment=""
     )
+    db.add(new_proposal)
+    db.commit()
     return explorer_update_allocate(db=db, allocate_update=allocate_update, allocate_id=allocate_id)
 
 #

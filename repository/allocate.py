@@ -28,6 +28,12 @@ def broker_search_allocate(creator_id: int, db: Session, skip: int = 0, limit: i
     return query.offset(skip).limit(limit).all()
 
 
+def researcher_search_allocate(creator_id: int, db: Session, skip: int = 0, limit: int = 10):
+    query = db.query(Allocate).order_by(Allocate.id.desc())
+    query = query.filter(Allocate.state == AllocatetState.pending_to_accept)
+    return query.offset(skip).limit(limit).all()
+
+
 def broker_allocate_single(db: Session, allocate_id: int):
     return db.query(Allocate).filter(Allocate.id == allocate_id).first()
 
@@ -35,27 +41,32 @@ def broker_allocate_single(db: Session, allocate_id: int):
 # SUS
 def explorer_search_allocate(creator_id: int, db: Session, skip: int = 0, limit: int = 10):
     query = db.query(Allocate).join(RFP).order_by(Allocate.id.desc())
-    query = query.filter(RFP.creator_id == creator_id)
+    # query = query.filter(RFP.creator_id == creator_id)
+    query = query.filter((RFP.creator_id == creator_id)
+                         & (Allocate.state == AllocatetState.pending_to_specify_master))
     return query.offset(skip).limit(limit).all()
 
 
 def explorer_allocate_single(db: Session, allocate_id: int):
+
     return db.query(Allocate).filter(Allocate.id == allocate_id).first()
 
 
 def explorer_update_allocate(
-    db: Session, allocate_id: int, allocate_update: BrokerUpdateAllocate
+    db: Session, allocate_id: int, allocate_update: ExplorerUpdateAllocate
 ):
     allocate = db.query(Allocate).filter(Allocate.id == allocate_id).first()
     if not allocate:
         raise HTTPException(status_code=404, detail="allocate not found")
 
     allocate.state = AllocatetState.eccepted
-    allocate.master = allocate_update.supervisor_id
+    allocate.master = allocate_update.master
 
     db.commit()
     db.refresh(allocate)
     return allocate
+
+#
 
 
 def researcher_accept_allocate(
@@ -66,7 +77,7 @@ def researcher_accept_allocate(
         raise HTTPException(status_code=404, detail="allocate not found")
     create_notif(db=db, user_id=allocate.allocated_to_user_id,
                  title="موضوع پروژه شما تایید شد و در انتطار ویرایش پروپوزال میباشد")
-    allocate.state = AllocatetState.eccepted
+    allocate.state = AllocatetState.pending_to_specify_master
 
     db.commit()
     db.refresh(allocate)
@@ -86,10 +97,13 @@ def researcher_reject_allocate(
     db.refresh(allocate)
     return allocate
 
+# filter state
+
 
 def user_search_allocate(user_id: int, db: Session, skip: int = 0, limit: int = 10):
-    query = db.query(Allocate)
-    query = query.filter(Allocate.allocated_to_user_id == user_id)
+    query = db.query(Allocate).order_by(Allocate.id.desc())
+    query = query.filter((Allocate.allocated_to_user_id == user_id)
+                         & (Allocate.state == AllocatetState.pending_to_specify_title))
     return query.offset(skip).limit(limit).all()
 
 
@@ -104,7 +118,7 @@ def user_update_allocate(
     if not allocate:
         raise HTTPException(status_code=404, detail="allocate not found")
 
-    allocate.state = AllocatetState.pending_to_specify_supervisor
+    allocate.state = AllocatetState.pending_to_accept
     allocate.project_title = allocate_update.project_title
     allocate.project_description = allocate_update.project_description
 

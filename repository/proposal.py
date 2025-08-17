@@ -66,7 +66,7 @@ def user_get_proposals_like(
     query = db.query(Proposal).order_by(Proposal.id.desc())
     if info:
         query = query.filter(Proposal.info.ilike(f"%{info}%"))
-    return query.filter(Proposal.user_id == user_id).offset(skip).limit(limit).all()
+    return query.filter((Proposal.user_id == user_id) & (Proposal.state == ProposalState.pending_to_fill)).offset(skip).limit(limit).all()
 
 
 def suoervisor_get_proposal_by_id(db: Session, proposal_id: int):
@@ -93,13 +93,13 @@ def explorer_update_proposal(
 
 
 def researcher_update_proposal_and_add_project(
-    db: Session, proposal_id: int, proposal_update: ResearcherUpdateProposal, creator_id: int
+    db: Session, proposal_id: int, creator_id: int
 ):
     proposal = db.query(Proposal).filter(Proposal.id == proposal_id).first()
     if not proposal:
         raise HTTPException(status_code=404, detail="Proposal not found")
 
-    proposal.state = proposal_update.state
+    proposal.state = ProposalState.eccepted
 
     new_project = Project(
         user_supervisor_id=proposal.supervisor_id,
@@ -107,8 +107,8 @@ def researcher_update_proposal_and_add_project(
         state=ProjectState.active,
         creator_id=creator_id,
         created_at=datetime.now(),
-        master=proposal,
-        title=proposal,
+        master=proposal.master_name_and_family,
+        title=proposal.title,
         proposal_id=proposal.id,
         start_at=proposal.start_at,
         end_at=proposal.end_at,
@@ -116,6 +116,18 @@ def researcher_update_proposal_and_add_project(
     )
     db.add(new_project)
     db.commit()
+    db.refresh(proposal)
+    return proposal
+
+
+def researcher_update_proposal_and__not_add_project(
+    db: Session, proposal_id: int, creator_id: int
+):
+    proposal = db.query(Proposal).filter(Proposal.id == proposal_id).first()
+    if not proposal:
+        raise HTTPException(status_code=404, detail="Proposal not found")
+
+    proposal.state = ProposalState.rejected
     db.refresh(proposal)
     return proposal
 
@@ -139,6 +151,7 @@ def user_update_proposal(
         proposal.start_at = proposal_update.start_at
     if proposal_update.end_at:
         proposal.end_at = proposal_update.end_at
+    proposal.state = ProposalState.pending_to_explorer_accept
     db.commit()
     db.refresh(proposal)
     return proposal
@@ -150,3 +163,25 @@ def broker_update_proposal(db: Session, proposal_id: int, state: int):
     updating_proposal.state = state
     db.commit()
     db.refresh(updating_proposal)
+
+
+def researcher_get_proposals_like(
+    db: Session, creator_id: int, skip: int = 0, limit: int = 10, info: str = None
+):
+    query = db.query(Proposal).join(RFP).order_by(Proposal.id.desc())
+    if info:
+        query = query.filter(
+            Proposal.info.ilike(
+                f"%{info}%")
+        )
+    return query.filter(
+
+        Proposal.state == ProposalState.pending_to_accept
+    ).offset(skip).limit(limit).all()
+
+
+def researcher_get_proposal_by_id(db: Session, proposal_id: int):
+    proposal = db.query(Proposal).filter(Proposal.id == proposal_id).first()
+    if not proposal:
+        raise HTTPException(status_code=404, detail="Proposal not found")
+    return proposal

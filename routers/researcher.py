@@ -6,9 +6,9 @@ from sqlalchemy.orm import Session
 from sqlalchemy import update, desc
 from datetime import time
 
-from repository.allocate import broker_allocate_single, broker_search_allocate, researcher_accept_allocate, researcher_reject_allocate
+from repository.allocate import broker_allocate_single, broker_search_allocate, researcher_accept_allocate, researcher_reject_allocate, researcher_search_allocate
 from repository.projects import *
-from repository.proposal import researcher_update_proposal_and_add_project
+from repository.proposal import researcher_get_proposals_like, researcher_update_proposal_and__not_add_project, researcher_update_proposal_and_add_project
 from repository.reports import *
 from model.schemas import *
 from util.util import *
@@ -96,7 +96,7 @@ async def get_allocates(
     limit: int = 10,
     db: Session = Depends(get_db),
 ):
-    allocate = broker_search_allocate(
+    allocate = researcher_search_allocate(
         db=db, creator_id=current_user.id, skip=skip, limit=limit)
     if not allocate:
         raise HTTPException(status_code=404, detail="No allocate found")
@@ -127,14 +127,35 @@ async def edit_accepting_project(
 ):
     return researcher_accept_project(db=db, project_id=project_id)
 
+# edit
+
 
 @router.put("/proposal/{proposal_id}", response_model=ProposalResponse)
 async def edit_proposal_and_create_project(
     current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
     proposal_id: int,
-    proposal_update: ResearcherUpdateProposal,
+    # proposal_update: ResearcherUpdateProposal,
+    accept: bool,
     db: Session = Depends(get_db),
 ):
-    return researcher_update_proposal_and_add_project(
-        db=db, proposal_id=proposal_id, proposal_update=proposal_update, creator_id=current_user.id
-    )
+    if accept:
+        return researcher_update_proposal_and_add_project(
+            db=db, proposal_id=proposal_id,  creator_id=current_user.id
+        )
+    else:
+        return researcher_update_proposal_and__not_add_project(
+            db=db, proposal_id=proposal_id, creator_id=current_user.id
+        )
+
+
+@router.get("/proposals/", response_model=List[ProposalResponse])
+async def read_proposals(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    skip: int = 0,
+    limit: int = 10,
+    info: str = None,
+    db: Session = Depends(get_db),
+):
+    proposals = researcher_get_proposals_like(
+        db=db, skip=skip, limit=limit, info=info, creator_id=current_user.id)
+    return proposals

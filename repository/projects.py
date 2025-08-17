@@ -10,7 +10,7 @@ def supervisor_get_projects(
     query = db.query(Project).order_by(Project.id.desc())
     if info:
         query = query.filter(Project.title.ilike(f"%{info}%"))
-    return query.filter(Project.user_supervisor_id == supervisor_id).offset(skip).limit(limit).all()
+    return query.filter((Project.user_supervisor_id == supervisor_id)).offset(skip).limit(limit).all()
 
 
 def supervisor_get_single_project(db: Session, project_id: int):

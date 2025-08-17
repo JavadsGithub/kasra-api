@@ -222,7 +222,7 @@ async def add_proposal(db: Session = Depends(get_db)):
 
     new_allocates = [
         Allocate(
-            supervisor_id=4,
+            master="ali saeedi",
             allocated_to_user_id=3,
             state=AllocatetState.pending_to_specify_title,
             creator_id=1,
@@ -232,7 +232,7 @@ async def add_proposal(db: Session = Depends(get_db)):
             RFP_id=RFP_id,
         ),
         Allocate(
-            supervisor_id=4,
+            master="ali saeedi",
             allocated_to_user_id=3,
             state=AllocatetState.rejected,
             creator_id=1,
@@ -242,7 +242,7 @@ async def add_proposal(db: Session = Depends(get_db)):
             RFP_id=RFP_id,
         ),
         Allocate(
-            supervisor_id=4,
+            master="ali saeedi",
             allocated_to_user_id=3,
             state=AllocatetState.eccepted,
             creator_id=1,
@@ -252,9 +252,9 @@ async def add_proposal(db: Session = Depends(get_db)):
             RFP_id=RFP_id,
         ),
         Allocate(
-            supervisor_id=4,
+            master="ali saeedi",
             allocated_to_user_id=3,
-            state=AllocatetState.pending_to_specify_supervisor,
+            state=AllocatetState.pending_to_specify_master,
             creator_id=1,
             created_at=datetime.now(),
             project_title="project1",
@@ -262,7 +262,7 @@ async def add_proposal(db: Session = Depends(get_db)):
             RFP_id=RFP_id,
         ),
         Allocate(
-            supervisor_id=4,
+            master="ali saeedi",
             allocated_to_user_id=3,
             state=AllocatetState.pending_to_accept,
             creator_id=1,

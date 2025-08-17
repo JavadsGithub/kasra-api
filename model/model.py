@@ -10,7 +10,7 @@ Base = declarative_base()
 class AllocatetState(enum.Enum):
     pending_to_specify_title = "اجرا جهت تعیین موضوع"
     pending_to_specify_master = "در انتظار انتخاب استاد راهنما"
-    # pending_to_accept = "در انتطار تایید نهایی"
+    pending_to_accept = "در انتطار تایید"
     eccepted = "تایید شده"
     rejected = "رد شده"
 
@@ -48,6 +48,7 @@ class User(Base):
     lname = Column(String(999))
     father_name = Column(String(999))
     birth = Column(Date)
+
     resume_file_id = Column(Integer, ForeignKey("file.id"))
     address = Column(String(999))
     username = Column(String(999))
@@ -87,13 +88,14 @@ class Allocate(Base):
     project_title = Column(String(999), nullable=True)
     project_description = Column(String(999), nullable=True)
     state = Column(Enum(AllocatetState))
-    supervisor_id = Column(Integer, ForeignKey("user.id"), nullable=True)
+    # supervisor_id = Column(Integer, ForeignKey("user.id"), nullable=True)
+    master = Column(String(999), nullable=True)
 
     rfp = relationship("RFP", foreign_keys=[RFP_id])
     allocated_to_user = relationship(
         "User", foreign_keys=[allocated_to_user_id]
     )
-    supervisor = relationship("User", foreign_keys=[supervisor_id])
+    # supervisor = relationship("User", foreign_keys=[supervisor_id])
     creator = relationship("User", foreign_keys=[creator_id])
 
 

@@ -31,13 +31,13 @@ def user_get_reports_by_project(db: Session, project_id: int, creator_id: int):
 #     return report_files
 
 
-def supervisor_update_report(db: Session, report_id: int, report_update: ReportUpdate):
+def supervisor_accept_report(db: Session, report_id: int, report_update: ReportUpdate):
     report = db.query(Report).filter(Report.id == report_id).first()
     if not report:
         raise HTTPException(status_code=404, detail="Report not found")
 
     report.comment = report_update.comment
-    report.state = report_update.state
+    report.state = ReportState.eccepted
     # if report_update.state == ReportState.eccepted:
     report.accepted_percent = report_update.accepted_percent
     project = db.query(Project).filter(
@@ -47,6 +47,17 @@ def supervisor_update_report(db: Session, report_id: int, report_update: ReportU
             status_code=404, detail="the project not found")
     project.accepted_percent = report_update.accepted_percent
 
+    db.commit()
+    db.refresh(report)
+    return report
+
+
+def supervisor_reject_report(db: Session, report_id: int, report_update: ReportUpdate):
+    report = db.query(Report).filter(Report.id == report_id).first()
+    if not report:
+        raise HTTPException(status_code=404, detail="Report not found")
+    report.comment = report_update.comment
+    report.state = ReportState.rejected
     db.commit()
     db.refresh(report)
     return report

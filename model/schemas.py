@@ -197,6 +197,13 @@ class BrokerUpdateAllocate(BaseModel):
         orm_mode = True
 
 
+class ExplorerUpdateAllocate(BaseModel):
+    master: str
+
+    class Config:
+        orm_mode = True
+
+
 class ResearcherUpdateAllocate(BaseModel):
     state: str
 
@@ -213,6 +220,7 @@ class AllocateResponse(BaseModel):
     allocated_to_user: UserInfoLimitedResponse
     project_title: Optional[str]
     project_description: Optional[str]
+    master: Optional[str]
     state: str
 
     class Config:
@@ -263,8 +271,8 @@ class ProposalResponse(BaseModel):
     id: int
     creator_id: int
     created_at: datetime
-    start_at: datetime
-    end_at: datetime
+    start_at: Optional[datetime]
+    end_at: Optional[datetime]
     master_name_and_family: str
     title: str
     description: str
@@ -346,7 +354,7 @@ class ReportResponse(BaseModel):
 
 
 class ReportUpdate(BaseModel):
-    state: str
+    #    state: str
     comment: str
     accepted_percent: int
 

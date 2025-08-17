@@ -85,11 +85,17 @@ async def edit_report(
     current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
     report_id: int,
     report_update: ReportUpdate,
+    accept: bool,
     db: Session = Depends(get_db),
 ):
-    return supervisor_update_report(
-        db=db, report_id=report_id, report_update=report_update
-    )
+    if accept:
+        return supervisor_accept_report(
+            db=db, report_id=report_id, report_update=report_update
+        )
+    else:
+        return supervisor_reject_report(
+            db=db, report_id=report_id, report_update=report_update
+        )
 
 
 @router.get("/projects/", response_model=List[ProjectResponse])
