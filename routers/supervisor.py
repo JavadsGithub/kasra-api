@@ -85,7 +85,7 @@ async def edit_report(
     current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
     report_id: int,
     report_update: ReportUpdate,
-    accept: bool,
+    accept: bool = False,
     db: Session = Depends(get_db),
 ):
     if accept:

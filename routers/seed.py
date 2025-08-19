@@ -216,13 +216,29 @@ async def add_proposal(db: Session = Depends(get_db)):
     ]
     db.add_all(new_rfps)
     db.commit()
+    new_masters = [
+        Master(
+            name="حجت مختاری"
+        ),
+        Master(
+            name="محمد اسدی"
+        ),
+        Master(
+            name="علی محمودی"
+        ),
+        Master(
+            name="حسن صادقی"
+        ),
+    ]
+    db.add_all(new_masters)
+    db.commit()
 
     user_id = db.query(User).first().id
     RFP_id = db.query(RFP).first().id
 
     new_allocates = [
         Allocate(
-            master="ali saeedi",
+            master_id=1,
             allocated_to_user_id=3,
             state=AllocatetState.pending_to_specify_title,
             creator_id=1,
@@ -232,43 +248,43 @@ async def add_proposal(db: Session = Depends(get_db)):
             RFP_id=RFP_id,
         ),
         Allocate(
-            master="ali saeedi",
+            master_id=1,
             allocated_to_user_id=3,
             state=AllocatetState.rejected,
             creator_id=1,
             created_at=datetime.now(),
             project_title="project1",
-            project_description="project1 ",
+            project_description="",
             RFP_id=RFP_id,
         ),
         Allocate(
-            master="ali saeedi",
+            master_id=1,
             allocated_to_user_id=3,
             state=AllocatetState.eccepted,
             creator_id=1,
             created_at=datetime.now(),
             project_title="project1",
-            project_description="project1 ",
+            project_description="",
             RFP_id=RFP_id,
         ),
         Allocate(
-            master="ali saeedi",
+            master_id=1,
             allocated_to_user_id=3,
             state=AllocatetState.pending_to_specify_master,
             creator_id=1,
             created_at=datetime.now(),
             project_title="project1",
-            project_description="project1 ",
+            project_description="",
             RFP_id=RFP_id,
         ),
         Allocate(
-            master="ali saeedi",
+            master_id=1,
             allocated_to_user_id=3,
             state=AllocatetState.pending_to_accept,
             creator_id=1,
             created_at=datetime.now(),
             project_title="project1",
-            project_description="project1 ",
+            project_description="",
             RFP_id=RFP_id,
         )
     ]
@@ -283,9 +299,9 @@ async def add_proposal(db: Session = Depends(get_db)):
             comment="",
             creator_id=2,
             created_at=datetime.now(),
-            master_name_and_family="محمد علیزاده",
+            master_id=1,
             title="پروپوزال1 ",
-            description="پروپوزال1 ",
+            description="",
             RFP_id=RFP_id,
             allocate_id=1,
             start_at=datetime.now(),
@@ -299,9 +315,9 @@ async def add_proposal(db: Session = Depends(get_db)):
             comment="",
             creator_id=2,
             created_at=datetime.now(),
-            master_name_and_family="محمد علیزاده",
+            master_id=1,
             title="پروپوزال2 ",
-            description="پروپوزال2 ",
+            description="",
             RFP_id=RFP_id,
             allocate_id=1,
             start_at=datetime.now(),
@@ -315,9 +331,9 @@ async def add_proposal(db: Session = Depends(get_db)):
             comment="",
             creator_id=2,
             created_at=datetime.now(),
-            master_name_and_family="محمد علیزاده",
-            title="پروپوزال3 ",
-            description="پروپوزال3 ",
+            master_id=1,
+            title="",
+            description="",
             RFP_id=RFP_id,
             allocate_id=1,
             start_at=datetime.now(),
@@ -331,9 +347,9 @@ async def add_proposal(db: Session = Depends(get_db)):
             comment="",
             creator_id=2,
             created_at=datetime.now(),
-            master_name_and_family="محمد علیزاده",
+            master_id=1,
             title="پروپوزال4",
-            description="پروپوزال3 ",
+            description="",
             RFP_id=RFP_id,
             allocate_id=1,
             start_at=datetime.now(),
@@ -361,7 +377,7 @@ async def add_proposal(db: Session = Depends(get_db)):
 
             creator_id=2,
             created_at=datetime.now(),
-            master="محمد علیزاده",
+            master_id=1,
             title="project 1",
             proposal_id=proposals[0].id,
             start_at=datetime.now(),
@@ -374,7 +390,7 @@ async def add_proposal(db: Session = Depends(get_db)):
             state=ProjectState.active,
             creator_id=2,
             created_at=datetime.now(),
-            master="محمد علیزاده",
+            master_id=1,
             title="project 2",
             proposal_id=proposals[1].id,
             start_at=datetime.now(),
@@ -387,7 +403,7 @@ async def add_proposal(db: Session = Depends(get_db)):
             state=ProjectState.active,
             creator_id=2,
             created_at=datetime.now(),
-            master="محمد علیزاده",
+            master_id=1,
             title="project 3",
             proposal_id=proposals[2].id,
             start_at=datetime.now(),

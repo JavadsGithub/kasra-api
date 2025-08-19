@@ -35,3 +35,26 @@ user: Done
     edit proposal Done
     get projects 
     get reports
+
+
+
+
+
+
+proposal:
+    model done
+    get schema done
+    user update schema done
+    user update repository done
+
+
+rfp:
+    model done
+    get schema done
+    explorer add schema done
+    explorer add repository done
+
+change all:
+    allocate done
+    proposal done
+    project done

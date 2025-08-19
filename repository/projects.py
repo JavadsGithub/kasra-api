@@ -22,7 +22,7 @@ def supervisor_get_single_project(db: Session, project_id: int):
 def researcher_get_projects(db: Session, user_id: int, skip: int = 0, limit: int = 10):
     return (
         db.query(Project).order_by(Project.id.desc())
-        .filter((Project.accepted_percent >= 100) & (Project.state == ProjectState.active))
+        # .filter((Project.accepted_percent >= 100) & (Project.state == ProjectState.active))
         .offset(skip)
         .limit(limit)
         .all()

@@ -40,6 +40,13 @@ from datetime import date, datetime
 #     ended = "غیر فعال"
 # login
 
+class MasterResponse(BaseModel):
+    id: int
+    name: str
+
+    class Config:
+        from_attributes = True
+
 
 class Token(BaseModel):
     access_token: str
@@ -153,6 +160,24 @@ class ExplorerCreateUpdateRFP(BaseModel):
     info: str
     file_id: Optional[int] = None
     RFP_field_id: int
+    beneficiary: Optional[str] = None  # کاربر بهره‌بردار
+    representative: Optional[str] = None  # نماینده بهره‌بردار
+    issue_title: Optional[str] = None  # عنوان مسئله
+    issue_description: Optional[str] = None  # شرح مختصر مسئله
+    mission_area: Optional[str] = None  # حوضه ماموریتی
+    specialty_field: Optional[str] = None  # رشته و گرایش تخصصی
+    issue_origin: Optional[str] = None  # توضیحات درباره منشا یافتن مسئله
+    proposed_execution_path: Optional[str] = None  # توضیحات مسیر پیشنهادی اجرا
+    frequency: Optional[str] = None  # فراوانی
+    financial_value: Optional[str] = None  # ارزش مالی مسئله
+    key_requirements: Optional[str] = None  # الزامات کلیدی و حیاتی
+    limitations: Optional[str] = None  # محدودیت ها
+    technical_solution: Optional[str] = None  # راه حل فنی
+    related_projects: Optional[str] = None  # پروژه های مرتبط
+    proposed_product: Optional[str] = None  # محصول پیشنهادی
+    issue_support: Optional[str] = None  # نحوه حمایت از مسئله
+    analyst_evaluator: Optional[str] = None  # تحلیل کارگزار کاشف
+    keywords: Optional[str] = None  # کلمات کلیدی
 
     class Config:
         orm_mode = True
@@ -165,6 +190,24 @@ class RFPResponse(BaseModel):
     creator_id: int
     creator: UserInfoLimitedResponse
     file_id: Optional[int] = None
+    beneficiary: Optional[str] = None  # کاربر بهره‌بردار
+    representative: Optional[str] = None  # نماینده بهره‌بردار
+    issue_title: Optional[str] = None  # عنوان مسئله
+    issue_description: Optional[str] = None  # شرح مختصر مسئله
+    mission_area: Optional[str] = None  # حوضه ماموریتی
+    specialty_field: Optional[str] = None  # رشته و گرایش تخصصی
+    issue_origin: Optional[str] = None  # توضیحات درباره منشا یافتن مسئله
+    proposed_execution_path: Optional[str] = None  # توضیحات مسیر پیشنهادی اجرا
+    frequency: Optional[str] = None  # فراوانی
+    financial_value: Optional[str] = None  # ارزش مالی مسئله
+    key_requirements: Optional[str] = None  # الزامات کلیدی و حیاتی
+    limitations: Optional[str] = None  # محدودیت ها
+    technical_solution: Optional[str] = None  # راه حل فنی
+    related_projects: Optional[str] = None  # پروژه های مرتبط
+    proposed_product: Optional[str] = None  # محصول پیشنهادی
+    issue_support: Optional[str] = None  # نحوه حمایت از مسئله
+    analyst_evaluator: Optional[str] = None  # تحلیل کارگزار کاشف
+    keywords: Optional[str] = None  # کلمات کلیدی
 
     RFP_field: RFPFieldResponse
 
@@ -198,7 +241,7 @@ class BrokerUpdateAllocate(BaseModel):
 
 
 class ExplorerUpdateAllocate(BaseModel):
-    master: str
+    master_id: int
 
     class Config:
         orm_mode = True
@@ -220,7 +263,7 @@ class AllocateResponse(BaseModel):
     allocated_to_user: UserInfoLimitedResponse
     project_title: Optional[str]
     project_description: Optional[str]
-    master: Optional[str]
+    master: Optional[MasterResponse]
     state: str
 
     class Config:
@@ -229,7 +272,7 @@ class AllocateResponse(BaseModel):
 
 # Proposal schemas
 class ExplorerCreateProposal(BaseModel):
-    master_name_and_family: str
+    master_id: int
     # add title, description and RFP based on Allocate_id
 
     class Config:
@@ -246,6 +289,8 @@ class UserUpdateProposal(BaseModel):
 class ExplorerUpdateProposal(BaseModel):
     comment: str
     supervisor_id: int
+    commission_file_id: Optional[int]
+    commission_date_time: Optional[datetime]
 
     class Config:
         orm_mode = True
@@ -263,6 +308,22 @@ class UserUpdateProposal(BaseModel):
     start_at: datetime
     end_at: datetime
 
+    applicant_name: Optional[str]  # نام و نام خانوادگی مجری
+    contact_number: Optional[str]  # شماره تماس
+    education: Optional[str]  # مدرک تحصیلی
+    expertise: Optional[str]  # تخصص
+    project_duration: Optional[str]  # مدت‌زمان و نفرساعت اجرای پروژه
+    project_goals: Optional[str]  # اهداف پروژه
+    project_importance: Optional[str]  # اهمیت پروژه
+    technical_details: Optional[str]  # جزئیات و روش های فنی انجام پروژه
+    # ويژگي‌هاي اصلي و مشخصات عمومی و فني محصول پروژه
+    product_features: Optional[str]
+    # سوابق پژوهش‌ها و محصولات مشابه موجود در سطح کشور و دنیا
+    similar_products: Optional[str]
+    project_outcomes: Optional[str]  # دستاوردهای هر گام از پروژه
+    project_innovation: Optional[str]  # نوآوری پروژه
+    project_risks: Optional[str]  # ریسک‌ها و گلوگاه‌هاي احتمالی در اجرای پروژه
+
     class Config:
         orm_mode = True
 
@@ -273,7 +334,7 @@ class ProposalResponse(BaseModel):
     created_at: datetime
     start_at: Optional[datetime]
     end_at: Optional[datetime]
-    master_name_and_family: str
+    master: Optional[MasterResponse]
     title: str
     description: str
     RFP_id: int
@@ -284,10 +345,30 @@ class ProposalResponse(BaseModel):
     state: str
     comment: Optional[str]  # اگر ممکن است None باشد
 
+    applicant_name: Optional[str]  # نام و نام خانوادگی مجری
+    contact_number: Optional[str]  # شماره تماس
+    education: Optional[str]  # مدرک تحصیلی
+    expertise: Optional[str]  # تخصص
+    project_duration: Optional[str]  # مدت‌زمان و نفرساعت اجرای پروژه
+    project_goals: Optional[str]  # اهداف پروژه
+    project_importance: Optional[str]  # اهمیت پروژه
+    technical_details: Optional[str]  # جزئیات و روش های فنی انجام پروژه
+    # ويژگي‌هاي اصلي و مشخصات عمومی و فني محصول پروژه
+    product_features: Optional[str]
+    # سوابق پژوهش‌ها و محصولات مشابه موجود در سطح کشور و دنیا
+    similar_products: Optional[str]
+    project_outcomes: Optional[str]  # دستاوردهای هر گام از پروژه
+    project_innovation: Optional[str]  # نوآوری پروژه
+    project_risks: Optional[str]  # ریسک‌ها و گلوگاه‌هاي احتمالی در اجرای پروژه
+
     class Config:
         orm_mode = True
 
 # Project schemas
+
+
+class ResearcherProjectUpdate(BaseModel):
+    commission_file_id: int
 
 
 class ProjectRequest(BaseModel):
@@ -308,7 +389,7 @@ class ProjectResponse(BaseModel):
     start_at: date
     end_at: date
     title: str
-    master: str
+    master: MasterResponse
 
     proposal: ProposalResponse
     supervisor: UserInfoLimitedResponse
@@ -357,12 +438,6 @@ class ReportUpdate(BaseModel):
     #    state: str
     comment: str
     accepted_percent: int
-
-
-class MasterResponse(BaseModel):
-
-    class Config:
-        from_attributes = True
 
 
 # # ReportFile schemas

@@ -9,9 +9,13 @@ from repository.user import create_notif
 
 
 def broker_create_allocate(db: Session, allocate: BrokerCreateAllocate, creator_id: int):
+    rfp = db.query(RFP).filter(RFP.id == allocate.RFP_id).first()
+    if not rfp:
+        raise HTTPException(status_code=404, detail="rfp not found")
     new_rfp = Allocate(
         RFP_id=allocate.RFP_id,
         allocated_to_user_id=allocate.allocated_to_user_id,
+        project_title=rfp.info,
         creator_id=creator_id,
         created_at=datetime.now(),
         state=AllocatetState.pending_to_specify_title
@@ -30,7 +34,7 @@ def broker_search_allocate(creator_id: int, db: Session, skip: int = 0, limit: i
 
 def researcher_search_allocate(creator_id: int, db: Session, skip: int = 0, limit: int = 10):
     query = db.query(Allocate).order_by(Allocate.id.desc())
-    query = query.filter(Allocate.state == AllocatetState.pending_to_accept)
+    # query = query.filter(Allocate.state == AllocatetState.pending_to_accept)
     return query.offset(skip).limit(limit).all()
 
 
@@ -42,8 +46,8 @@ def broker_allocate_single(db: Session, allocate_id: int):
 def explorer_search_allocate(creator_id: int, db: Session, skip: int = 0, limit: int = 10):
     query = db.query(Allocate).join(RFP).order_by(Allocate.id.desc())
     # query = query.filter(RFP.creator_id == creator_id)
-    query = query.filter((RFP.creator_id == creator_id)
-                         & (Allocate.state == AllocatetState.pending_to_specify_master))
+    # query = query.filter((RFP.creator_id == creator_id)
+    #                      & (Allocate.state == AllocatetState.pending_to_specify_master))
     return query.offset(skip).limit(limit).all()
 
 
@@ -60,7 +64,7 @@ def explorer_update_allocate(
         raise HTTPException(status_code=404, detail="allocate not found")
 
     allocate.state = AllocatetState.eccepted
-    allocate.master = allocate_update.master
+    allocate.master_id = allocate_update.master_id
 
     db.commit()
     db.refresh(allocate)
@@ -102,8 +106,8 @@ def researcher_reject_allocate(
 
 def user_search_allocate(user_id: int, db: Session, skip: int = 0, limit: int = 10):
     query = db.query(Allocate).order_by(Allocate.id.desc())
-    query = query.filter((Allocate.allocated_to_user_id == user_id)
-                         & (Allocate.state == AllocatetState.pending_to_specify_title))
+    query = query.filter((Allocate.allocated_to_user_id == user_id))
+    #  & (Allocate.state == AllocatetState.pending_to_specify_title))
     return query.offset(skip).limit(limit).all()
 
 
@@ -112,15 +116,15 @@ def user_allocate_single(db: Session, allocate_id: int):
 
 
 def user_update_allocate(
-    db: Session, allocate_id: int, allocate_update: UserUpdateAllocate
+    db: Session, allocate_id: int,
 ):
     allocate = db.query(Allocate).filter(Allocate.id == allocate_id).first()
     if not allocate:
         raise HTTPException(status_code=404, detail="allocate not found")
 
     allocate.state = AllocatetState.pending_to_accept
-    allocate.project_title = allocate_update.project_title
-    allocate.project_description = allocate_update.project_description
+    # allocate.project_title = allocate_update.project_title
+    # allocate.project_description = allocate_update.project_description
 
     db.commit()
     db.refresh(allocate)

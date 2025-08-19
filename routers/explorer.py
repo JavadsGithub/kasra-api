@@ -141,7 +141,7 @@ async def edit_allocate(
     new_proposal = model.Proposal(
         creator_id=current_user.id,
         created_at=datetime.now(),
-        master_name_and_family=allocate_update.master,
+        master=allocate.master,
         title=allocate.project_title,
         description=allocate.project_description,
         RFP_id=allocate.RFP_id,
@@ -185,3 +185,12 @@ async def single_allocate(
     if not allocate:
         raise HTTPException(status_code=404, detail="No allocate found")
     return allocate
+
+
+@router.get("/masters", response_model=List[MasterResponse])
+async def get_masters(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    db: Session = Depends(get_db),
+):
+
+    return db.query(model.Master).all()

@@ -1,8 +1,10 @@
 from doctest import master
 from sre_parse import State
 import enum
-from sqlalchemy import Boolean, Column, Enum, Integer, String, ForeignKey, Date, DateTime
+from sqlalchemy import Boolean, Column, Enum, Integer, String, ForeignKey, Date, DateTime, Text
 from sqlalchemy.orm import relationship, declarative_base
+
+# from repository import commission
 
 Base = declarative_base()
 
@@ -32,6 +34,12 @@ class ReportState(enum.Enum):
 class ProjectState(enum.Enum):
     active = "فعال"
     ended = "غیر فعال"
+
+
+class Master(Base):
+    __tablename__ = "master"
+    id = Column(Integer, primary_key=True)
+    name = Column(String(999))
 
 
 class UserRole(Base):
@@ -73,6 +81,29 @@ class RFP(Base):
     file_id = Column(Integer, ForeignKey("file.id"))
     RFP_field_id = Column(Integer, ForeignKey("RFP_field.id"))
 
+    beneficiary = Column(Text, nullable=True)  # کاربر بهره‌بردار
+    representative = Column(Text, nullable=True)  # نماینده بهره‌بردار
+    issue_title = Column(Text, nullable=True)  # عنوان مسئله
+    issue_description = Column(Text, nullable=True)  # شرح مختصر مسئله
+    mission_area = Column(Text, nullable=True)  # حوضه ماموریتی
+    specialty_field = Column(Text, nullable=True)  # رشته و گرایش تخصصی
+    # توضیحات درباره منشا یافتن مسئله
+    issue_origin = Column(Text, nullable=True)
+    proposed_execution_path = Column(
+        Text, nullable=True)  # توضیحات مسیر پیشنهادی اجرا
+    frequency = Column(Text, nullable=True)  # فراوانی
+    financial_value = Column(Text, nullable=True)  # ارزش مالی مسئله
+    # الزامات کلیدی و حیاتی
+    key_requirements = Column(Text, nullable=True)
+    limitations = Column(Text, nullable=True)  # محدودیت ها
+    technical_solution = Column(Text, nullable=True)  # راه حل فنی
+    related_projects = Column(Text, nullable=True)  # پروژه های مرتبط
+    proposed_product = Column(Text, nullable=True)  # محصول پیشنهادی
+    issue_support = Column(Text, nullable=True)  # نحوه حمایت از مسئله
+    analyst_evaluator = Column(
+        Text, nullable=True)  # تحلیل کارگزار کاشف
+    keywords = Column(Text, nullable=True)  # کلمات کلیدی
+
     RFP_field = relationship("RFPField", foreign_keys=[RFP_field_id])
     creator = relationship("User", foreign_keys=[creator_id])
 
@@ -89,7 +120,8 @@ class Allocate(Base):
     project_description = Column(String(999), nullable=True)
     state = Column(Enum(AllocatetState))
     # supervisor_id = Column(Integer, ForeignKey("user.id"), nullable=True)
-    master = Column(String(999), nullable=True)
+    master_id = Column(Integer, ForeignKey("master.id"), nullable=True)
+    master = relationship("Master", foreign_keys=[master_id])
 
     rfp = relationship("RFP", foreign_keys=[RFP_id])
     allocated_to_user = relationship(
@@ -113,7 +145,10 @@ class Proposal(Base):
     id = Column(Integer, primary_key=True)
     creator_id = Column(Integer, ForeignKey("user.id"))
     created_at = Column(DateTime)
-    master_name_and_family = Column(String(999), nullable=True)
+
+    master_id = Column(Integer, ForeignKey("master.id"), nullable=True)
+    master = relationship("Master", foreign_keys=[master_id])
+
     title = Column(String(999))
     description = Column(String(999))
     RFP_id = Column(Integer, ForeignKey("RFP.id"))
@@ -124,8 +159,33 @@ class Proposal(Base):
     supervisor_id = Column(Integer, ForeignKey("user.id"), nullable=True)
     user_id = Column(Integer, ForeignKey("user.id"))
     file_id = Column(Integer, ForeignKey("file.id"), nullable=True)
+
+    commission_file_id = Column(Integer, ForeignKey("file.id"), nullable=True)
+    commission_date_time = Column(DateTime, nullable=True)
+
     state = Column(Enum(ProposalState))  # ENUM
     comment = Column(String(999))
+
+    # نام و نام خانوادگی مجری
+    applicant_name = Column(String(255), nullable=True)
+    contact_number = Column(String(50), nullable=True)  # شماره تماس
+    education = Column(String(255), nullable=True)  # مدرک تحصیلی
+    expertise = Column(String(255), nullable=True)  # تخصص
+    # مدت‌زمان و نفرساعت اجرای پروژه
+    project_duration = Column(String(255), nullable=True)
+    project_goals = Column(String(999), nullable=True)  # اهداف پروژه
+    project_importance = Column(String(999), nullable=True)  # اهمیت پروژه
+    # جزئیات و روش های فنی انجام پروژه
+    technical_details = Column(String(999), nullable=True)
+    # ويژگي‌هاي اصلي و مشخصات عمومی و فني محصول پروژه
+    product_features = Column(String(999), nullable=True)
+    # سوابق پژوهش‌ها و محصولات مشابه موجود در سطح کشور و دنیا
+    similar_products = Column(String(999), nullable=True)
+    # دستاوردهای هر گام از پروژه
+    project_outcomes = Column(String(999), nullable=True)
+    project_innovation = Column(String(999), nullable=True)  # نوآوری پروژه
+    # ریسک‌ها و گلوگاه‌هاي احتمالی در اجرای پروژه
+    project_risks = Column(String(999), nullable=True)
 
     rfp = relationship("RFP", foreign_keys=[RFP_id])
     user = relationship("User", foreign_keys=[user_id])
@@ -142,7 +202,10 @@ class Project(Base):
     start_at = Column(Date)
     end_at = Column(Date)
     title = Column(String(999))
-    master = Column(String(999))
+
+    master_id = Column(Integer, ForeignKey("master.id"), nullable=True)
+    master = relationship("Master", foreign_keys=[master_id])
+
     proposal_id = Column(Integer, ForeignKey("proposal.id"))
     user_supervisor_id = Column(Integer, ForeignKey("user.id"))
     # user_researcher_id = Column(Integer, ForeignKey("user.id"))
@@ -150,6 +213,9 @@ class Project(Base):
 
     accepted_percent = Column(Integer)
     state = Column(Enum(ProjectState))
+
+    commission_file_id = Column(Integer, ForeignKey("file.id"), nullable=True)
+    commission_date_time = Column(DateTime, nullable=True)
 
     proposal = relationship("Proposal", foreign_keys=[proposal_id])
     supervisor = relationship("User", foreign_keys=[user_supervisor_id])
@@ -188,11 +254,6 @@ class Report(Base):
     project = relationship("Project", foreign_keys=[project_id])
     creator = relationship("User", foreign_keys=[creator_id])
 
-
-class Master(Base):
-    __tablename__ = "masterr"
-    id = Column(Integer, primary_key=True)
-    name = Column(String(999))
 
 # class ReportFile(Base):
 #     __tablename__ = "report_file"

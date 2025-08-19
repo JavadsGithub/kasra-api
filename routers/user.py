@@ -278,10 +278,9 @@ async def single_allocate(
 async def edit_allocate(
     current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
     allocate_id: int,
-    allocate_update: UserUpdateAllocate,
     db: Session = Depends(get_db),
 ):
     allocate = user_allocate_single(db, allocate_id=allocate_id)
     if datetime.now() - allocate.created_at > timedelta(days=7):
         raise HTTPException(status_code=403, detail="time limit has passed")
-    return user_update_allocate(db=db, allocate_update=allocate_update, allocate_id=allocate_id)
+    return user_update_allocate(db=db, allocate_id=allocate_id)
