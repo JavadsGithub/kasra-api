@@ -73,6 +73,7 @@ class NotificationResponse(BaseModel):
 class UserAddRequest(BaseModel):
     username: str
     password: str
+    user_type_id: int
     fname: str
     lname: str
     father_name: str
@@ -94,6 +95,14 @@ class UserUpdateRequest(BaseModel):
     address: Optional[str] = None
     phone: Optional[str] = None
     active: bool
+
+    class Config:
+        from_attributes = True
+
+
+class UserRoleResponse(BaseModel):
+    id: int
+    title: str
 
     class Config:
         from_attributes = True
@@ -261,9 +270,9 @@ class AllocateResponse(BaseModel):
 
     rfp: RFPResponse
     allocated_to_user: UserInfoLimitedResponse
-    project_title: Optional[str]
-    project_description: Optional[str]
-    master: Optional[MasterResponse]
+    project_title: Optional[str] = None
+    project_description: Optional[str] = None
+    master: Optional[MasterResponse] = None
     state: str
 
     class Config:
@@ -289,8 +298,8 @@ class UserUpdateProposal(BaseModel):
 class ExplorerUpdateProposal(BaseModel):
     comment: str
     supervisor_id: int
-    commission_file_id: Optional[int]
-    commission_date_time: Optional[datetime]
+    commission_file_id: Optional[int] = None
+    commission_date_time: Optional[datetime] = None
 
     class Config:
         orm_mode = True
@@ -308,21 +317,22 @@ class UserUpdateProposal(BaseModel):
     start_at: datetime
     end_at: datetime
 
-    applicant_name: Optional[str]  # نام و نام خانوادگی مجری
-    contact_number: Optional[str]  # شماره تماس
-    education: Optional[str]  # مدرک تحصیلی
-    expertise: Optional[str]  # تخصص
-    project_duration: Optional[str]  # مدت‌زمان و نفرساعت اجرای پروژه
-    project_goals: Optional[str]  # اهداف پروژه
-    project_importance: Optional[str]  # اهمیت پروژه
-    technical_details: Optional[str]  # جزئیات و روش های فنی انجام پروژه
+    applicant_name: Optional[str] = None  # نام و نام خانوادگی مجری
+    contact_number: Optional[str] = None  # شماره تماس
+    education: Optional[str] = None  # مدرک تحصیلی
+    expertise: Optional[str] = None  # تخصص
+    project_duration: Optional[str] = None  # مدت‌زمان و نفرساعت اجرای پروژه
+    project_goals: Optional[str] = None  # اهداف پروژه
+    project_importance: Optional[str] = None  # اهمیت پروژه
+    technical_details: Optional[str] = None  # جزئیات و روش های فنی انجام پروژه
     # ويژگي‌هاي اصلي و مشخصات عمومی و فني محصول پروژه
-    product_features: Optional[str]
+    product_features: Optional[str] = None
     # سوابق پژوهش‌ها و محصولات مشابه موجود در سطح کشور و دنیا
-    similar_products: Optional[str]
-    project_outcomes: Optional[str]  # دستاوردهای هر گام از پروژه
-    project_innovation: Optional[str]  # نوآوری پروژه
-    project_risks: Optional[str]  # ریسک‌ها و گلوگاه‌هاي احتمالی در اجرای پروژه
+    similar_products: Optional[str] = None
+    project_outcomes: Optional[str] = None  # دستاوردهای هر گام از پروژه
+    project_innovation: Optional[str] = None  # نوآوری پروژه
+    # ریسک‌ها و گلوگاه‌هاي احتمالی در اجرای پروژه
+    project_risks: Optional[str] = None
 
     class Config:
         orm_mode = True
@@ -332,34 +342,35 @@ class ProposalResponse(BaseModel):
     id: int
     creator_id: int
     created_at: datetime
-    start_at: Optional[datetime]
-    end_at: Optional[datetime]
-    master: Optional[MasterResponse]
+    start_at: Optional[datetime] = None
+    end_at: Optional[datetime] = None
+    master: Optional[MasterResponse] = None
     title: str
-    description: str
+    # description: str
     RFP_id: int
-    allocate_id: Optional[int]  # اگر ممکن است None باشد
-    supervisor_id: Optional[int]  # اگر ممکن است None باشد
+    allocate_id: Optional[int] = None  # اگر ممکن است None باشد
+    supervisor_id: Optional[int] = None  # اگر ممکن است None باشد
     user_id: int
-    file_id: Optional[int]
+    file_id: Optional[int] = None
     state: str
-    comment: Optional[str]  # اگر ممکن است None باشد
+    comment: Optional[str] = None  # اگر ممکن است None باشد
 
-    applicant_name: Optional[str]  # نام و نام خانوادگی مجری
-    contact_number: Optional[str]  # شماره تماس
-    education: Optional[str]  # مدرک تحصیلی
-    expertise: Optional[str]  # تخصص
-    project_duration: Optional[str]  # مدت‌زمان و نفرساعت اجرای پروژه
-    project_goals: Optional[str]  # اهداف پروژه
-    project_importance: Optional[str]  # اهمیت پروژه
-    technical_details: Optional[str]  # جزئیات و روش های فنی انجام پروژه
+    applicant_name: Optional[str] = None  # نام و نام خانوادگی مجری
+    contact_number: Optional[str] = None  # شماره تماس
+    education: Optional[str] = None  # مدرک تحصیلی
+    expertise: Optional[str] = None  # تخصص
+    project_duration: Optional[str] = None  # مدت‌زمان و نفرساعت اجرای پروژه
+    project_goals: Optional[str] = None  # اهداف پروژه
+    project_importance: Optional[str] = None  # اهمیت پروژه
+    technical_details: Optional[str] = None  # جزئیات و روش های فنی انجام پروژه
     # ويژگي‌هاي اصلي و مشخصات عمومی و فني محصول پروژه
-    product_features: Optional[str]
+    product_features: Optional[str] = None
     # سوابق پژوهش‌ها و محصولات مشابه موجود در سطح کشور و دنیا
-    similar_products: Optional[str]
-    project_outcomes: Optional[str]  # دستاوردهای هر گام از پروژه
-    project_innovation: Optional[str]  # نوآوری پروژه
-    project_risks: Optional[str]  # ریسک‌ها و گلوگاه‌هاي احتمالی در اجرای پروژه
+    similar_products: Optional[str] = None
+    project_outcomes: Optional[str] = None  # دستاوردهای هر گام از پروژه
+    project_innovation: Optional[str] = None  # نوآوری پروژه
+    # ریسک‌ها و گلوگاه‌هاي احتمالی در اجرای پروژه
+    project_risks: Optional[str] = None
 
     class Config:
         orm_mode = True
@@ -386,10 +397,11 @@ class ProjectResponse(BaseModel):
     creator_id: int
     created_at: datetime
 
+    state: str
     start_at: date
     end_at: date
     title: str
-    master: MasterResponse
+    master: Optional[MasterResponse] = None
 
     proposal: ProposalResponse
     supervisor: UserInfoLimitedResponse
@@ -423,7 +435,7 @@ class ReportResponse(BaseModel):
     comment: str
     state: str
     anounced_percent: int
-    accepted_percent: Optional[int]
+    accepted_percent: Optional[int] = None
     project_id: int
     file_pdf_id: int
     file_docx_id: int
@@ -438,6 +450,7 @@ class ReportUpdate(BaseModel):
     #    state: str
     comment: str
     accepted_percent: int
+    commission_date_time: Optional[datetime] = None
 
 
 # # ReportFile schemas

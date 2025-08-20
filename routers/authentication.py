@@ -106,10 +106,11 @@ async def read_users_me(
         active=user.active,
         user_type_id=user.user_type_id,
         notification_count=notification_count,
+
         allocate_state={
             "pending_to_specify_title": "اجرا جهت تعیین موضوع",
-            "pending_to_specify_supervisor": "در انتظار انتخاب ناظر",
-            "pending_to_accept": "در انتطار تایید نهایی",
+            "pending_to_specify_master": "در انتظار انتخاب استاد راهنما",
+            "pending_to_accept": "در انتطار تایید",
             "eccepted": "تایید شده",
             "rejected": "رد شده"},
 

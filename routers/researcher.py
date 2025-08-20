@@ -123,9 +123,10 @@ async def single_allocate(
 async def edit_accepting_project(
     current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
     project_id: int,
+    project_update: ResearcherProjectUpdate,
     db: Session = Depends(get_db),
 ):
-    return researcher_accept_project(db=db, project_id=project_id)
+    return researcher_accept_project(db=db, project_id=project_id, project_update=project_update)
 
 # edit
 

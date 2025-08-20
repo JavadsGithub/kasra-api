@@ -45,6 +45,9 @@ def supervisor_accept_report(db: Session, report_id: int, report_update: ReportU
     if not project:
         raise HTTPException(
             status_code=404, detail="the project not found")
+    if report_update.commission_date_time:
+        project.commission_date_time = report_update.commission_date_time
+
     project.accepted_percent = report_update.accepted_percent
 
     db.commit()
