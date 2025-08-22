@@ -48,6 +48,14 @@ class MasterResponse(BaseModel):
         from_attributes = True
 
 
+class MasterRequest(BaseModel):
+    # id: int
+    name: str
+
+    class Config:
+        from_attributes = True
+
+
 class Token(BaseModel):
     access_token: str
     token_type: str

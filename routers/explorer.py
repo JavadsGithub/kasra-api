@@ -114,12 +114,13 @@ async def read_proposals(
 #
 
 
-@router.put("/proposal/{proposal_id}", response_model=ProposalResponse)
+@router.put("/accept-proposal/{proposal_id}", response_model=ProposalResponse)
 async def edit_proposal(
     current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
     proposal_id: int,
     proposal_update: ExplorerUpdateProposal,
     db: Session = Depends(get_db),
+
 ):
     return explorer_update_proposal(
         db=db, proposal_id=proposal_id, proposal_update=proposal_update

@@ -10,10 +10,13 @@ from routers import (
     researcher,
     supervisor,
     user,
+    admin,
     file,
     seed,
 )
 from fastapi.middleware.cors import CORSMiddleware
+
+# from routers import admin
 
 # from seed import seeding
 app = FastAPI()
@@ -39,4 +42,7 @@ app.include_router(researcher.router)
 app.include_router(file.router)
 app.include_router(supervisor.router)
 app.include_router(seed.router)
+app.include_router(admin.router)
+
+
 # seeding()

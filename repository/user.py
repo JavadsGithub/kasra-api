@@ -1,5 +1,6 @@
 from datetime import datetime
 from sqlalchemy.orm import Session
+from sqlalchemy import and_, func, or_
 from model.model import *
 from model.schemas import *
 from fastapi import HTTPException
@@ -76,7 +77,28 @@ def user_get_report_by_id(db: Session, report_id: int):
 
 
 def broker_get_users_master(db: Session):
-    return db.query(User).filter(User.user_type_id == 3)
+    # query = db.query(User).join(Allocate).order_by(Proposal.id.desc())
+    # users = db.query(Allocate).filter(
+    #     (Allocate.allocated_to_user == User.id)
+    #     & (Allocate.state != AllocatetState.pending_to_specify_title)
+    #     & (User.user_type_id == 3)).all()
+    users = (
+        db.query(User)
+        .outerjoin(Allocate, User.id == Allocate.allocated_to_user_id)
+        # .filter(Allocate.state != AllocatetState.pending_to_specify_title,)
+        .filter(or_(
+
+                Allocate.id.is_(None),  # برای کاربرانی که Allocate ندارند
+                Allocate.state != AllocatetState.pending_to_specify_title,
+                ))
+        .filter(User.user_type_id == 3)
+
+        .group_by(User.id)
+        .having(func.count(Allocate.id) < 2)
+        .all()
+    )
+    return users
+    # return db.query(User).filter(User.user_type_id == 3)
 
 
 def broker_get_users_discoverer(db: Session):
@@ -97,3 +119,23 @@ def create_notif(db: Session, user_id: int, title: str):
     db.add(new_notif)
     db.commit()
 # create_notif(db=db, user_id=user_id, title="")
+
+
+def admin_get_users_like(
+    db: Session, skip: int = 0, limit: int = 10, fname: str = None
+):
+    query = db.query(User).order_by(User.id.desc())
+    if fname:
+        query = query.filter(User.lname.ilike(
+            f"%{fname}%"))
+    return query.offset(skip).limit(limit).all()
+
+
+def researcher_get_masters_like(
+    db: Session, skip: int = 0, limit: int = 10, name: str = None
+):
+    query = db.query(Master).order_by(Master.id.desc())
+    if name:
+        query = query.filter(Master.name.ilike(
+            f"%{name}%"))
+    return query.offset(skip).limit(limit).all()

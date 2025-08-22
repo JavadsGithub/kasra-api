@@ -11,6 +11,7 @@ from repository.projects import *
 from repository.proposal import researcher_get_proposals_like, researcher_update_proposal_and__not_add_project, researcher_update_proposal_and_add_project
 from repository.reports import *
 from model.schemas import *
+from repository.user import researcher_get_masters_like
 from util.util import *
 from service.mentor import *
 
@@ -149,6 +150,18 @@ async def edit_proposal_and_create_project(
         )
 
 
+@router.put("/proposal/{proposal_id}", response_model=ProposalResponse)
+async def edit_proposal_and_create_project(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    proposal_id: int,
+    # proposal_update: ResearcherUpdateProposal,
+    comment: str,
+    db: Session = Depends(get_db),
+):
+    proposal = db.query(Proposal).filter(Proposal.id == proposal_id).first()
+    proposal =
+
+
 @router.get("/proposals/", response_model=List[ProposalResponse])
 async def read_proposals(
     current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
@@ -160,3 +173,69 @@ async def read_proposals(
     proposals = researcher_get_proposals_like(
         db=db, skip=skip, limit=limit, info=info, creator_id=current_user.id)
     return proposals
+
+
+@router.post("/add-master/", response_model=MasterResponse)
+async def read_proposals(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    new_master: MasterRequest,
+
+    db: Session = Depends(get_db),
+):
+    new_db_master = Master(
+        name=new_master.name
+    )
+    db.add(new_db_master)
+    db.commit()
+    db.refresh(new_db_master)
+    return new_db_master
+
+
+@router.get("/masters/", response_model=List[MasterResponse])
+async def read_masters(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    db: Session = Depends(get_db),
+    skip: int = 0,
+    limit: int = 10,
+    name: str = None,
+):
+
+    users = researcher_get_masters_like(
+        db=db, skip=skip, limit=limit, name=name)
+    return users
+
+
+@router.put("/update-master/{master_id}", response_model=MasterResponse)
+async def update_master(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    update_master: MasterRequest,
+    master_id: int,
+    db: Session = Depends(get_db),
+):
+    master = db.query(Master).filter(Master.id == master_id).first()
+    if not master:
+        raise HTTPException(
+            status_code=403, detail="master dose not exists"
+        )
+    if update_master.name:
+        master.name = update_master.name
+
+    db.commit()
+    db.refresh(master)
+    return master
+
+
+# @router.delete("/delete-master/{master_id}", response_model=MasterResponse)
+# async def update_master(
+#     current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+#     master_id: int,
+#     db: Session = Depends(get_db),
+# ):
+#     master = db.query(Master).filter(Master.id == master_id).first()
+#     if not master:
+#         raise HTTPException(
+#             status_code=403, detail="master dose not exists"
+#         )
+#     db.delete(master)
+#     db.commit()
+#     return master
