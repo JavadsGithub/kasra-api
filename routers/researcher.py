@@ -150,18 +150,6 @@ async def edit_proposal_and_create_project(
         )
 
 
-@router.put("/proposal/{proposal_id}", response_model=ProposalResponse)
-async def edit_proposal_and_create_project(
-    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
-    proposal_id: int,
-    # proposal_update: ResearcherUpdateProposal,
-    comment: str,
-    db: Session = Depends(get_db),
-):
-    proposal = db.query(Proposal).filter(Proposal.id == proposal_id).first()
-    proposal =
-
-
 @router.get("/proposals/", response_model=List[ProposalResponse])
 async def read_proposals(
     current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],

@@ -21,6 +21,8 @@ class ProposalState(enum.Enum):
     pending_to_fill = "در انتظار تکمیل"
     pending_to_explorer_accept = "در انتظار تایید کاشف"
     pending_to_accept = "در انتظار تایید نهایی"
+    edit = "درخواست اصلاح"
+
     eccepted = "تایید شده"
     rejected = "رد شده"
 
@@ -33,7 +35,7 @@ class ReportState(enum.Enum):
 
 class ProjectState(enum.Enum):
     active = "فعال"
-    ended = "غیر فعال"
+    ended = "غیرفعال"
 
 
 class Master(Base):

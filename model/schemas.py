@@ -80,7 +80,7 @@ class NotificationResponse(BaseModel):
 # User schemas
 class UserAddRequest(BaseModel):
     username: str
-    password: str
+    password: Optional[str] = None
     user_type_id: int
     fname: str
     lname: str

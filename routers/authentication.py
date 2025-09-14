@@ -119,7 +119,9 @@ async def read_users_me(
             "pending_to_fill": "در انتظار تکمیل",
             "pending_to_explorer_accept": "در انتظار تایید کاشف",
             "pending_to_accept": "در انتظار تایید نهایی",
-            "eccepted": "تایید شده",
+            "rejected": "رد شده",
+
+            "edit": "درخواست اصلاح",
             "rejected": "رد شده"},
 
 
@@ -131,7 +133,7 @@ async def read_users_me(
 
         project_state={
             "active": "فعال",
-            "ended": "غیر فعال"}
+            "ended": "غیرفعال"}
     )
 
 
