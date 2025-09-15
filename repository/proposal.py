@@ -108,6 +108,7 @@ def researcher_update_proposal_and_add_project(
         user_user_id=proposal.user_id,
         state=ProjectState.active,
         creator_id=creator_id,
+        price=proposal.price,
         created_at=datetime.now(),
         master_id=proposal.master_id,
         title=proposal.title,

@@ -313,6 +313,16 @@ class ExplorerUpdateProposal(BaseModel):
         orm_mode = True
 
 
+class SupervisorUpdateProposal(BaseModel):
+    comment: str
+    supervisor_id: int
+    commission_file_id: Optional[int] = None
+    commission_date_time: Optional[datetime] = None
+
+    class Config:
+        orm_mode = True
+
+
 class ResearcherUpdateProposal(BaseModel):
     state: str
 
@@ -325,6 +335,7 @@ class UserUpdateProposal(BaseModel):
     start_at: datetime
     end_at: datetime
 
+    price: Optional[str] = None
     applicant_name: Optional[str] = None  # نام و نام خانوادگی مجری
     contact_number: Optional[str] = None  # شماره تماس
     education: Optional[str] = None  # مدرک تحصیلی
@@ -410,7 +421,7 @@ class ProjectResponse(BaseModel):
     end_at: date
     title: str
     master: Optional[MasterResponse] = None
-
+    price: Optional[str] = None
     proposal: ProposalResponse
     supervisor: UserInfoLimitedResponse
     # researcher: UserInfoLimitedResponse

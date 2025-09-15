@@ -154,6 +154,7 @@ class Proposal(Base):
     title = Column(String(999))
     description = Column(String(999))
     RFP_id = Column(Integer, ForeignKey("RFP.id"))
+    price = Column(Integer, nullable=True)
     allocate_id = Column(Integer, ForeignKey("allocate.id"))
     start_at = Column(Date, nullable=True)
     end_at = Column(Date, nullable=True)
@@ -214,6 +215,7 @@ class Project(Base):
     user_user_id = Column(Integer, ForeignKey("user.id"))
 
     accepted_percent = Column(Integer)
+    price = Column(Integer, nullable=True)
     state = Column(Enum(ProjectState))
 
     commission_file_id = Column(Integer, ForeignKey("file.id"), nullable=True)

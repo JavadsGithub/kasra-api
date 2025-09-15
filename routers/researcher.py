@@ -8,7 +8,7 @@ from datetime import time
 
 from repository.allocate import broker_allocate_single, broker_search_allocate, researcher_accept_allocate, researcher_reject_allocate, researcher_search_allocate
 from repository.projects import *
-from repository.proposal import researcher_get_proposals_like, researcher_update_proposal_and__not_add_project, researcher_update_proposal_and_add_project
+from repository.proposal import researcher_get_proposals_like, researcher_update_proposal_and__not_add_project, researcher_update_proposal_and_add_project, supervisor_update_proposal
 from repository.reports import *
 from model.schemas import *
 from repository.user import researcher_get_masters_like
@@ -212,6 +212,18 @@ async def update_master(
     db.refresh(master)
     return master
 
+
+@router.put("/accept-proposal/{proposal_id}", response_model=ProposalResponse)
+async def edit_proposal(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    proposal_id: int,
+    proposal_update: SupervisorUpdateProposal,
+    db: Session = Depends(get_db),
+
+):
+    return supervisor_update_proposal(
+        db=db, proposal_id=proposal_id, proposal_update=proposal_update
+    )
 
 # @router.delete("/delete-master/{master_id}", response_model=MasterResponse)
 # async def update_master(
