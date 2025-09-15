@@ -3,6 +3,8 @@ from model.model import *
 from model.schemas import *
 from fastapi import HTTPException
 
+from routers import file
+
 
 def supervisor_get_reports(db: Session, skip: int = 0, limit: int = 10):
     return db.query(Report).order_by(Report.id.desc()).offset(skip).limit(limit).all()
@@ -31,12 +33,14 @@ def user_get_reports_by_project(db: Session, project_id: int, creator_id: int):
 #     return report_files
 
 
-def supervisor_accept_report(db: Session, report_id: int, report_update: ReportUpdate):
+def supervisor_accept_report(db: Session, report_id: int, report_update: ReportUpdate, file_id: int):
     report = db.query(Report).filter(Report.id == report_id).first()
     if not report:
         raise HTTPException(status_code=404, detail="Report not found")
-
+    if file_id != 0:
+        report.supervisor_file_id = file_id
     report.comment = report_update.comment
+
     report.state = ReportState.eccepted
     # if report_update.state == ReportState.eccepted:
     report.accepted_percent = report_update.accepted_percent
@@ -55,8 +59,10 @@ def supervisor_accept_report(db: Session, report_id: int, report_update: ReportU
     return report
 
 
-def supervisor_reject_report(db: Session, report_id: int, report_update: ReportUpdate):
+def supervisor_reject_report(db: Session, report_id: int, report_update: ReportUpdate, file_id: int):
     report = db.query(Report).filter(Report.id == report_id).first()
+    if file_id != 0:
+        report.supervisor_file_id = file_id
     if not report:
         raise HTTPException(status_code=404, detail="Report not found")
     report.comment = report_update.comment

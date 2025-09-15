@@ -249,6 +249,7 @@ class Report(Base):
     anounced_percent = Column(Integer)
     accepted_percent = Column(Integer, nullable=True)
     project_id = Column(Integer, ForeignKey("project.id"))
+    supervisor_file_id = Column(Integer, ForeignKey("file.id"))
     file_pdf_id = Column(Integer, ForeignKey("file.id"))
     file_docx_id = Column(Integer, ForeignKey("file.id"))
     file_pptx_id = Column(Integer, ForeignKey("file.id"))

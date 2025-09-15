@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException, status, Response
 from model import model, schemas
 from sqlalchemy.orm import Session
 from sqlalchemy.orm import Session
-from sqlalchemy import update, desc
+from sqlalchemy import Null, null, update, desc
 from datetime import time
 from repository.proposal import *
 from repository.projects import *
@@ -84,17 +84,20 @@ async def read_report(
 async def edit_report(
     current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
     report_id: int,
+
     report_update: ReportUpdate,
+    file_id: int = 0,
     accept: bool = False,
+
     db: Session = Depends(get_db),
 ):
     if accept:
         return supervisor_accept_report(
-            db=db, report_id=report_id, report_update=report_update
+            db=db, report_id=report_id, report_update=report_update, file_id=file_id
         )
     else:
         return supervisor_reject_report(
-            db=db, report_id=report_id, report_update=report_update
+            db=db, report_id=report_id, report_update=report_update, file_id=file_id
         )
 
 
