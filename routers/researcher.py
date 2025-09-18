@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import update, desc
 from datetime import time
 
-from repository.allocate import broker_allocate_single, broker_search_allocate, researcher_accept_allocate, researcher_reject_allocate, researcher_search_allocate
+from repository.allocate import broker_allocate_single, broker_search_allocate, explorer_allocate_single, explorer_update_allocate, researcher_accept_allocate, researcher_reject_allocate, researcher_search_allocate
 from repository.projects import *
 from repository.proposal import researcher_get_proposals_like, researcher_update_proposal_and__not_add_project, researcher_update_proposal_and_add_project, supervisor_update_proposal
 from repository.reports import *
@@ -88,6 +88,35 @@ async def edit_allocate(
         return researcher_reject_allocate(db=db, allocate_id=allocate_id)
 
 #
+
+
+@router.put("/master-allocates/{allocate_id}", response_model=AllocateResponse)
+async def edit_master_allocate(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    allocate_id: int,
+    allocate_update: ExplorerUpdateAllocate,
+    db: Session = Depends(get_db),
+):
+    allocate = explorer_allocate_single(db, allocate_id=allocate_id)
+    if not allocate:
+        raise HTTPException(status_code=404, detail="No allocate found")
+    new_proposal = model.Proposal(
+        creator_id=current_user.id,
+        created_at=datetime.now(),
+        master=allocate.master,
+        title=allocate.project_title,
+        description=allocate.project_description,
+        RFP_id=allocate.RFP_id,
+        allocate_id=allocate_id,
+
+        # supervisor_id=Column(Integer, ForeignKey("user.id"), nullable=True),
+        user_id=allocate.allocated_to_user_id,
+        state=model.ProposalState.pending_to_fill,  # ENUM
+        comment=""
+    )
+    db.add(new_proposal)
+    db.commit()
+    return explorer_update_allocate(db=db, allocate_update=allocate_update, allocate_id=allocate_id)
 
 
 @router.get("/allocates/", response_model=List[AllocateResponse])

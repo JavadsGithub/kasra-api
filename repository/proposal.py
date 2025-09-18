@@ -94,6 +94,24 @@ def explorer_update_proposal(
     return proposal
 
 
+def supervisor_update_proposal(
+    db: Session, proposal_id: int, proposal_update: SupervisorUpdateProposal
+):
+    proposal = db.query(Proposal).filter(Proposal.id == proposal_id).first()
+    if not proposal:
+        raise HTTPException(status_code=404, detail="Proposal not found")
+
+    proposal.state = ProposalState.pending_to_accept
+    proposal.comment = proposal_update.comment
+    proposal.supervisor_id = proposal_update.supervisor_id
+    proposal.commission_file_id = proposal_update.commission_file_id
+    proposal.commission_date_time = proposal_update.commission_date_time
+
+    db.commit()
+    db.refresh(proposal)
+    return proposal
+
+
 def researcher_update_proposal_and_add_project(
     db: Session, proposal_id: int, creator_id: int
 ):
