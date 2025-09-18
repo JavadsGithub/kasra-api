@@ -58,6 +58,9 @@ def explorer_create_rfp(db: Session, rfp: ExplorerCreateUpdateRFP, creator_id: i
         analyst_evaluator=rfp.analyst_evaluator,  # تحلیل کارگزار کاشف
         keywords=rfp.keywords  # کلمات کلیدی
     )
+    rfp_exists = db.query(RFP).filter(RFP.info == rfp.info).all()
+    if rfp_exists:
+        raise HTTPException(status_code=403, detail="RFP already exists")
     db.add(new_rfp)
     db.commit()
     db.refresh(new_rfp)
