@@ -3,6 +3,7 @@ from model.model import *
 from model.schemas import *
 from fastapi import HTTPException
 
+from repository.user import create_notif
 from routers import file
 
 
@@ -56,6 +57,8 @@ def supervisor_accept_report(db: Session, report_id: int, report_update: ReportU
 
     db.commit()
     db.refresh(report)
+    create_notif(db=db, user_id=project.user_user_id,
+                 title="وضعیت گزارش کار تغییر کرد")
     return report
 
 
@@ -69,6 +72,9 @@ def supervisor_reject_report(db: Session, report_id: int, report_update: ReportU
     report.state = ReportState.rejected
     db.commit()
     db.refresh(report)
+    project = db.query(Project).filter(Project.id == report.project_id).first()
+    create_notif(db=db, user_id=project.user_user_id,
+                 title="وضعیت گزارش کار تغییر کرد")
     return report
 
 

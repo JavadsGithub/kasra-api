@@ -85,6 +85,8 @@ def researcher_accept_allocate(
 
     db.commit()
     db.refresh(allocate)
+    create_notif(db=db, user_id=allocate.allocated_to_user_id,
+                 title="وضعیت تخصیص تغییر کرد")
     return allocate
 
 
@@ -99,7 +101,10 @@ def researcher_reject_allocate(
 
     db.commit()
     db.refresh(allocate)
+    create_notif(db=db, user_id=allocate.allocated_to_user_id,
+                 title="وضعیت تخصیص تغییر کرد")
     return allocate
+
 
 # filter state
 

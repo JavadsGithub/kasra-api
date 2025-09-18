@@ -11,7 +11,7 @@ from repository.projects import *
 from repository.proposal import researcher_get_proposals_like, researcher_update_proposal_and__not_add_project, researcher_update_proposal_and_add_project, supervisor_update_proposal
 from repository.reports import *
 from model.schemas import *
-from repository.user import researcher_get_masters_like
+from repository.user import create_notif, researcher_get_masters_like
 from util.util import *
 from service.mentor import *
 
@@ -116,6 +116,8 @@ async def edit_master_allocate(
     )
     db.add(new_proposal)
     db.commit()
+    create_notif(db=db, user_id=allocate.allocated_to_user_id,
+                 title="وضعیت پروپوزال تغییر کرد")
     return explorer_update_allocate(db=db, allocate_update=allocate_update, allocate_id=allocate_id)
 
 
@@ -253,6 +255,25 @@ async def edit_proposal(
     return supervisor_update_proposal(
         db=db, proposal_id=proposal_id, proposal_update=proposal_update
     )
+
+
+@router.put("/user/{user_id}", response_model=UserInfoResponse)
+async def change_password(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    user_id: int,
+    new_password: str,
+    db: Session = Depends(get_db),
+):
+    user = db.query(User).filter(User.id == user_id).first()
+
+    if not user:
+        raise HTTPException(status_code=404, detail="user not found")
+    user.password = hash(password=new_password)
+
+    db.commit()
+    db.refresh(user)
+    return user
+
 
 # @router.delete("/delete-master/{master_id}", response_model=MasterResponse)
 # async def update_master(

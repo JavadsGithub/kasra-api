@@ -2,7 +2,7 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status, Response
 from repository.allocate import explorer_allocate_single, explorer_search_allocate, explorer_update_allocate
 from repository.proposal import explorer_get_proposals_like, explorer_update_proposal
-from repository.user import explorer_get_users_supervisor
+from repository.user import create_notif, explorer_get_users_supervisor
 from service import explorer
 from service.explorer import rfps_exist
 from model import model
@@ -81,6 +81,8 @@ async def edit_rfp(
     rfp_update: ExplorerCreateUpdateRFP,
     db: Session = Depends(get_db),
 ):
+    create_notif(db=db, user_id=current_user.id,
+                 title="rfp جدید اضافه شد")
     return explorer_update_rfp(db=db, rfp_id=rfp_id, rfp_update=rfp_update)
 
 #
@@ -122,6 +124,7 @@ async def edit_proposal(
     db: Session = Depends(get_db),
 
 ):
+
     return explorer_update_proposal(
         db=db, proposal_id=proposal_id, proposal_update=proposal_update
     )
@@ -143,6 +146,9 @@ async def edit_proposal_and_create_project(
     proposal.comment = comment
     db.commit()
     db.refresh(proposal)
+
+    create_notif(db=db, user_id=proposal.user_id,
+                 title="وضعیت پروپوزال تغییر کرد")
     return proposal
 
 
@@ -172,6 +178,8 @@ async def edit_allocate(
     )
     db.add(new_proposal)
     db.commit()
+    create_notif(db=db, user_id=new_proposal.user_id,
+                 title="وضعیت پروپوزال تغییر کرد")
     return explorer_update_allocate(db=db, allocate_update=allocate_update, allocate_id=allocate_id)
 
 #

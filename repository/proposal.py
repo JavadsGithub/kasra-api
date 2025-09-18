@@ -3,6 +3,8 @@ from model.model import *
 from model.schemas import *
 from fastapi import HTTPException
 
+from repository.user import create_notif
+
 
 def broker_get_proposals(db: Session, skip: int = 0, limit: int = 10):
     return (
@@ -91,6 +93,9 @@ def explorer_update_proposal(
 
     db.commit()
     db.refresh(proposal)
+
+    create_notif(db=db, user_id=proposal.user_id,
+                 title="وضعیت پروپوزال تغییر کرد")
     return proposal
 
 
@@ -109,6 +114,8 @@ def supervisor_update_proposal(
 
     db.commit()
     db.refresh(proposal)
+    create_notif(db=db, user_id=proposal.user_id,
+                 title="وضعیت پروپوزال تغییر کرد")
     return proposal
 
 
@@ -138,6 +145,9 @@ def researcher_update_proposal_and_add_project(
     db.add(new_project)
     db.commit()
     db.refresh(proposal)
+
+    create_notif(db=db, user_id=proposal.user_id,
+                 title="وضعیت پروپوزال تغییر کرد")
     return proposal
 
 
@@ -150,6 +160,8 @@ def researcher_update_proposal_and__not_add_project(
 
     proposal.state = ProposalState.rejected
     db.refresh(proposal)
+    create_notif(db=db, user_id=proposal.user_id,
+                 title="وضعیت پروپوزال تغییر کرد")
     return proposal
 
 
@@ -203,6 +215,8 @@ def user_update_proposal(
     proposal.state = ProposalState.pending_to_explorer_accept
     db.commit()
     db.refresh(proposal)
+    create_notif(db=db, user_id=proposal.user_id,
+                 title="وضعیت پروپوزال تغییر کرد")
     return proposal
 
 
@@ -212,6 +226,8 @@ def broker_update_proposal(db: Session, proposal_id: int, state: int):
     updating_proposal.state = state
     db.commit()
     db.refresh(updating_proposal)
+    create_notif(db=db, user_id=updating_proposal.user_id,
+                 title="وضعیت پروپوزال تغییر کرد")
 
 
 def researcher_get_proposals_like(

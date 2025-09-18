@@ -2,6 +2,7 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from model.model import *
 from model.schemas import *
+from repository.user import create_notif
 
 
 def supervisor_get_projects(
@@ -49,4 +50,6 @@ def researcher_accept_project(
 
     db.commit()
     db.refresh(project)
+    create_notif(db=db, user_id=project.user_user_id,
+                 title="وضعیت پروژه تغییر کرد")
     return project
