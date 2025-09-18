@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from datetime import time
 
 from repository.allocate import broker_allocate_single, broker_create_allocate, broker_search_allocate
+from repository.log import add_log
 from repository.proposal import *
 from repository.projects import *
 from repository.user import *
@@ -62,6 +63,7 @@ async def add_allocate(
     allocate: BrokerCreateAllocate,
     db: Session = Depends(get_db),
 ):
+    add_log(db=db, user_id=current_user.id, act="اضافه کردن تخصبص")
     create_notif(db=db, user_id=allocate.allocated_to_user_id,
                  title="rfp جدید به شما تخصیص داده شد!")
     return broker_create_allocate(db=db, allocate=allocate, creator_id=current_user.id)

@@ -14,3 +14,11 @@ def add_log(db: Session, user_id: int, act: str):
 
     db.add(log)
     db.commit()
+
+
+def get_logs(
+    db: Session, supervisor_id: int, skip: int = 0, limit: int = 10
+):
+    logs = db.query(Project).order_by(
+        Project.id.desc()).offset(skip).limit(limit).all()
+    return logs

@@ -1,3 +1,4 @@
+from ast import Str
 import enum
 from typing import Optional
 from pydantic import BaseModel
@@ -471,6 +472,14 @@ class ReportUpdate(BaseModel):
     accepted_percent: int
     commission_date_time: Optional[datetime] = None
 
+
+# log
+
+class LogResponse(BaseModel):
+    id: int
+    user_name: Optional[str] = None
+    act: Optional[str] = None
+    created_at: Optional[datetime] = None
 
 # # ReportFile schemas
 # class ReportFileRequest(BaseModel):

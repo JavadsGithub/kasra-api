@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.orm import Session
 from sqlalchemy import Null, null, update, desc
 from datetime import time
+from repository.log import add_log
 from repository.proposal import *
 from repository.projects import *
 from repository.reports import *
@@ -92,10 +93,12 @@ async def edit_report(
     db: Session = Depends(get_db),
 ):
     if accept:
+        add_log(db=db, user_id=current_user.id, act="تایید گزارش کار")
         return supervisor_accept_report(
             db=db, report_id=report_id, report_update=report_update, file_id=file_id
         )
     else:
+        add_log(db=db, user_id=current_user.id, act="رد گزارش کار")
         return supervisor_reject_report(
             db=db, report_id=report_id, report_update=report_update, file_id=file_id
         )

@@ -7,6 +7,7 @@ from sqlalchemy import update, desc
 from datetime import time
 
 from repository.allocate import broker_allocate_single, broker_search_allocate, researcher_accept_allocate, researcher_reject_allocate, researcher_search_allocate
+from repository.log import get_logs
 from repository.projects import *
 from repository.proposal import researcher_get_proposals_like, researcher_update_proposal_and__not_add_project, researcher_update_proposal_and_add_project
 from repository.reports import *
@@ -129,3 +130,15 @@ async def read_users(
     users = admin_get_users_like(
         db=db, skip=skip, limit=limit, fname=fname)
     return users
+
+
+@router.get("/logs/", response_model=List[LogResponse])
+async def read_logs(
+    current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    skip: int = 0,
+    limit: int = 10,
+
+    db: Session = Depends(get_db),
+):
+    logs = get_logs(db, skip=skip, limit=limit)
+    return logs

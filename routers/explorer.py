@@ -1,6 +1,7 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status, Response
 from repository.allocate import explorer_allocate_single, explorer_search_allocate, explorer_update_allocate
+from repository.log import add_log
 from repository.proposal import explorer_get_proposals_like, explorer_update_proposal
 from repository.user import create_notif, explorer_get_users_supervisor
 from service import explorer
@@ -69,6 +70,7 @@ async def add_rfp(
     rfp: ExplorerCreateUpdateRFP,
     db: Session = Depends(get_db),
 ):
+    add_log(db=db, user_id=current_user.id, act="اضافه کردن rfp")
     return explorer_create_rfp(db=db, rfp=rfp, creator_id=current_user.id)
 
 #
@@ -83,6 +85,7 @@ async def edit_rfp(
 ):
     create_notif(db=db, user_id=current_user.id,
                  title="rfp جدید اضافه شد")
+    add_log(db=db, user_id=current_user.id, act="اضافه کردن rfp")
     return explorer_update_rfp(db=db, rfp_id=rfp_id, rfp_update=rfp_update)
 
 #
@@ -124,7 +127,7 @@ async def edit_proposal(
     db: Session = Depends(get_db),
 
 ):
-
+    add_log(db=db, user_id=current_user.id, act="تغییر وضعیت پروپوزال")
     return explorer_update_proposal(
         db=db, proposal_id=proposal_id, proposal_update=proposal_update
     )
@@ -149,6 +152,7 @@ async def edit_proposal_and_create_project(
 
     create_notif(db=db, user_id=proposal.user_id,
                  title="وضعیت پروپوزال تغییر کرد")
+    add_log(db=db, user_id=current_user.id, act="تغییر وضعیت پروپوزال")
     return proposal
 
 
@@ -178,8 +182,10 @@ async def edit_allocate(
     )
     db.add(new_proposal)
     db.commit()
+
     create_notif(db=db, user_id=new_proposal.user_id,
                  title="وضعیت پروپوزال تغییر کرد")
+    add_log(db=db, user_id=current_user.id, act="تغییر وضعیت پروپوزال")
     return explorer_update_allocate(db=db, allocate_update=allocate_update, allocate_id=allocate_id)
 
 #

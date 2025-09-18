@@ -7,6 +7,7 @@ from sqlalchemy import update, desc
 from datetime import time
 
 from repository.allocate import broker_allocate_single, broker_search_allocate, explorer_allocate_single, explorer_update_allocate, researcher_accept_allocate, researcher_reject_allocate, researcher_search_allocate
+from repository.log import add_log
 from repository.projects import *
 from repository.proposal import researcher_get_proposals_like, researcher_update_proposal_and__not_add_project, researcher_update_proposal_and_add_project, supervisor_update_proposal
 from repository.reports import *
@@ -82,9 +83,10 @@ async def edit_allocate(
     db: Session = Depends(get_db),
 ):
     if accept:
-
+        add_log(db=db, user_id=current_user.id, act="تایید پروپوزال")
         return researcher_accept_allocate(db=db, allocate_id=allocate_id)
     else:
+        add_log(db=db, user_id=current_user.id, act="رد پروپوزال")
         return researcher_reject_allocate(db=db, allocate_id=allocate_id)
 
 #
@@ -118,6 +120,8 @@ async def edit_master_allocate(
     db.commit()
     create_notif(db=db, user_id=allocate.allocated_to_user_id,
                  title="وضعیت پروپوزال تغییر کرد")
+    add_log(db=db, user_id=current_user.id,
+            act="اضافه کردن پروژه و تایید پروپوزال")
     return explorer_update_allocate(db=db, allocate_update=allocate_update, allocate_id=allocate_id)
 
 
@@ -158,6 +162,7 @@ async def edit_accepting_project(
     project_update: ResearcherProjectUpdate,
     db: Session = Depends(get_db),
 ):
+    add_log(db=db, user_id=current_user.id, act="تایید پروژه")
     return researcher_accept_project(db=db, project_id=project_id, project_update=project_update)
 
 # edit
@@ -172,10 +177,12 @@ async def edit_proposal_and_create_project(
     db: Session = Depends(get_db),
 ):
     if accept:
+        add_log(db=db, user_id=current_user.id, act="تایید پروپوزال")
         return researcher_update_proposal_and_add_project(
             db=db, proposal_id=proposal_id,  creator_id=current_user.id
         )
     else:
+        add_log(db=db, user_id=current_user.id, act="رد پروپوزال")
         return researcher_update_proposal_and__not_add_project(
             db=db, proposal_id=proposal_id, creator_id=current_user.id
         )
@@ -207,6 +214,7 @@ async def read_proposals(
     db.add(new_db_master)
     db.commit()
     db.refresh(new_db_master)
+    add_log(db=db, user_id=current_user.id, act="اضافه کردن استاد راهنما")
     return new_db_master
 
 
@@ -241,6 +249,7 @@ async def update_master(
 
     db.commit()
     db.refresh(master)
+    add_log(db=db, user_id=current_user.id, act="ویرایش استاد راهنما")
     return master
 
 
@@ -252,6 +261,7 @@ async def edit_proposal(
     db: Session = Depends(get_db),
 
 ):
+    add_log(db=db, user_id=current_user.id, act="تغییر وضعیت پروپوزال")
     return supervisor_update_proposal(
         db=db, proposal_id=proposal_id, proposal_update=proposal_update
     )
@@ -272,6 +282,7 @@ async def change_password(
 
     db.commit()
     db.refresh(user)
+    add_log(db=db, user_id=current_user.id, act="اضافه کردن کاربر")
     return user
 
 

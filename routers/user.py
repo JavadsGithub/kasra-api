@@ -7,6 +7,7 @@ from datetime import time
 import datetime
 from model import schemas
 from repository.allocate import user_allocate_single, user_search_allocate, user_update_allocate
+from repository.log import add_log
 from repository.proposal import user_get_proposals_like, user_update_proposal
 from repository.reports import user_get_reports_by_project
 from repository.rfp import user_search_rfps
@@ -183,6 +184,7 @@ async def add_report(
     report_request: ReportRequest,
     db: Session = Depends(get_db),
 ):
+    add_log(db=db, user_id=current_user.id, act="ارسال گزارش کار")
     return user_create_report(db=db, report=report_request, creator_id=current_user.id)
 
 #
@@ -221,6 +223,7 @@ async def edit_proposal(
     proposal = user_get_proposal_by_id(db=db, proposal_id=proposal_id)
     if datetime.now() - proposal.created_at > timedelta(days=21):
         raise HTTPException(status_code=403, detail="time limit has passed")
+    add_log(db=db, user_id=current_user.id, act="تکمیل پروپوزال")
     return user_update_proposal(
         db=db, proposal_id=proposal_id, proposal_update=proposal_update
     )
@@ -283,4 +286,5 @@ async def edit_allocate(
     allocate = user_allocate_single(db, allocate_id=allocate_id)
     if datetime.now() - allocate.created_at > timedelta(days=7):
         raise HTTPException(status_code=403, detail="time limit has passed")
+    add_log(db=db, user_id=current_user.id, act="تایید موضوع پروژه")
     return user_update_allocate(db=db, allocate_id=allocate_id)
