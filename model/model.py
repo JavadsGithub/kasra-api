@@ -260,6 +260,14 @@ class Report(Base):
     creator = relationship("User", foreign_keys=[creator_id])
 
 
+class Log(Base):
+    __tablename__ = "log"
+    id = Column(Integer, primary_key=True)
+    user_name = Column(String(999))
+    act = Column(String(999))
+    created_at = Column(DateTime)
+
+
 # class ReportFile(Base):
 #     __tablename__ = "report_file"
 #     id = Column(Integer, primary_key=True)
