@@ -261,7 +261,7 @@ class Report(Base):
 
 
 class Log(Base):
-    __tablename__ = "log"
+    __tablename__ = "log_table"
     id = Column(Integer, primary_key=True)
     user_name = Column(String(999))
     act = Column(String(999))
