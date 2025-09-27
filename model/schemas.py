@@ -460,7 +460,7 @@ class ReportResponse(BaseModel):
     file_pdf_id: int
     file_docx_id: int
     file_pptx_id: int
-    supervisor_file_id: int
+    supervisor_file_id: Optional[int] = None
     project: ProjectResponse
 
     class Config:
