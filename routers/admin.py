@@ -122,13 +122,14 @@ async def update_user(
 @router.get("/users/", response_model=List[UserInfoResponse])
 async def read_users(
     current_user: Annotated[schemas.UserInfoResponse, Depends(get_current_user)],
+    active: bool,
     skip: int = 0,
     limit: int = 10,
     fname: str = None,
     db: Session = Depends(get_db),
 ):
     users = admin_get_users_like(
-        db=db, skip=skip, limit=limit, fname=fname)
+        db=db, skip=skip, limit=limit, fname=fname, active=active)
     return users
 
 

@@ -31,7 +31,7 @@ async def add_proposal(db: Session = Depends(get_db)):
         UserRole(title="کارجو"),  # 3
         UserRole(title="ناظر"),  # 4
         UserRole(title="امور محققین"),  # 5
-        UserRole(title="admin"),  # 6
+        # UserRole(title="admin"),  # 6
     ]
     db.add_all(new_user_roules)
     db.commit()
@@ -109,19 +109,19 @@ async def add_proposal(db: Session = Depends(get_db)):
             phone="09185020304",
             active=True,
         ),
-        User(
-            user_type_id=rolese[5].id,
-            fname="محسن",
-            lname="عالینژاد",
-            father_name="حسن",
-            birth=datetime.now(),
-            resume_file_id=file_id,
-            address="مشهد-رضوی",
-            username="admin6",
-            password=util.hash("admin"),
-            phone="09185020304",
-            active=True,
-        ),
+        # User(
+        #     user_type_id=rolese[5].id,
+        #     fname="محسن",
+        #     lname="عالینژاد",
+        #     father_name="حسن",
+        #     birth=datetime.now(),
+        #     resume_file_id=file_id,
+        #     address="مشهد-رضوی",
+        #     username="admin6",
+        #     password=util.hash("admin"),
+        #     phone="09185020304",
+        #     active=True,
+        # ),
         # repeat
         User(
             user_type_id=rolese[2].id,
