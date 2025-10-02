@@ -124,11 +124,11 @@ def create_notif(db: Session, user_id: int, title: str):
 def admin_get_users_like(
     db: Session, active: bool, skip: int = 0, limit: int = 10, fname: str = None
 ):
-    query = db.query(User).order_by(User.id.desc())
+    query = db.query(User).order_by(
+        User.id.desc()).filter(User.active == active)
     if fname:
         query = query.filter(User.lname.ilike(
             f"%{fname}%"))
-    query.filter(User.active == active)
     return query.offset(skip).limit(limit).all()
 
 
